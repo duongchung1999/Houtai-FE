@@ -1,0 +1,54 @@
+.el-header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: center;
+}
+
+.el-main {
+    padding: 20px 10px;
+    .el-scrollbar {
+        height: calc(100vh - 50px - 60px - 40px);
+    }
+
+    .config-form-drawer {
+        .priview-row {
+            height: 100%;
+
+            .el-col {
+                height: 100%;
+            }
+
+            .right-panel {
+                .action-bar {
+                    height: 45px;
+                }
+                .scrollbar-body {
+                    padding: 20px 10px 20px 0;
+                    height: calc(100vh - 45px);
+                }
+            }
+        }
+
+        .config-editor {
+            height: 100%;
+        }
+
+        .form-footer {
+            display: flex;
+            margin-top: 10px;
+            justify-content: flex-end;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}
+
+::v-deep .el-drawer__body {
+    overflow:unset;
+  }

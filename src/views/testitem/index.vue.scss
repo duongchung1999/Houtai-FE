@@ -1,0 +1,72 @@
+::v-deep .el-scrollbar {
+    height: calc(100vh - 50px - 60px - 20px);
+    .el-scrollbar__wrap {
+        overflow-x: auto;
+    }
+
+    .el-scrollbar__bar.is-vertical {
+        z-index: 3;
+    }
+}
+
+.el-main {
+    padding: 10px 20px;
+    height: calc(100vh - 50px - 60px);
+}
+
+.form-item-cmd {
+    display: flex;
+    justify-content: space-between;
+    // align-items:;
+    .el-input {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    ::v-deep i.el-icon-question {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+}
+
+.noList-item-desc {
+    float: right;
+    color: #8492a6;
+    font-size: 13px;
+}
+
+.search-input {
+    width: 500px;
+    margin-left: auto;
+}
+
+::v-deep .el-table {
+    .unit-text {
+        background-color: #ebeef5;
+        color: #909399;
+        border-radius: 4px;
+        padding: 2px 4px;
+        font-size: 12px;
+    }
+}
+::v-deep .default-pass-condition-text {
+    background-color: #f2f6fc;
+    color: #c0c4cc;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 12px;
+}
+
+::v-deep .delete-test-item-dialog {
+    .el-dialog__body {
+        padding-top: 0;
+    }
+
+    .where-used {
+        li {
+            margin-top: 10px;
+        }
+    }
+}

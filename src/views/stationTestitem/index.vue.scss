@@ -1,0 +1,133 @@
+.el-main {
+  height: calc(100vh - 50px - 60px - 20px);
+  padding: 10px;
+}
+
+.list-header {
+  margin: 0;
+  padding: 10px;
+  padding-top: 0;
+
+  display: flex;
+  align-items: center;
+  border-bottom: 1px #e4e7ed solid;
+  box-sizing: border-box;
+
+  .el-input {
+    width: 200px;
+  }
+
+  .radio-label {
+    padding-left: 0;
+  }
+
+  .action-buttons {
+    display: flex;
+    margin-left: auto;
+
+    ::v-deep .el-upload {
+      margin: 0 10px !important;
+    }
+  }
+}
+
+.list-row {
+  height: 100%;
+  .el-col {
+    height: 100%;
+
+    .draggable-list {
+      min-height: 400px;
+    }
+
+    .v-list-item {
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      height: 44px;
+      letter-spacing: 0.75px;
+      color: #303133;
+      justify-content: space-between;
+      position: relative;
+
+      .config-tags {
+        margin-right: auto;
+        .el-tag {
+          margin-left: 10px;
+        }
+      }
+
+      &.isHidden {
+        opacity: 0.5;
+        &:hover {
+          opacity: 1;
+        }
+      }
+
+      .delete-btn,
+      .move-btn {
+        padding: 12px;
+        font-size: 20px;
+      }
+
+      .move-btn {
+        cursor: move;
+      }
+      .delete-btn {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+      }
+
+      .sort-index {
+        color: #67c23a;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 24px;
+        font-style: oblique;
+        font-weight: 700;
+      }
+    }
+  }
+
+  ::v-deep .el-scrollbar {
+    height: 100%;
+    height: calc(100vh - 50px - 60px - 20px - 52px - 11px);
+
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+      .el-scrollbar__view {
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+.action-bar {
+  .sub-bar {
+    padding: 0 10px;
+    width: 50%;
+    align-items: center;
+  }
+}
+
+.import-btn {
+  margin-left: auto;
+}
+
+.chosenClass {
+  background: #1890ff;
+  * {
+    background: transparent;
+    color: #fff !important;
+  }
+  .el-tag {
+    border-color: #fff;
+  }
+
+  &:hover {
+    background: #1890ff;
+  }
+}

@@ -1,0 +1,72 @@
+.el-header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    .el-button {
+        margin-left: 20px;
+        i {
+            font-size: 24px;
+        }
+    }
+}
+
+.el-drawer {
+    position: relative;
+    .buttons {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        position: absolute;
+
+        display: flex;
+        justify-content: right;
+        padding-right: 30px;
+        margin-bottom: 30px;
+    }
+}
+
+.filter-item {
+    margin-bottom: 30px;
+    display: flex;
+    padding: 0 20px 0 20px;
+
+    .radio-label {
+        text-align: right;
+        width: 50px;
+        padding: 0;
+        margin-right: 20px;
+
+        // 表示不缩小适应，固定其宽度
+        flex-shrink: 0;
+    }
+
+    .filter {
+        flex-grow: 1;
+    }
+
+    .date-filter {
+        overflow: hidden;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+
+        .el-date-editor {
+            flex-grow: 1;
+            width: auto;
+        }
+    }
+}
+
+::v-deep .addtion-record {
+    background-color: #e7faf0;
+}
+
+::v-deep .deletion-record {
+    background-color: #ffeded;
+}
+
+::v-deep .modification-record {
+    background-color: #e8f4ff;
+}

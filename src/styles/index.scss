@@ -1,0 +1,178 @@
+// @import './variables.scss'; // Already imported in style-resources-loader
+// @import './mixins.scss'; // Already imported in style-resources-loader
+@import "./transition.scss";
+@import "./svgicon.scss";
+@import "./typography.scss";
+
+$spacing-types: (
+  //类型
+  m: margin,
+  p: padding
+);
+
+$spacing-directions: (
+  //位置6   t: top,
+  b: bottom,
+  l: left,
+  r: right,
+  t: top
+);
+
+$spacing-base-size: 5px; //基数
+$spacing-sizes: (
+  //需要的边距可以添加
+  0: 0,
+  1: 1,
+  2: 2,
+  3: 3,
+  4: 4,
+  5: 5,
+  6: 6,
+  7: 7,
+  8: 8,
+  9: 9,
+  10: 10
+);
+
+//   循环出 margin 与 padding 的各类值
+@each $typeKey, $type in $spacing-types {
+  // 四边
+  @each $sizeKey, $size in $spacing-sizes {
+    // 四边
+    .#{$typeKey}-#{$size * $spacing-base-size} {
+      #{$type}: $size * $spacing-base-size;
+    }
+  }
+
+  // 水平
+  @each $sizeKey, $size in $spacing-sizes {
+    .#{$typeKey}-x-#{$size * $spacing-base-size} {
+      #{$type}-left: $size * $spacing-base-size;
+      #{$type}-right: $size * $spacing-base-size;
+    }
+  }
+
+  // 垂直
+  @each $sizeKey, $size in $spacing-sizes {
+    .#{$typeKey}-y-#{$size * $spacing-base-size} {
+      #{$type}-top: $size * $spacing-base-size;
+      #{$type}-bottom: $size * $spacing-base-size;
+    }
+  }
+
+  // 单边
+  @each $directionsKey, $directions in $spacing-directions {
+    @each $sizeKey, $size in $spacing-sizes {
+      .#{$typeKey}-#{$directionsKey}-#{$size * $spacing-base-size} {
+        #{$type}-#{$directions}: $size * $spacing-base-size !important;
+      }
+    }
+  }
+}
+
+/* Global scss */
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
+}
+
+html {
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+a,
+a:focus,
+a:hover {
+  color: inherit;
+  outline: none;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.clearfix {
+  @include clearfix;
+}
+
+.app-container {
+  padding: 20px;
+}
+
+.el-header {
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
+
+display: flex;  
+align-items: center;
+
+  label.radio-label {
+    padding-left: 0;
+  }
+
+  .right {
+    float: right;
+  }
+}
+
+.action-bar {
+  padding: 0;
+  display: flex;
+  .sub-bar {
+    box-sizing: border-box;
+    display: flex;
+    height: 100%;
+
+    .flex-right {
+      margin-left: auto;
+    }
+  }
+}
+
+label {
+  font-weight: 700;
+  &.radio-label {
+    cursor: pointer;
+    font-size: 14px;
+    color: rgb(96, 98, 102);
+    line-height: 40px;
+    padding: 0 12px 0 30px;
+  }
+}
+
+.el-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 40px 0;
+
+  p {
+    color: #5e6d82;
+  }
+}
+
+.df-v-center {
+  display: flex;
+  align-items: center;
+}
+.df-h-center {
+  display: flex;
+  justify-content: center;
+}
