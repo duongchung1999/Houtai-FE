@@ -160,8 +160,9 @@
     <el-dialog title="通用测试项目" :visible.sync="publicTestItemPanelVisible" width="80%">
       <el-tabs v-model="currentPublicTestItemGroupSummary" type="card" tab-position="top" @tab-click="onPTI_GroupSelected">
         <el-tab-pane v-for="item in publicTestItemGroups" :key="item.id" :label="item.summary" :name="item.summary">
-          <PublicTestItemForm ref="publicTestItemForm" v-if="currentPublicTestItemGroup" :group="currentPublicTestItemGroup" :testItems="publicTestItems" />
         </el-tab-pane>
+        <PublicTestItemForm ref="publicTestItemForm" v-if="currentPublicTestItemGroup" :group="currentPublicTestItemGroup" :testItems="publicTestItems" />
+
       </el-tabs>
 
       <span slot="footer" class="dialog-footer">

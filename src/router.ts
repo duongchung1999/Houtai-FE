@@ -131,16 +131,16 @@ export default new Router({
       ]
     },
 
-    // 请求日志
+    // 操作记录
     {
-      path: '/requestLog',
+      path: '/actionRecord',
       component: Layout,
-      redirect: '/requestLog',
+      redirect: '/actionRecord',
       children: [
         {
-          path: 'requestLog',
-          component: () => import(/* webpackChunkName: "requestLog" */ '@/views/requestLog/index.vue'),
-          meta: { title: '请求日志', icon: 'bug-fill' }
+          path: 'actionRecord',
+          component: () => import(/* webpackChunkName: "actionRecord" */ '@/views/actionRecord/index.vue'),
+          meta: { title: '操作记录', icon: 'bug-fill' }
         }
       ]
     },
@@ -163,8 +163,6 @@ export default new Router({
         }
       ]
     },
-
-
 
     // 修改密码
     {

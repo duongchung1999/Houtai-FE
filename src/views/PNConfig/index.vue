@@ -4,7 +4,7 @@
       <el-row :gutter="24" style="width:100%">
         <el-col :span="12" style="display:flex">
           <label class="radio-label" for="model-select">机型</label>
-          <el-select id="model-select" clearable v-model="model" value-key="name" filterable placeholder="请选择机型">
+          <el-select id="model-select" v-model="model" value-key="name" filterable placeholder="请选择机型">
             <el-option v-for="item in modelList" :key="item.id" :label="item.name" :value="item"></el-option>
           </el-select>
           <el-button type="primary" style="margin-left:auto" @click="PNConfTemplate.visible = true">编辑配置模板</el-button>

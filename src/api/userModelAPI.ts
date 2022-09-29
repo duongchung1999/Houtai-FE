@@ -5,7 +5,6 @@ const BASE_PATH = "/user-models";
 
 export class UserModelAPI {
 
-
     public static async getList(userId: number): Promise<UserModel[]> {
         return await get(`${BASE_PATH}/${userId}`);
     }

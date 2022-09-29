@@ -1,0 +1,50 @@
+.el-header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    gap: 16px;
+
+    .el-button {
+        margin-left: 20px;
+        i {
+            font-size: 24px;
+        }
+    }
+
+    & > label {
+        flex-shrink: 0;
+        font-weight: 500;
+        color: #666;
+    }
+}
+
+.table-area {
+    // 总高度 - 导航栏 - 顶栏 - .el-main padding - 分页(margin和元素高度)
+    height: calc(100vh - 50px - 60px - 40px - 20px - 32px);
+}
+
+.el-pagination {
+    // margin: 10px auto;
+    margin-top: 20px;
+    text-align: center;
+}
+
+::v-deep .diff-text-area {
+    display: inline;
+
+    & > * {
+        padding: 4px 0;
+    }
+
+    ins {
+        background-color: #e7faf0;
+        color: #13ce66;
+        text-decoration:none;
+    }
+
+    del {
+        background-color: #ffeded;
+        color: #ff4949;
+    }
+}

@@ -23,8 +23,6 @@ const defaultTestItemFormData = {
     isAlwaysRun: false
 }
 
-// TODO 删除料号后及时刷新料号列表
-
 interface TableRow {
     id: number;
     name: string;
@@ -198,7 +196,6 @@ export default class TestItemPage extends Vue {
     }
 
     async updateTestItem(testItem: TestItem) {
-        console.info(testItem)
         await testItemModule.update({ modelId: this.model.id, testItem })
         this.$message.success('更新成功');
     }
@@ -239,11 +236,10 @@ export default class TestItemPage extends Vue {
     }
 
     @Ref('publicTestItemForm')
-    publicTestItemForm: PublicTestItemForm[];
+    publicTestItemForm: PublicTestItemForm;
 
-    key = Date.now();
     createCmd() {
-        let cmd = this.publicTestItemForm[0].testCmd;
+        let cmd = this.publicTestItemForm.testCmd;
         this.publicTestItemPanelVisible = false;
         let testItemFormModal = this.$refs['test-item-modal'] as any;
         testItemFormModal.formDataCopy.cmd = cmd;

@@ -271,7 +271,7 @@ export function Obj2INIString(obj: object): string {
   }
 
 
-  let configParser = new ConfigIniParser();
+  let configParser = new ConfigIniParser('\r\n');
   for (const key in obj) {
     let value = obj[key];
     if (typeof value === 'object' && value !== null) {
