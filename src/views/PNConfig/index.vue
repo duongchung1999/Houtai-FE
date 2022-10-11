@@ -34,7 +34,7 @@
         <el-col :span="12">
           <div class="v-list-header">
             <label for="">已分配的料号列表</label>
-            <el-button type="success" @click="setPNModal({ visible:true, addMode:true, title:'添加料号' })">添加料号</el-button>
+            <el-button type="success" :disabled="!currentPNConfig.id" @click="setPNModal({ visible:true, addMode:true, title:'添加料号' })">添加料号</el-button>
           </div>
           <v-list id="pn-list">
             <v-list-item v-for="(pn, i) in PNList" :key="i">

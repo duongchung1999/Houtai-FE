@@ -8,6 +8,10 @@ export class PublicTestItemParam {
         BaseEntity.converter(this, data)
     }
 
+    id?: number = undefined;
+
+    sortIndex?: number = undefined;
+
     methodId?: number = undefined;
 
     /** 参数概述 */

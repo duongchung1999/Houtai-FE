@@ -1,7 +1,5 @@
-
 import { PublicTestItem } from "@/entity/publicTestItem/publicTestItem";
 import { PublicTestItemGroup } from "@/entity/publicTestItem/publicTestItemGroup";
-import { PublicTestItemParam } from "@/entity/publicTestItem/publicTestItemParam";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 
@@ -27,7 +25,7 @@ class Params {
 export default class PublicTestItemForm extends Vue {
   @Prop() group: PublicTestItemGroup;
   @Prop() testItems: PublicTestItem[];
-
+  
   /** 当前选中的测试项目 */
   currentTestItem: PublicTestItem = new PublicTestItem();
 

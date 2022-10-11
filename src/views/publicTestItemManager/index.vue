@@ -59,6 +59,8 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import XMLJS from "xml-js";
 
+// FIXME 电流表A_CC测试项目，参数属性不对
+
 /** c# xml注释文档 */
 class XmlNoteDoc {
   doc: {

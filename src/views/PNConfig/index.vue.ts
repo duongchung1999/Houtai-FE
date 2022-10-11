@@ -241,6 +241,7 @@ export default class PNConfigPage extends Vue {
             formData.modelId = this.model.id;
 
             if (this.PNModal.addMode) {
+                formData.no = formData.no.trim();
                 await PartNoAPI.add(formData);
                 this.$message.success('添加成功');
             } else {

@@ -139,7 +139,7 @@ export default class StationTestItemPage extends Vue {
         }
 
         var reallyIndex = 1;
-        result.forEach(e => {
+        result.forEach((e) => {
             if (e.isHidden) {
                 e.reallyIndex = 0;
             } else {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-header >
+    <el-header>
       <!-- 选择机型 -->
       <el-row :gutter="20" style="width:100%">
         <el-col :span="12">
