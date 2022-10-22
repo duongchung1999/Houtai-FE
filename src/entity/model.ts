@@ -1,4 +1,5 @@
 import { BaseEntity } from "./baseEntity";
+import { DynamicCode } from "./dynamicCode";
 
 /**
  * model
@@ -23,4 +24,7 @@ export class Model {
 
     /** 料号表单的配置 */
     pnConfigTemplate?: string = undefined;
+
+    /** 动态码 */
+    dynamicCode?: DynamicCode = undefined;
 }

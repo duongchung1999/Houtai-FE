@@ -151,3 +151,15 @@
 ::v-deep .el-drawer__body {
   overflow:unset;
 }
+
+.dynamic-code {
+  font-weight: 500;
+  font-size: 36px;
+  letter-spacing: 8px;
+  display: inline-block;
+  width: 120px;
+}
+
+.locked {
+  color: #909399;
+}

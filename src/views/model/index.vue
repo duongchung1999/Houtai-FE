@@ -15,10 +15,6 @@
         </el-col>
 
         <el-col :span="12">
-          <label class="radio-label" for="station-select">站别</label>
-          <el-select id="station-select" clearable v-model="station" value-key="name" filterable placeholder="请选择站别">
-            <el-option v-for="item in stationList" :key="item.id" :label="item.name" :value="item"></el-option>
-          </el-select>
           <el-button type="success" class="right" @click="
               setStationModal({
                 visible: true,
@@ -37,12 +33,17 @@
           <v-list>
             <v-list-item v-for="(item, i) in filteredModelList" :key="i" @click="model = item">
               {{ item.name }}
+              <div>
+                <span class="locked" v-if="item.dynamicCode">
+                  {{parseTime(item.dynamicCode.expireDate,'{y}年{m}月{d}日')}}到期
+                  <i class="el-icon-lock m-r-10px"></i>
+                </span>
+                
+                <el-dropdown type="text">
+                  <el-button type="text" icon="el-icon-s-operation"></el-button>
 
-              <el-dropdown type="text">
-                <el-button type="text" icon="el-icon-s-operation"></el-button>
-
-                <el-dropdown-menu slot="dropdown" @click.native="model = item">
-                  <el-dropdown-item icon="el-icon-edit" @click.native="
+                  <el-dropdown-menu slot="dropdown" @click.native="model = item">
+                    <el-dropdown-item icon="el-icon-edit" @click.native="
                       setModelModal({
                         title: '编辑机型名称',
                         visible: true,
@@ -50,11 +51,15 @@
                         formData: item,
                       })
                     ">
-                    修改名称</el-dropdown-item>
-                  <el-dropdown-item divided icon="el-icon-delete" class="danger" @click.native="deleteModel(item)">
-                    删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+                      修改名称</el-dropdown-item>
+
+                    <el-dropdown-item  v-if="!item.dynamicCode" icon="el-icon-key" @click.native="showDynamicCodeModal">设置密码</el-dropdown-item>
+                    <el-dropdown-item  v-else icon="el-icon-view" @click.native="showDynamicCode">显示密码</el-dropdown-item>
+                    <el-dropdown-item divided icon="el-icon-delete" class="danger" @click.native="deleteModel(item)">
+                      删除</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </div>
             </v-list-item>
             <el-empty description="无机型" v-if="!modelList.length" :image-size="200"></el-empty>
           </v-list>
@@ -98,10 +103,24 @@
     <v-modal-box :addMode="stationModal.addMode" :title="stationModal.title" :visible.sync="stationModal.visible" :columns="stationModal.columns" v-model="stationModal.formData" @submit="stationModal.onSubmit">
     </v-modal-box>
 
+    <!-- 设置动态密码 -->
+    <v-modal-box :addMode="false" title="设置动态密码" :visible.sync="dynamicCodeModal.visible" v-model="dynamicCodeModal.formData" @edit="setDynamicCode">
+      <template #default="{formData}">
+        <el-form-item label="动态密码" prop="code">
+          <span class="dynamic-code m-r-10px">{{formData.code}}</span>
+          <el-button type="text" size="default" @click="refreshDynamicCode(formData)">刷新</el-button>
+        </el-form-item>
+        <el-form-item label="过期时间" prop="expireDate" :rules="expiredRules">
+          <el-date-picker v-model="formData.expireDate" type="date" placeholder="到期时间">
+          </el-date-picker>
+        </el-form-item>
+      </template>
+    </v-modal-box>
+
     <el-drawer class="config-form-drawer" :with-header="false" :visible.sync="drawerVisible" direction="rtl" size="100%" destroy-on-close>
       <el-row class="priview-row">
         <el-col :span="12">
-        <div class="config-editor" style="height: 100vh"></div>
+          <div class="config-editor" style="height: 100vh"></div>
         </el-col>
         <el-col :span="12">
           <div class="right-panel">

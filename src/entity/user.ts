@@ -45,4 +45,6 @@ export class User {
 
     /** permission role */
     public role?: RoleOptions = undefined;
+
+    public roleId?: number = undefined;
 }

@@ -1,16 +1,30 @@
 import { formConf } from "@/components/formGenerator/generator/config";
 import Parser from "@/components/formGenerator/parser";
 import { Model } from "@/entity/model";
-import { Station } from "@/entity/station";
+import { Station } from "@/entity/station"; 
 import { backstageConfigModule, modelModule, stationModule, userModule } from '@/store/modules';
-import { INIString2Obj } from "@/utils/index";
+import { INIString2Obj, parseTime } from "@/utils/index";
 import { debounce } from 'throttle-debounce';
 import Vue from "vue";
 import * as MonacoEditor from "monaco-editor";
 import { Component, Watch } from 'vue-property-decorator';
 import BackstageManagePage, { BackstageConfigKeys } from "../backstageManage/index.vue";
+import { DynamicCode } from "@/entity/dynamicCode";
+import { DynamicCodeAPI } from "@/api/dynamicCodeAPI";
+import { RoleOptions } from "@/entity/user";
 
 formConf.fields = []
+function limitExpireDate(rule, value: Date, callback) {
+    let time = value.getTime();
+    let now = Date.now();
+    if (time < now) {
+        callback(new Error("不能选择过去的日期"))
+    } else if (time > now + (1000 * 60 * 60 * 24 * 30)) {
+        callback(new Error('有效期不能超过30天'))
+    } else {
+        callback();
+    }
+};
 
 @Component({ name: "ModelPage", components: { Parser } })
 export default class ModelPage extends Vue {
@@ -87,6 +101,19 @@ export default class ModelPage extends Vue {
     get modelList() { return modelModule.modelList; }
     get stationList() { return stationModule.stationList; }
     formParserKey = Date.now()
+
+    dynamicCodeModal = {
+        visible: false,
+        formData: new DynamicCode(),
+    }
+
+    /** 表单的过期时间的验证规则 */
+    expiredRules = [
+        { required: true, message: '请选择过期时间', trigger: 'blur' },
+        { validator: limitExpireDate, trigger: 'blur' }
+    ]
+
+    parseTime = parseTime
 
     onSubmitForm({ formData, formConf }) {
         this.editor.setValue((BackstageManagePage as any).builderINIStringFromForm({ formData, formConf }));
@@ -229,6 +256,50 @@ export default class ModelPage extends Vue {
         this.$nextTick(() => {
             this.onEditorMounted();
         })
+    }
+
+    /** 设置动态码 */
+    async setDynamicCode(code: DynamicCode) {
+        code.modelId = this.model.id;
+        code.createDate = new Date();
+        code.expireDate = new Date(parseTime(code.expireDate, '{y}-{m}-{d}'))
+        code = await DynamicCodeAPI.add(code);
+        this.model.dynamicCode = code;
+        this.dynamicCodeModal.visible = false;
+        this.$message.success('设置密码成功');
+    }
+
+    /** 显示动态码 */
+    showDynamicCode() {
+        //<span class="dynamic-code">{{formData.code}}</span>
+        let userRole = userModule.nowUser.role;
+        if(![RoleOptions.ACCOUNT_MANAGER, RoleOptions.ADMIN, RoleOptions.SW].includes(userRole)) {
+            this.$message.error('权限不足');
+            return;
+        } 
+        this.$alert(this.model.dynamicCode.code);
+    }
+
+    refreshDynamicCode(formData: DynamicCode) {
+        formData.code = this.createCode();
+    }
+
+    /** 创建随机4位数动态码 */
+    createCode() {
+        let result = '';
+        for (let i = 0; i < 4; i++) {
+            result += Math.floor(Math.random() * 10) + '';
+        }
+        return result;
+    }
+
+    /** 显示动态码Modal */
+    showDynamicCodeModal() {
+        this.dynamicCodeModal = {
+            visible: true,
+            formData: new DynamicCode(),
+        }
+        this.refreshDynamicCode(this.dynamicCodeModal.formData);
     }
 
     @Watch('stationModal.visible')

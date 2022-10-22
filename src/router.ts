@@ -52,7 +52,6 @@ export default new Router({
       ]
     },
 
-
     // 料号配置
     {
       path: '/PNConfig',
@@ -80,7 +79,6 @@ export default new Router({
         }
       ]
     },
-
 
     // 总测试项目
     {
@@ -151,12 +149,26 @@ export default new Router({
       path: '/userManage',
       component: Layout,
       redirect: '/userManage',
+      meta: {
+        title: '用户管理',
+        icon: 'user',
+        roles: [RoleOptions.ACCOUNT_MANAGER, RoleOptions.ADMIN]
+      },
       children: [
         {
           path: 'userManage',
           component: () => import(/* webpackChunkName: "userManage" */ '@/views/userManage/index.vue'),
           meta: {
             title: '用户管理',
+            icon: 'user',
+            roles: [RoleOptions.ACCOUNT_MANAGER, RoleOptions.ADMIN]
+          }
+        },
+        {
+          path: 'roleManage',
+          component: () => import(/* webpackChunkName: "roleManage" */ '@/views/roleManage/index.vue'),
+          meta: {
+            title: '角色管理',
             icon: 'user',
             roles: [RoleOptions.ACCOUNT_MANAGER, RoleOptions.ADMIN]
           }

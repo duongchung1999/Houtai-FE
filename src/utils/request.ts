@@ -5,7 +5,7 @@ import { getToken } from './cookies'
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API,
   
-  baseURL: process.env && process.env.NODE_ENV == "development" ? 'https://localhost:44379/api/v2' : 'http://10.55.2.25:9001/api/v2',
+  baseURL: process.env && process.env.NODE_ENV == "development" ? 'https://localhost:44334/api/v2' : 'http://10.55.2.25:9001/api/v2',
   timeout: 5000
 })
 

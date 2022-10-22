@@ -288,7 +288,7 @@ export function Obj2INIString(obj: object): string {
 /**
  * ini配置字符串转为对象
  */
-export function INIString2Obj(config: string): object {
+export function INIString2Obj(config: string): any {
   let configParser = new ConfigIniParser();
   configParser.parse(config);
   let result = {}

@@ -68,7 +68,7 @@
               <v-list-item v-for="(item, i) in fliteredStationTestItem" :key="i" :class="{
                   isHidden: item.isHidden,
                   isAlwaysRun: item.isAlwaysRun,
-                }">
+                }"> 
                 <div>
                   <span class="sort-index">{{ item.reallyIndex }}</span>
                   {{ getTestItemName(item) }}

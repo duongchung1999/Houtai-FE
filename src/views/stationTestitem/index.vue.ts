@@ -82,9 +82,7 @@ export default class StationTestItemPage extends Vue {
                 // 如果一个机型没有站别，清空测试项目列表
                 this.station = new Station();
             }
-
         })
-
     };
 
     get station(): Station { return stationModule.station };
