@@ -1,4 +1,5 @@
 import { BaseEntity } from "./baseEntity";
+import { PermissionRole } from "./permissionRole";
 
 export enum RoleOptions {
     /// <summary>
@@ -47,4 +48,6 @@ export class User {
     public role?: RoleOptions = undefined;
 
     public roleId?: number = undefined;
+
+    public permissionRole?: PermissionRole = undefined;
 }

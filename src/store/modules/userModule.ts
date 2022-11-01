@@ -58,7 +58,6 @@ export default class UserModule extends VuexModule {
         removeToken() // must remove  token  first
         // resetRouter()
         this.context.commit('RESET_STATE');
-
     };
 
     /**

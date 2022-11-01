@@ -1,7 +1,17 @@
 import { BaseEntity } from "./baseEntity";
 
-/** 角色 */
-export class Role {
+export enum PermissionRoleOptions {
+    ADMIN = 8,
+    ACCOUNT_MANAGER = 7,
+    SW = 5,
+    TE = 4,
+    /** 模板程序开发者 */
+    TEMPLATE_PROGRAM_DEVELOPER = 2,
+    BASC = 1,
+}
+
+/** 权限角色 */
+export class PermissionRole {
     constructor(data?: any) {
         BaseEntity.converter(this, data)
     }

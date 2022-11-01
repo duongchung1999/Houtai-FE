@@ -9,6 +9,8 @@ export class DynamicCode {
     id?: number = undefined;
 
     modelId?: number = undefined;
+    
+    modelName?: string = undefined;
 
     /** 动态码 */
     code?: string = undefined;
@@ -18,4 +20,5 @@ export class DynamicCode {
 
     /** 到期时间 */
     expireDate: Date = undefined;
+
 }

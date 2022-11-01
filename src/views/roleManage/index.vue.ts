@@ -1,13 +1,13 @@
 import { RoleAPI } from '@/api/roleAPI';
 import VModalBox from '@/components/VModalBox/index.vue';
-import { Role } from '@/entity/role';
+import { PermissionRole } from '@/entity/permissionRole';
 import { removeEle, updateEle } from '@/utils';
 import Vue from "vue";
 import { Component } from 'vue-property-decorator';
 
 @Component({ name: "RoleManagePage", components: { VModalBox } })
 export default class RoleManagePage extends Vue {
-    roles: Role[] = [];
+    roles: PermissionRole[] = [];
 
     rules = {
         name: [{ required: true, message: '角色名称不能为空', triggler: 'click' }],
@@ -18,16 +18,16 @@ export default class RoleManagePage extends Vue {
         visible: false,
         addMode: false,
         title: '',
-        formData: new Role(),
+        formData: new PermissionRole(),
     }
 
-    selectedRole: Role = null;
+    selectedRole: PermissionRole = null;
 
     async mounted() {
         this.roles = await RoleAPI.getList();
     }
 
-    showEditModel(r: Role) {
+    showEditModel(r: PermissionRole) {
         this.modal = {
             visible: true,
             addMode: false,
@@ -41,11 +41,11 @@ export default class RoleManagePage extends Vue {
             visible: true,
             addMode: true,
             title: "添加角色",
-            formData: new Role()
+            formData: new PermissionRole()
         }
     }
 
-    async addRole(r: Role) {
+    async addRole(r: PermissionRole) {
         let addedRole = await RoleAPI.add(r);
         this.roles.push(addedRole);
 
@@ -53,7 +53,7 @@ export default class RoleManagePage extends Vue {
         this.modal.visible = false;
     }
 
-    async deleteRole(r: Role) {
+    async deleteRole(r: PermissionRole) {
         this.$confirm('是否删除这个角色', '删除角色')
             .then(async _ => {
                 await RoleAPI.del(r.id);
@@ -63,7 +63,7 @@ export default class RoleManagePage extends Vue {
             }).catch(e => console.info(e))
     }
 
-    async updateRole(r: Role) {
+    async updateRole(r: PermissionRole) {
         let updatedRole = await RoleAPI.update(r);
         updateEle(this.roles, updatedRole, e => e.id == updatedRole.id);
 

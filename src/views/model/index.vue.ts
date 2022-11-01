@@ -261,6 +261,7 @@ export default class ModelPage extends Vue {
     /** 设置动态码 */
     async setDynamicCode(code: DynamicCode) {
         code.modelId = this.model.id;
+        code.modelName = this.model.name;
         code.createDate = new Date();
         code.expireDate = new Date(parseTime(code.expireDate, '{y}-{m}-{d}'))
         code = await DynamicCodeAPI.add(code);

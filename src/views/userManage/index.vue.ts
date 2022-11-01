@@ -1,4 +1,6 @@
+import { RoleAPI } from '@/api/roleAPI';
 import VModalBox from '@/components/VModalBox/index.vue';
+import { PermissionRole } from '@/entity/permissionRole';
 import { RoleOptions, User } from '@/entity/user';
 import { userModule } from '@/store/modules';
 import Vue from "vue";
@@ -35,7 +37,8 @@ export default class UserManagePage extends Vue {
     rules = {
         username: [{ required: true, message: '用户名不能为空', trigger: 'click' },],
         nickname: [{ required: true, message: '昵称不能为空', trigger: 'click' },],
-        role: [{ required: true, message: '权限不能为空', trigger: 'click' },],
+        // role: [{ required: true, message: '权限不能为空', trigger: 'click' },],
+        permissionRole:[{ required: true, message: '权限不能为空', trigger: 'click' },],
         // password: [{ required: true, message: '密码不能为空', trigger: 'click' },],
     }
 
@@ -43,10 +46,13 @@ export default class UserManagePage extends Vue {
         visible: false,
         addMode: false,
         title: '',
-        formData: new User(),
+        formData: new User()
     }
+    
+    permissionRoles: PermissionRole[] = []
 
     selectedUser: User = null;
+    
     get users() {
         let users = userModule.users;
         return users.filter(e => e.role <= userModule.nowUser.role);
@@ -55,8 +61,11 @@ export default class UserManagePage extends Vue {
     async mounted() {
         //加载用户列表
         await userModule.getInfoList({ page: 1, size: 1000 });
-    }
 
+        //加载权限角色列表
+        this.permissionRoles = await RoleAPI.getList();
+    }
+ 
     showEditModel(u: User) {
         this.userModal = {
             visible: true,
@@ -78,27 +87,30 @@ export default class UserManagePage extends Vue {
     @Ref('user-modal-box')
     userModalBox: VModalBox;
 
-    async addUser(u: User) {
+    async addUser(user: User) {
         await this.userModalBox.elForm.validate()
-
-        await userModule.add(u);
+        user.roleId = user.permissionRole.id;
+        delete user.permissionRole;
+        await userModule.add(user);
         this.$message.success('添加成功')
         await userModule.getInfoList({ page: 1, size: 1000 });
         this.userModal.visible = false;
-
     }
-    async updateUser(u: User) {
+    
+    async updateUser(user: User) {
         await this.userModalBox.elForm.validate()
-
-        await userModule.update(u);
+        user.roleId = user.permissionRole.id;
+        delete user.permissionRole;
+        await userModule.update(user);
         this.$message.success('更新成功')
         this.userModal.visible = false;
     }
 
-    async deleteUser(u: User) {
+    async deleteUser(formData: User) {
+        let user = formData as User;
         this.$confirm('确定要和删除这个用户吗', '删除用户', { confirmButtonText: '删除', cancelButtonText: '否' })
             .then(async _ => {
-                userModule.delete(u)
+                userModule.delete(user)
                 this.$message.success('删除成功');
             })
             .catch(e => console.info(e));

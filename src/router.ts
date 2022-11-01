@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/layout/index.vue'
 import { RoleOptions } from './entity/user'
+import { PermissionRoleOptions } from '@/entity/permissionRole'
 
 Vue.use(Router)
 
@@ -61,7 +62,14 @@ export default new Router({
         {
           path: 'PNConfig',
           component: () => import(/* webpackChunkName: "PNConfig" */ '@/views/PNConfig/index.vue'),
-          meta: { title: '料号配置', icon: 'todo-fill', roles: [RoleOptions.SW, RoleOptions.ADMIN] }
+          meta: {
+            title: '料号配置', icon: 'todo-fill', roles: [
+              PermissionRoleOptions.ACCOUNT_MANAGER,
+              PermissionRoleOptions.SW,
+              PermissionRoleOptions.ADMIN,
+              PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
+            ]
+          }
         }
       ]
     },
@@ -75,7 +83,14 @@ export default new Router({
         {
           path: 'assignModel',
           component: () => import(/* webpackChunkName: "assignModel" */ '@/views/assignModel/index.vue'),
-          meta: { title: '分配机型', icon: 'share-fill', roles: [RoleOptions.SW, RoleOptions.ADMIN] }
+          meta: {
+            title: '分配机型', icon: 'share-fill', roles: [
+              PermissionRoleOptions.ACCOUNT_MANAGER,
+              PermissionRoleOptions.SW,
+              PermissionRoleOptions.ADMIN,
+              PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
+            ]
+          }
         }
       ]
     },
@@ -89,7 +104,15 @@ export default new Router({
         {
           path: 'testitem',
           component: () => import(/* webpackChunkName: "testitem" */ '@/views/testitem/index.vue'),
-          meta: { title: '测试项目', icon: 'list-unordered', roles: [] }
+          meta: {
+            title: '测试项目', icon: 'list-unordered', roles: [
+              PermissionRoleOptions.ACCOUNT_MANAGER,
+              PermissionRoleOptions.SW,
+              PermissionRoleOptions.TE,
+              PermissionRoleOptions.ADMIN,
+              PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
+            ]
+          }
         }
       ]
     },
@@ -103,7 +126,15 @@ export default new Router({
         {
           path: 'stationTestitem',
           component: () => import(/* webpackChunkName: "stationTestitem" */ '@/views/stationTestitem/index.vue'),
-          meta: { title: '站别测试项目', icon: 'list-ordered', roles: [] }
+          meta: {
+            title: '站别测试项目', icon: 'list-ordered', roles: [
+              PermissionRoleOptions.ACCOUNT_MANAGER,
+              PermissionRoleOptions.SW,
+              PermissionRoleOptions.TE,
+              PermissionRoleOptions.ADMIN,
+              PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
+            ]
+          }
         }
       ]
     },
@@ -113,18 +144,33 @@ export default new Router({
       path: '/backstageManage',
       component: Layout,
       redirect: '/backstageManage',
-      meta: { title: '后台配置', icon: 'settings-fill', roles: [RoleOptions.SW, RoleOptions.ADMIN] },
+      meta: {
+        title: '后台配置', icon: 'settings-fill', roles: [
+          PermissionRoleOptions.ADMIN,
+          PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
+        ]
+      },
       children: [
         {
           path: 'backstageManage',
           component: () => import(/* webpackChunkName: "backstageManage" */ '@/views/backstageManage/index.vue'),
-          meta: { title: '后台配置', icon: 'settings-fill', roles: [RoleOptions.SW, RoleOptions.ADMIN] }
+          meta: {
+            title: '后台配置', icon: 'settings-fill', roles: [
+              PermissionRoleOptions.ADMIN,
+              PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
+            ]
+          }
         },
 
         {
           path: 'publicTestItemManager',
           component: () => import(/* webpackChunkName: "publicTestItemManager" */ '@/views/publicTestItemManager/index.vue'),
-          meta: { title: '通用测试项目', icon: 'list-unordered', roles: [RoleOptions.SW, RoleOptions.ADMIN] }
+          meta: {
+            title: '通用测试项目', icon: 'list-unordered', roles: [
+              PermissionRoleOptions.ADMIN,
+              PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
+            ]
+          }
         }
       ]
     },
@@ -152,7 +198,10 @@ export default new Router({
       meta: {
         title: '用户管理',
         icon: 'user',
-        roles: [RoleOptions.ACCOUNT_MANAGER, RoleOptions.ADMIN]
+        roles: [
+          PermissionRoleOptions.ADMIN,
+          PermissionRoleOptions.ACCOUNT_MANAGER
+        ]
       },
       children: [
         {
@@ -161,7 +210,10 @@ export default new Router({
           meta: {
             title: '用户管理',
             icon: 'user',
-            roles: [RoleOptions.ACCOUNT_MANAGER, RoleOptions.ADMIN]
+            roles: [
+              PermissionRoleOptions.ADMIN,
+              PermissionRoleOptions.ACCOUNT_MANAGER
+            ]
           }
         },
         {
@@ -170,7 +222,10 @@ export default new Router({
           meta: {
             title: '角色管理',
             icon: 'user',
-            roles: [RoleOptions.ACCOUNT_MANAGER, RoleOptions.ADMIN]
+            roles: [
+              PermissionRoleOptions.ADMIN,
+              PermissionRoleOptions.ACCOUNT_MANAGER
+            ]
           }
         }
       ]

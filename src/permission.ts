@@ -65,12 +65,21 @@ router.afterEach((to: Route) => {
 })
 
 function checkRole(to: Route, next: any) {
+  let userLevel = userModule.nowUser?.permissionRole?.level;
+
   let pageRoles = to?.meta?.roles;
   if (pageRoles && pageRoles.length > 0) {
-    if (pageRoles.includes(userModule.nowUser.role)) {
-      console.info((!pageRoles))
+    
+    if (pageRoles.includes(userLevel)) {
+      // console.info((!pageRoles))
+      console.info(userLevel)
     } else {
       next('/403')
     }
+    // if (pageRoles.includes(userModule.nowUser.role)) {
+    //   // console.info((!pageRoles))
+    // } else {
+    //   next('/403')
+    // }
   }
 }

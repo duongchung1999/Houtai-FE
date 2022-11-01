@@ -25,7 +25,7 @@
           <el-input v-model="formData.name" placeholder="角色" clearable />
         </el-form-item>
         <el-form-item label="权限等级" prop="level">
-          <el-slider v-model="formData.level" :min="1" :max="8" :step="1" />
+          <el-slider v-model="formData.level" :min="1" :max="8" :step="1"/>
         </el-form-item>
 
       </template>

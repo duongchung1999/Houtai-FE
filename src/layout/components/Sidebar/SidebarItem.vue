@@ -89,13 +89,14 @@ export default class extends Vue {
    * @param route 单个路由对象
    */
   hasRoutePermissions(route: any): boolean {
+    let userLevel = userModule.nowUser?.permissionRole?.level;
     let userRole = userModule.nowUser.role;
     let routeRoles = route.meta?.roles;
 
     // 没有权限限制的路由
     if (!routeRoles || routeRoles.length == 0) return true;
     // 如果用户拥有当前路由的权限
-    else if (routeRoles.includes(userRole)) {
+    else if (routeRoles.includes(userLevel)) {
       return true;
     }
   }
