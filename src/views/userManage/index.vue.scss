@@ -16,9 +16,7 @@
     margin-left: auto;
 }
 
-
-
-.role-option {
+::v-deep .role-option {
     display: flex;
     align-items: center;
     justify-content: space-between;

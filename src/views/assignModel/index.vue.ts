@@ -23,6 +23,7 @@ export default class AssignModelgPage extends Vue {
     get filteredUserMdoles() {
         return this.userModels.filter(e => e.name.includes(this.allocateModelKeyWord))
     }
+
     filter = {
         //总页数
         pageCount: 0,
@@ -54,9 +55,8 @@ export default class AssignModelgPage extends Vue {
         //加载用户列表
         await userModule.getInfoList({ page: 1, size: 1000 });
 
-
         userModule.users.forEach(u => {
-            if (userModule.nowUser.role > u.role) {
+            if (userModule.nowUser.permissionRole.level > u.permissionRole.level) {
                 this.users.push(u)
             }
         })

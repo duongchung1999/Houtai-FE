@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/layout/index.vue'
-import { RoleOptions } from './entity/user'
 import { PermissionRoleOptions } from '@/entity/permissionRole'
 
 Vue.use(Router)

@@ -1,7 +1,7 @@
 import { formConf } from "@/components/formGenerator/generator/config";
 import Parser from "@/components/formGenerator/parser";
 import { Model } from "@/entity/model";
-import { Station } from "@/entity/station"; 
+import { Station } from "@/entity/station";
 import { backstageConfigModule, modelModule, stationModule, userModule } from '@/store/modules';
 import { INIString2Obj, parseTime } from "@/utils/index";
 import { debounce } from 'throttle-debounce';
@@ -11,7 +11,7 @@ import { Component, Watch } from 'vue-property-decorator';
 import BackstageManagePage, { BackstageConfigKeys } from "../backstageManage/index.vue";
 import { DynamicCode } from "@/entity/dynamicCode";
 import { DynamicCodeAPI } from "@/api/dynamicCodeAPI";
-import { RoleOptions } from "@/entity/user";
+import { getTranslation, getTranslationDate } from "@/multi-language/multi-language";
 
 formConf.fields = []
 function limitExpireDate(rule, value: Date, callback) {
@@ -100,6 +100,11 @@ export default class ModelPage extends Vue {
 
     get modelList() { return modelModule.modelList; }
     get stationList() { return stationModule.stationList; }
+
+    get nowUserLang() {
+        return userModule.nowUser.lang
+    }
+
     formParserKey = Date.now()
 
     dynamicCodeModal = {
@@ -273,11 +278,11 @@ export default class ModelPage extends Vue {
     /** 显示动态码 */
     showDynamicCode() {
         //<span class="dynamic-code">{{formData.code}}</span>
-        let userRole = userModule.nowUser.role;
-        if(![RoleOptions.ACCOUNT_MANAGER, RoleOptions.ADMIN, RoleOptions.SW].includes(userRole)) {
+        let userRoleLevel = userModule.nowUser.permissionRole.level;
+        if (userRoleLevel < 5) {
             this.$message.error('权限不足');
             return;
-        } 
+        }
         this.$alert(this.model.dynamicCode.code);
     }
 
@@ -316,6 +321,10 @@ export default class ModelPage extends Vue {
     }
 
     async mounted() {
+        console.log(getTranslationDate(Date.now(), 'CN'));
+        console.log(getTranslationDate(Date.now(), 'EN'));
+        console.log(getTranslationDate(Date.now(), 'VN'));
+
         await modelModule.getList(userModule.nowUser.id);
         if (!this.model?.id) {
             this.model = this.modelList[0]
@@ -344,4 +353,5 @@ export default class ModelPage extends Vue {
             this.stationModal.visible = false;
         }
     }
+    
 };

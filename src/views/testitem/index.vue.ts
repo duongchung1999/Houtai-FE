@@ -23,12 +23,21 @@ const defaultTestItemFormData = {
     isAlwaysRun: false
 }
 
-interface TableRow {
+class TableRow {
     id: number;
     name: string;
     cmd: string;
     isAlwaysRun: boolean;
     isHidden: boolean;
+    testItem: TestItem;
+
+    // 这个测试项目在哪些站别使用
+    whereUsed: string;
+
+    constructor() {
+        // 让页面刷新时处于隐藏状态
+        this.whereUsed = '123'
+    }
 }
 
 @Component({ components: { VModalBox, PublicTestItemForm } })
@@ -39,6 +48,7 @@ export default class TestItemPage extends Vue {
         if (!summary) return null;
         return this.publicTestItemGroups.find(e => e.summary == summary);
     }
+    
     publicTestItems: PublicTestItem[] = []
     publicTestItemGroups: PublicTestItemGroup[] = []
     publicTestItemPanelVisible = false;
@@ -69,12 +79,13 @@ export default class TestItemPage extends Vue {
 
     columns = [
         { key: "name", label: "名称", width: '230px' },
-        { key: "cmd", label: "调用命令" },
-        { key: "upperValue", label: "上限", width: "150px" },
-        { key: "lowerValue", label: "下限", width: "150px" },
-        { key: "no", label: "比对编号", width: '100' },
-        { key: "isHidden", label: "隐藏此项", width: "80px" },
-        { key: "isAlwaysRun", label: "始终执行", width: "80px" },
+        { key: "cmd", label: "指令" },
+        // { key: "lowerValue", label: "下限", width: "150px" },
+        // { key: "upperValue", label: "上限", width: "150px" },
+        // { key: "unit", label: "单位", width: "100px" },
+        // { key: "no", label: "比对编号", width: '100px' },
+        // { key: "isHidden", label: "隐藏此项", width: "80px" },
+        // { key: "isAlwaysRun", label: "始终执行", width: "80px" },
     ]
 
     deleteTestItemContent: string = '';
@@ -103,14 +114,15 @@ export default class TestItemPage extends Vue {
         let kw = this.searchKw.toLowerCase();
         this.testItemList.forEach(e => {
             if (e.cmd.toLowerCase().includes(kw) || e.name.toLowerCase().includes(kw)) {
-                result.push({
-                    id: e.id,
-                    name: this.getTestItemName(e),
-                    cmd: e.cmd,
-                    isAlwaysRun: e.isAlwaysRun,
-                    isHidden: e.isHidden,
-                    testItem: e
-                })
+                let tableRow = new TableRow()
+                tableRow.id = e.id;
+                tableRow.name = this.getTestItemName(e);
+                tableRow.cmd = e.cmd;
+                tableRow.isAlwaysRun = e.isAlwaysRun;
+                tableRow.isHidden = e.isHidden;
+                tableRow.testItem = e;
+                this.getWhereUsedTestItem(tableRow);
+                result.push(tableRow);
             }
         })
         return result;
@@ -175,6 +187,42 @@ export default class TestItemPage extends Vue {
         await testItemModule.setState({ testItem })
     }
 
+    // 获取测试在哪些站别使用过，赋值给tableRow的whereUsed属性
+    async getWhereUsedTestItem(tableRow: TableRow) {
+        let ret = ''
+        let testItem = new TestItem(tableRow);
+
+        // 哪一站，第几项
+        var usedStationTestItems = await TestItemAPI.getWhereUsed(testItem.id);
+
+        if (!usedStationTestItems.length) {
+            tableRow.whereUsed = ''
+            return
+        }
+        var tempData = {};
+
+        usedStationTestItems.forEach(e => {
+            if (!tempData[e.station.name]) {
+                tempData[e.station.name] = []
+            }
+
+            tempData[e.station.name].push(e.sortIndex);
+        })
+
+        ret = '在站别'
+
+        for (const stationName in tempData) {
+            let sectionText = `${stationName}、`;
+            ret += sectionText
+        }
+        //去掉ret最后一个字符
+        ret = ret.substring(0, ret.length - 1);
+
+        ret += `使用`
+
+        tableRow.whereUsed = ret;
+    }
+
     async search() {
         await this.$nextTick();
         this.tableLoading = true;
@@ -209,6 +257,11 @@ export default class TestItemPage extends Vue {
         this.testItemModal = { ...this.testItemModal, ...data, };
         if (data.formData) {
             let copyFormData = { ...data.formData };
+
+            if (data.addMode) {
+                copyFormData.no = 1;
+            }
+
             this.testItemModal.formData = copyFormData;
         }
     }
@@ -243,6 +296,38 @@ export default class TestItemPage extends Vue {
         this.publicTestItemPanelVisible = false;
         let testItemFormModal = this.$refs['test-item-modal'] as any;
         testItemFormModal.formDataCopy.cmd = cmd;
+    }
+
+    // 获取测试项目的上限、下限、测试项目编号和单位（比对方式）生成上下限文本字符串
+    getTestItemLimitText(lowerValue: string, upperValue: string, compareType: number, unit: string): string {
+        // 如果下限、上限、单位等于'N/A'，把对应的值赋值空字符串，用三元表达式
+        unit = unit == 'N/A' ? '' : unit;
+        lowerValue = lowerValue == 'N/A' ? '' : lowerValue;
+        upperValue = upperValue == 'N/A' ? '' : upperValue;
+
+        let ret = ''
+        // 1. 如果compareType等于1或者4，返回 upperValue+unit字符串
+        // 2. 如果compareType等于2或者5，返回 upperValue+unit ~ lowerValue+unit字符串
+        // 2.1 如果上限等于>符号，返回  > lowerValue+unit
+        // 2.2 如果下限等于<符号，返回  < upperValue+unit
+        // 3. 如果compareType等于3或者6，返回 不比对
+
+        if (compareType == 1 || compareType == 4) {
+            ret = upperValue
+        } else if (compareType == 2 || compareType == 5) {
+            if (upperValue == '>') {
+                ret = `> ${lowerValue}${unit}`
+            } else if (lowerValue == '<') {
+                ret = `${upperValue}${unit} <`
+            } else {
+                ret = `${lowerValue}${unit} ~ ${upperValue}${unit}`
+            }
+
+        } else if (compareType == 3 || compareType == 6) {
+            ret = '不比对'
+        }
+
+        return ret
     }
 
     async mounted() {

@@ -1,7 +1,16 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggle-click="toggleSideBar" />
+    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
+      @toggle-click="toggleSideBar" />
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+
+    <div class="whtas-news">
+      <el-button type="primary" size="mini" round plain v-if="isShowWhatsNews">
+        <a href="https://azure-flavor-e22.notion.site/1452ef55fd2041c9963aa061a72fd0b2" target="_blank"
+          rel="noopener noreferrer">最近更新 🎉</a>
+      </el-button>
+
+    </div>
     <div class="right-menu">
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
@@ -9,48 +18,48 @@
             :src="avatar+'?imageView2/1/w/80/h/80'"
             class="user-avatar"
           > -->
-          {{nickname}}
+          {{ nickname }}
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              主页
+              {{ $t('主页') }}
             </el-dropdown-item>
           </router-link>
-            <router-link to="/changePassword/changePassword">
-           <el-dropdown-item>
-              修改密码
+          <div>
+            <el-dropdown-item @click.native="changeLanguageDialogVisible = true">
+              {{ $t('切换语言') }}
+            </el-dropdown-item>
+          </div>
+          <router-link to="/changePassword/changePassword">
+            <el-dropdown-item>
+              {{ $t('修改密码') }}
             </el-dropdown-item>
           </router-link>
 
-          <!-- <a
-            target=" _blank" href="https://github.com/armour/vue-typescript-admin-template/">
-            <el-dropdown-item>
-              Github
-            </el-dropdown-item>
-            </a> -->
-          <!-- <a
-            target="_blank"
-            href="https://armour.github.io/vue-typescript-admin-docs/"
-          >
-            <el-dropdown-item>
-              Docs
-            </el-dropdown-item>
-          </a> -->
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">退出登录</span>
+            <span style="display:block;" @click="logout">{{ $t('退出登录') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+
+    <!-- 更改当前用户语言选项 -->
+    <el-dialog :title="$t('切换语言')" :visible.sync="changeLanguageDialogVisible">
+      <ol id="language-options-box">
+        <li @click="changeUserLang('ZN')">中文</li>
+        <li @click="changeUserLang('VN')">Tiếng Việt</li>
+        <li @click="changeUserLang('EN')">English</li>
+      </ol>
+    </el-dialog>
+
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { AppModule } from "@/store/modules/app";
-// import { userModule } from "@/store/modules";
 import UserModule from "@/store/modules/userModule";
 
 import { getModule } from "vuex-module-decorators";
@@ -67,6 +76,17 @@ const userModule = getModule(UserModule);
   },
 })
 export default class extends Vue {
+
+  // 是否展示最近更新按钮
+  get isShowWhatsNews(): boolean {
+    const now = new Date();
+    const end = new Date(2023, 3, 18);
+    return now < end;
+  }
+
+  changeLanguageDialogVisible = false;
+  currentUserLanguage = "ZN";
+
   get nickname() {
     var { nowUser } = userModule;
     return nowUser ? nowUser.nickname : "";
@@ -88,11 +108,18 @@ export default class extends Vue {
     await userModule.logout();
     this.$router.push(`/login?redirect=${this.$route.fullPath}`);
   }
+
+  async changeUserLang(lang: string) {
+    await userModule.updateUserLang({ lang });
+    this.$message.success('切换语言成功')
+    this.changeLanguageDialogVisible = false;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .navbar {
+  display: flex;
   height: 50px;
   overflow: hidden;
   position: relative;
@@ -148,7 +175,6 @@ export default class extends Vue {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
         position: relative;
 
         .user-avatar {
@@ -168,5 +194,32 @@ export default class extends Vue {
       }
     }
   }
+}
+
+#language-options-box {
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  list-style: none;
+
+  padding-left: 0;
+  margin: 0;
+
+  li {
+    cursor: pointer;
+    color: #1890ff;
+  }
+}
+
+// 最新消息按钮
+.whtas-news {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-left: auto;
+  margin-right: 12px;
+
 }
 </style>

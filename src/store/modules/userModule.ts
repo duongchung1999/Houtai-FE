@@ -23,6 +23,10 @@ export default class UserModule extends VuexModule {
     /** user informations, must be initialized */
     users: User[] = [];
 
+    get nowUserLang() {
+        return this.nowUser.lang;
+    }
+
     @Mutation
     public RESET_STATE() {
         removeToken();
@@ -38,7 +42,7 @@ export default class UserModule extends VuexModule {
     }
 
     /**
-     * login and set token 
+     * login and set token  
      * @param user a user entity that with a username and a password
      * @returns \{token, refreshToken}
      */
@@ -84,6 +88,18 @@ export default class UserModule extends VuexModule {
     public async getInfoList({ page, size }: { page: number, size: number }) {
         var result = await UserAPI.getInfoList(page, size);
         return { users: result.items }
+    }
+
+
+    @Mutation
+    public updateUserLangMutaion(lang: string) {
+        this.nowUser.lang = lang;
+    }
+
+    @Action
+    public async updateUserLang({ lang }: { lang: string }) {
+        await UserAPI.updateUserLang(lang);
+        this.context.commit('updateUserLangMutaion', lang)
     }
 
     @Action

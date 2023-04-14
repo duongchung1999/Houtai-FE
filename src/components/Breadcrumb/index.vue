@@ -11,11 +11,11 @@
         <span
           v-if="item.redirect === 'noredirect' || index === breadcrumbs.length-1"
           class="no-redirect"
-        >{{ item.meta.title }}</span>
+        >{{ $t(item.meta.title) }}</span>
         <a
           v-else
           @click.prevent="handleLink(item)"
-        >{{ item.meta.title }}</a>
+        >{{ $t(item.meta.title) }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -30,10 +30,10 @@ import { RouteRecord, Route } from 'vue-router'
   name: 'Breadcrumb'
 })
 export default class extends Vue {
-  private breadcrumbs: RouteRecord[] = [];
+  public breadcrumbs: RouteRecord[] = [];
 
   @Watch('$route')
-  private onRouteChange(route: Route) {
+  public onRouteChange(route: Route) {
     // if you go to the redirect page, do not update the breadcrumbs
     if (route.path.startsWith('/redirect/')) {
       return
@@ -45,7 +45,7 @@ export default class extends Vue {
     this.getBreadcrumb()
   }
 
-  private getBreadcrumb() {
+  public getBreadcrumb() {
     let matched = this.$route.matched.filter(
       item => item.meta && item.meta.title
     )
@@ -60,19 +60,19 @@ export default class extends Vue {
     })
   }
 
-  private isDashboard(route: RouteRecord) {
+  public isDashboard(route: RouteRecord) {
     const name = route && route.meta && route.meta.title
     return name === 'Dashboard'
   }
 
-  private pathCompile(path: string) {
+  public pathCompile(path: string) {
     // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
     const { params } = this.$route
     const toPath = compile(path)
     return toPath(params)
   }
 
-  private handleLink(item: any) {
+  public handleLink(item: any) {
     const { redirect, path } = item
     if (redirect) {
       this.$router.push(redirect)

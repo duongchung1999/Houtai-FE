@@ -23,7 +23,7 @@ export class UserAPI {
         return get(`${BASE_PATH}/role-options/`)
     }
 
-    
+
     /**
      * 获取用户信息列表
      * @param page 页码
@@ -31,7 +31,7 @@ export class UserAPI {
      * @returns 
      */
     static async getInfoList(page: number, size: number): Promise<PageList<User>> {
-        return await get(`${BASE_PATH}/info`, {page,size});
+        return await get(`${BASE_PATH}/info`, { page, size });
     }
 
     /**
@@ -52,8 +52,17 @@ export class UserAPI {
         return update(BASE_PATH, user);
     }
 
+    /**
+     * 更新当前用户的语言选项
+     * @param lang 语言选项
+     * @returns 
+     */
+    static async updateUserLang(lang: string = 'ZN'): Promise<boolean> {
+        return update(`${BASE_PATH}/user-lang/${lang}`, {});
+    }
+
     /**修改密码 */
-    static async changePassword(u:User):Promise<User> {
+    static async changePassword(u: User): Promise<User> {
         return update(`${BASE_PATH}/change-password`, u);
     }
 

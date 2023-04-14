@@ -4,7 +4,7 @@
       <sidebar-item-link v-if="theOnlyOneChild.meta && hasRoutePermissions(theOnlyOneChild)" :to="resolvePath(theOnlyOneChild.path)">
         <el-menu-item :index="resolvePath(theOnlyOneChild.path)" :class="{'submenu-title-noDropdown': isFirstLevel}">
           <svg-icon v-if="theOnlyOneChild.meta.icon" :name="theOnlyOneChild.meta.icon" />
-          <span v-if="theOnlyOneChild.meta.title" slot="title">{{ theOnlyOneChild.meta.title }}</span>
+          <span v-if="theOnlyOneChild.meta.title" slot="title">{{ $t(theOnlyOneChild.meta.title) }}</span>
         </el-menu-item>
       </sidebar-item-link>
     </template>
@@ -12,7 +12,7 @@
     <el-submenu v-else-if="hasRoutePermissions(item)" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
         <svg-icon v-if="item.meta && item.meta.icon" :name="item.meta.icon" />
-        <span v-if="item.meta && item.meta.title" slot="title">{{ item.meta.title }}</span>
+        <span v-if="item.meta && item.meta.title" slot="title">{{ $t(item.meta.title) }}</span>
       </template>
       <template v-if="item.children">
         <sidebar-item v-for="child in item.children" :key="child.path" :item="child" :is-collapse="isCollapse" :is-first-level="false" :base-path="resolvePath(child.path)" class="nest-menu" />
@@ -27,7 +27,6 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { RouteConfig } from "vue-router";
 import { isExternal } from "@/utils/validate";
 import SidebarItemLink from "./SidebarItemLink.vue";
-import { RoleOptions } from "@/entity/user";
 import { userModule } from "@/store/modules";
 
 @Component({
@@ -90,7 +89,6 @@ export default class extends Vue {
    */
   hasRoutePermissions(route: any): boolean {
     let userLevel = userModule.nowUser?.permissionRole?.level;
-    let userRole = userModule.nowUser.role;
     let routeRoles = route.meta?.roles;
 
     // 没有权限限制的路由

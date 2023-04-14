@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     class="v-modal-box"
-    :title="title"
+    :title="$t(title)"
     :visible.sync="syncedVisible"
     :width="width"
     destroy-on-close
@@ -18,7 +18,7 @@
           v-for="col in columns"
           :prop="col.key"
           :key="col.key"
-          :label="col.label"
+          :label="$t(col.label)"
           :rules="col.rules"
         >
           <el-input v-model="formDataCopy[col.key]"></el-input>
@@ -27,12 +27,12 @@
     </el-form>
 
     <span slot="footer" v-if="!addMode">
-      <el-button plain @click="syncedVisible = false">取消</el-button>
-      <el-button type="primary" @click="submit">保存</el-button>
+      <el-button plain @click="syncedVisible = false">{{$t('取消')}}</el-button>
+      <el-button type="primary" @click="submit">{{$t('保存')}}</el-button>
     </span>
     <span slot="footer" v-else>
-      <el-button type="danger" @click="syncedVisible = false">取消</el-button>
-      <el-button type="success" @click="submit">添加</el-button>
+      <el-button type="danger" @click="syncedVisible = false">{{$t('取消')}}</el-button>
+      <el-button type="success" @click="submit">{{$t('添加')}}</el-button>
     </span>
   </el-dialog>
 </template>

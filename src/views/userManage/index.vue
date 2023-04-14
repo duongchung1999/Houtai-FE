@@ -12,13 +12,8 @@
     </el-header>
     <el-main>
       <el-table :data="users">
-        <el-table-column prop="nickname" label="昵称"> </el-table-column>
-        <el-table-column prop="username" label="用户名"> </el-table-column>
-        <!-- <el-table-column prop="role" label="角色（旧）">
-          <template #default="{row}">
-            {{ getRoleName(row.role) }}
-          </template>
-        </el-table-column> -->
+        <el-table-column prop="nickname" label="昵称"></el-table-column>
+        <el-table-column prop="username" label="用户名"></el-table-column>
         <el-table-column prop="permissionRole" label="角色">
           <template #default="{row}">
             {{ row.permissionRole ? row.permissionRole.name : '无' }}
@@ -48,22 +43,13 @@
           <el-input v-model="formData.password" placeholder="请输入新密码" clearable></el-input>
         </el-form-item>
 
-        <!-- <el-form-item label="角色(旧)" prop="role">
-          <el-select v-model="formData.role" placeholder="请选择角色" filterable>
-            <el-option v-for="(value, i) in roleValues" :key="i" :value="value">
-              <div class="role-option">
-                <span class="value"> {{value}}</span>
-                <span class="name"> {{getRoleName(value)}}</span>
-              </div>
-            </el-option>
-          </el-select>
-          <span class=" m-l-10px">{{ getRoleName(formData.role) }}</span>
-
-        </el-form-item> -->
-        
         <el-form-item label="权限角色" prop="permissionRole">
           <el-select value-key="name" v-model="formData.permissionRole" placeholder="请选择角色" filterable>
             <el-option v-for="(role, i) in permissionRoles" :key="i" :value="role" :label="role.name">
+              <div class="role-option">
+                <span>{{role.name}}</span>
+                <span>{{role.level}}</span>
+              </div>
             </el-option>
           </el-select>
         </el-form-item>
