@@ -163,3 +163,19 @@
 .locked {
   color: #909399;
 }
+
+.delete-model-text {
+  color: red;
+  // 下划线
+  text-decoration: underline;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.delete-model-dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  gap: 12px;
+  padding-bottom: 12px;
+}

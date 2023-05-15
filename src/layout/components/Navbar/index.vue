@@ -5,7 +5,7 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="whtas-news">
-      <el-button type="primary" size="mini" round plain v-if="isShowWhatsNews">
+      <el-button type="primary" size="mini" round plain>
         <a href="https://azure-flavor-e22.notion.site/1452ef55fd2041c9963aa061a72fd0b2" target="_blank"
           rel="noopener noreferrer">最近更新 🎉</a>
       </el-button>

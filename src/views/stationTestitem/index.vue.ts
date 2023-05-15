@@ -9,6 +9,8 @@ import FileSaver from "file-saver";
 import Vue from "vue";
 import { Component, Ref, Watch } from 'vue-property-decorator';
 import Draggable from 'vuedraggable';
+import { StationTestItemAPI } from '@/api/stationTestItemAPI';
+import Jszip from 'jszip'
 
 enum DragingDirectionOptions {
     Upward,
@@ -20,6 +22,11 @@ Component.registerHooks(['beforeRouteLeave'])
 
 @Component({ name: 'stationTestitem', components: { Draggable } })
 export default class StationTestItemPage extends Vue {
+    exportStationTestItemZipDialog = {
+        visible: false,
+        selectedStations: [] as Station[],
+    }
+
     isLoading = false;
     searchTestItemKw: string = ''
     searchStationTestItemKw: string = ''
@@ -48,7 +55,7 @@ export default class StationTestItemPage extends Vue {
             return true;
         }
         for (const i in lst) {
-            if (lst[i].cmd != pst[i].cmd) {
+            if (lst[i].cmd != pst[i].cmd || lst[i].name != pst[i].name) {
                 return true;
             }
         }
@@ -145,6 +152,36 @@ export default class StationTestItemPage extends Vue {
             }
         })
         return result;
+    }
+
+    async exportStationTestItemZip() {
+        // 用file-saver创建zip文件
+        // 内部又多个文件，每个文件的名称为station.name，内容为testItems的文本
+        // 从exportStationTestItemZipDialog中获取selectedStations
+        // 迭代selectedStation（使用for of），从api中获取每个station的testItem
+        // 创建文件，名称为{station.name}.txt，内容为testItems的文本
+        // 将文件添加到zip中
+        // 保存zip文件
+        let zip = Jszip();
+
+        let stations = this.exportStationTestItemZipDialog.selectedStations;
+        let stationTestItemMap = new Map();
+
+        for (const station of stations) {
+            let stationTestItemList = await StationTestItemAPI.getList(this.model.id, station.id);
+            stationTestItemMap.set(station.name, stationTestItemList);
+            let testItems = stationTestItemList.map(e => e.testItem);
+            let testItemsText = this.testItems2TxtText(testItems);
+            let blob = new Blob(testItemsText, { type: "text/plain;charset=utf-8" });
+            zip.file(`${station.name}.txt`, blob);
+        }
+        // 用file-server保存zip文件
+        zip.generateAsync({ type: "blob" }).then((content) => {
+            FileSaver.saveAs(content, `${this.model.name}.zip`);
+        });
+
+        this.exportStationTestItemZipDialog.visible = false;
+
     }
 
     async onRemoveTestItem(index: number, item: TestItem) {
@@ -311,19 +348,25 @@ export default class StationTestItemPage extends Vue {
             .catch((e) => console.info(e));
     }
 
-    async exportTextItem2File() {
-        let txt = [];
+    /** 把TestItem[]转换为Txt文本数组 */
+    testItems2TxtText(testItems: TestItem[]) {
+        let txt: string[] = [];
         let hiddenItemCount = 0;
-        this.parsedStationTestItemList.forEach((t, i) => {
+        testItems.forEach((t, i) => {
             let index = (i + 1 - hiddenItemCount);
             if (t.name.includes('-')) {
                 hiddenItemCount++;
                 index = 0;
             }
-      
+
             let line = `${index},${t.name},${t.unit},${t.lowerValue},${t.upperValue},${t.no},${t.cmd}\r\n`;
             txt.push(line);
         })
+        return txt
+    }
+
+    async exportTextItem2File() {
+        let txt = this.testItems2TxtText(this.parsedStationTestItemList)
         var blob = new Blob(txt, { type: "text/plain;charset=utf-8" });
 
         FileSaver.saveAs(blob, `${this.station.name}.txt`);

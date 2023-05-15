@@ -34,11 +34,13 @@
         <el-col :span="12">
           <div class="v-list-header">
             <label for="">已分配的料号列表</label>
-            <el-button type="success" :disabled="!currentPNConfig.id" @click="setPNModal({ visible:true, addMode:true, title:'添加料号' })">添加料号</el-button>
+          
+            <el-button type="success" :disabled="!currentPNConfig.id"
+              @click="addPartNoDialog.visible = true">添加料号</el-button>
           </div>
           <v-list id="pn-list">
             <v-list-item v-for="(pn, i) in PNList" :key="i">
-              {{pn.no}}
+              {{ pn.no }}
               <el-button type="text" class="danger" icon="el-icon-delete" @click="deletePN(pn.id)"></el-button>
             </v-list-item>
           </v-list>
@@ -46,22 +48,33 @@
 
       </el-row>
     </el-main>
-    <!-- 添加/编辑 料号 -->
-    <v-modal-box :addMode="PNModal.addMode" :title="PNModal.title" :visible.sync="PNModal.visible" :columns="PNModal.columns" v-model="PNModal.formData" @submit="PNModal.onSubmit">
-    </v-modal-box>
 
-    <el-drawer id="PNConfig-panel" title="料号配置面板" :visible.sync="PNConfigPanel.visible" direction="btt" size="95%" destroy-on-close show-clos wrapperClosable>
+    <!-- 添加料号，支持一次性添加多个料号 -->
+    <el-dialog title="添加料号" :visible.sync="addPartNoDialog.visible" width="50%">
+      <el-input type="textarea" :rows="5" placeholder="请输入料号，回车分割多个料号" v-model="addPartNoDialog.inputValue" />
+      <span slot="footer">
+        <el-button @click="addPartNoDialog.visible = false">取消</el-button>
+        <el-button type="primary" @click="addPartNo">添加</el-button>
+      </span>
+    </el-dialog>
+
+    <el-drawer id="PNConfig-panel" title="料号配置面板" :visible.sync="PNConfigPanel.visible" direction="btt" size="95%"
+      destroy-on-close show-clos wrapperClosable>
       <el-row :gutter="20" class="m-l-10px m-r-10px">
         <el-col :span="12">
           <div class="col-title">
             <label>配置列表</label>
-            <el-input class="m-l-10px m-r-10px" style="flex:1" v-model="PNConfigSearchKeyWord" placeholder="搜索配置" clearable></el-input>
+            <el-input class="m-l-10px m-r-10px" style="flex:1" v-model="PNConfigSearchKeyWord" placeholder="搜索配置"
+              clearable></el-input>
             <el-button type="success" size="small" style="margin-left: auto;" @click="addPNConfig">添加配置</el-button>
           </div>
           <v-list id="PNConfig-list">
-            <v-list-item v-for="(config, i) in PNConfigList" :key="i" @click="onSelectConfig(config)" :class="currentPNConfig.id == config.id ? 'active': ''" v-show="config.title.includes(PNConfigSearchKeyWord)">
-              {{config.title}}
-              <el-button type="text" class="danger" icon="el-icon-delete" @click.stop="deletePNConfig(config.id)"></el-button>
+            <v-list-item v-for="(config, i) in PNConfigList" :key="i" @click="onSelectConfig(config)"
+              :class="currentPNConfig.id == config.id ? 'active' : ''"
+              v-show="config.title.includes(PNConfigSearchKeyWord)">
+              {{ config.title }}
+              <el-button type="text" class="danger" icon="el-icon-delete"
+                @click.stop="deletePNConfig(config.id)"></el-button>
             </v-list-item>
           </v-list>
         </el-col>
@@ -85,7 +98,8 @@
 
     </el-drawer>
 
-    <el-drawer class="config-template-drawer" :title="model.name + ' 的配置模板'" :visible.sync="PNConfTemplate.visible" direction="btt" size="95%" destroy-on-close show-close wrapperClosable>
+    <el-drawer class="config-template-drawer" :title="model.name + ' 的配置模板'" :visible.sync="PNConfTemplate.visible"
+      direction="btt" size="95%" destroy-on-close show-close wrapperClosable>
       <el-row :gutter="20">
         <el-col :span="12">
           <div class="template-config-editor" style="height: 100vh;"></div>

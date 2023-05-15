@@ -51,17 +51,10 @@ export default class PNConfigPage extends Vue {
 
     PNConfTemplate = { visible: false }
 
-    PNModal = {
+    addPartNoDialog = {
         visible: false,
-        addMode: false,
-        formData: new PartNo(),
-        columns: [
-            { key: 'no', label: '料号', rules: [{ required: true, message: '请输入料号' }] },
-        ],
-        onSubmit(formData: PartNo) { }
+        inputValue: '',
     }
-
-    setPNModal(data) { this.PNModal = { ...this.PNModal, ...data } }
 
     /** 编辑料号配置editor */
     pnConfigEditor: MonacoEditor.editor.IStandaloneCodeEditor = null;
@@ -232,26 +225,30 @@ export default class PNConfigPage extends Vue {
         return true;
     }
 
+    async addPartNo() {
+        let partnoTexts = this.addPartNoDialog.inputValue.split('\n');
+        
+        //迭代生成料号，通过接口添加
+        for (const partnoText of partnoTexts) {
+            let partNo = new PartNo();
+            partNo.no = partnoText.trim();
+
+            if (partNo.no == '') continue;
+
+            partNo.partNoConfigID = this.currentPNConfig.id;
+            partNo.modelId = this.model.id;
+            
+            await PartNoAPI.add(partNo);
+        }
+
+        this.PNList = await PartNoAPI.getList(this.currentPNConfig.id);
+        this.addPartNoDialog.visible = false;
+        this.$message.success('添加料号成功');
+    }
+
     async mounted() {
         await modelModule.getList(userModule.nowUser.id);
         this.model = this.modelList[0]
-
-        this.PNModal.onSubmit = async (formData: PartNo) => {
-            formData.partNoConfigID = this.currentPNConfig.id;
-            formData.modelId = this.model.id;
-
-            if (this.PNModal.addMode) {
-                formData.no = formData.no.trim();
-                await PartNoAPI.add(formData);
-                this.$message.success('添加成功');
-            } else {
-                await PartNoAPI.update(formData);
-                this.$message.success('更新成功');
-            }
-            this.PNList = await PartNoAPI.getList(this.currentPNConfig.id);
-            this.PNModal.visible = false;
-        }
-
         this.onPriviewEditorMounted()
     }
 };

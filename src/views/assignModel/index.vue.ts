@@ -55,8 +55,16 @@ export default class AssignModelgPage extends Vue {
         //加载用户列表
         await userModule.getInfoList({ page: 1, size: 1000 });
 
+        let nowUserLevel = userModule.nowUser.permissionRole.level
+
+        // 681 611 858
+        // 对模板开发者权限的特殊处理
+        if (nowUserLevel == 2) {
+            nowUserLevel = 6
+        }
+
         userModule.users.forEach(u => {
-            if (userModule.nowUser.permissionRole.level > u.permissionRole.level) {
+            if (nowUserLevel > u.permissionRole.level) {
                 this.users.push(u)
             }
         })

@@ -28,6 +28,22 @@ function limitExpireDate(rule, value: Date, callback) {
 
 @Component({ name: "ModelPage", components: { Parser } })
 export default class ModelPage extends Vue {
+
+    //显示动态密码对话框
+    showDynamicCodeDialog = {
+        visible: false,
+        dynamicCode: new DynamicCode(),
+    }
+
+    // 删除机型对话框
+    deleteModeDialog = {
+        visible: false,
+        model: {
+            name: ''
+        },
+        userInput: ''
+    }
+
     modelModal = {
         visible: false,
         title: '',
@@ -107,6 +123,7 @@ export default class ModelPage extends Vue {
 
     formParserKey = Date.now()
 
+    /** 设置动态密码框 */
     dynamicCodeModal = {
         visible: false,
         formData: new DynamicCode(),
@@ -221,13 +238,15 @@ export default class ModelPage extends Vue {
     }
 
     async deleteModel(model: Model) {
-        await this.$confirm(`此操作还会删除${model.name}对应的站别和测试项目，你确定要删除机型${model.name}吗？`, '删除机型', { type: 'warning' })
-            .then(async () => {
-                model = new Model(model)
-                await modelModule.del(model);
-                this.$message.success('删除成功');
-            })
-            .catch(e => console.info(e));
+        let userInput = this.deleteModeDialog.userInput
+        if (model.name != userInput) {
+            this.$message.error('请输入要删除的机型的名称')
+            return
+        }
+        model = new Model(model)
+        await modelModule.del(model);
+        this.$message.success('删除成功');
+        this.deleteModeDialog.visible = false
     }
 
     async updateStationName(station: Station, newName: string) {
@@ -283,7 +302,18 @@ export default class ModelPage extends Vue {
             this.$message.error('权限不足');
             return;
         }
-        this.$alert(this.model.dynamicCode.code);
+        this.showDynamicCodeDialog = {
+            visible: true,
+            dynamicCode: this.model.dynamicCode,
+        }
+    }
+
+    /** 删除动态码 */
+    async deleteDynamicCode() {
+        await DynamicCodeAPI.del(this.model.dynamicCode.id);
+        this.model.dynamicCode = null;
+        this.showDynamicCodeDialog.visible = false;
+        this.$message.success('删除密码成功');
     }
 
     refreshDynamicCode(formData: DynamicCode) {
@@ -353,5 +383,5 @@ export default class ModelPage extends Vue {
             this.stationModal.visible = false;
         }
     }
-    
+
 };

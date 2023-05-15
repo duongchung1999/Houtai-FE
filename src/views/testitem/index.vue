@@ -1,6 +1,7 @@
 <template>
   <div>
     <!-- [\u4e00-\u9fa5]+ 搜索中文， 替换原本的内容+格式 $t('$&') -->
+    
     <!-- 顶栏 -->
     <el-header>
       <!-- 选择机型 -->
@@ -227,6 +228,7 @@
         <el-button type="primary" @click="createCmd">确定</el-button>
       </span>
     </el-dialog>
+  
   </div>
 </template>
 
