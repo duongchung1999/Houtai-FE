@@ -1,4 +1,4 @@
-import { BaseEntity } from "./baseEntity";
+import { BaseEntity } from './baseEntity'
 
 export enum PermissionRoleOptions {
     ADMIN = 8,
@@ -12,9 +12,9 @@ export enum PermissionRoleOptions {
 
 /** 权限角色 */
 export class PermissionRole {
-    constructor(data?: any) {
-        BaseEntity.converter(this, data)
-    }
+  constructor(data?: any) {
+    BaseEntity.converter(this, data)
+  }
 
     id?: number = undefined;
 

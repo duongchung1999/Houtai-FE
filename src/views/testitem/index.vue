@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- [\u4e00-\u9fa5]+ 搜索中文， 替换原本的内容+格式 $t('$&') -->
-    
+
     <!-- 顶栏 -->
     <el-header>
       <!-- 选择机型 -->
@@ -39,7 +39,7 @@
       <el-scrollbar v-loading="tableLoading" element-loading-text="加载测试项目中">
         <el-table :data="tableData">
           <el-table-column v-for="col in columns" :prop="col.key" :key="col.key" :label="col.label" :width="col.width">
-            <template #default="{ row }">
+            <template #default="{row}">
               <!-- <el-switch @change="updateTestItemIsHidden(row.id, $event)" v-if="col.key == 'isHidden'"
                 v-model="row[col.key]" active-color="#13ce66" />
               <el-switch @change="updateTestItemIsAlwaysRun(row.id, $event)" v-else-if="col.key == 'isAlwaysRun'"
@@ -66,14 +66,14 @@
           </el-table-column>
 
           <el-table-column label="上下限" width="180px">
-            <template #default="{ row }">
+            <template #default="{row}">
               {{ getTestItemLimitText(row.testItem.lowerValue, row.testItem.upperValue, row.testItem.no,
                 row.testItem.unit) }}
             </template>
           </el-table-column>
 
           <el-table-column label="状态" align="center" width="100px">
-            <template #default="{ row }">
+            <template #default="{row}">
               <div class="status-bar">
                 <el-popover placement="top-start" content="测试项目在每次测试始终运行" v-if="row.isAlwaysRun">
                   <span slot="reference" class="status-item always-run">
@@ -110,13 +110,13 @@
 
           <!-- 操作栏 -->
           <el-table-column fixed="right" align="center" label="操作" width="200">
-            <template #default="{ row }">
+            <template #default="{row}">
               <el-button plain size="mini" icon="el-icon-edit" class="m-r-10px" @click="
                 setTestItemModal({
                   visible: true,
                   addMode: false,
                   title: '编辑测试项目',
-                  formData: getTestItemById(row.id),
+                  formData: getTestItemById(row.id)
                 })
               ">
                 编辑
@@ -136,7 +136,7 @@
     <v-modal-box ref="test-item-modal" :addMode="testItemModal.addMode" :title="testItemModal.title"
       :visible.sync="testItemModal.visible" v-model="testItemModal.formData" @submit="testItemModal.onSubmit"
       :rules="testItemModal.rules">
-      <template #default="{ formData }">
+      <template #default="{formData}">
         <el-form-item :label="$t('名称')" prop="name">
           <el-input v-model="formData.name"></el-input>
         </el-form-item>
@@ -228,7 +228,7 @@
         <el-button type="primary" @click="createCmd">确定</el-button>
       </span>
     </el-dialog>
-  
+
   </div>
 </template>
 

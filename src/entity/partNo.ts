@@ -1,9 +1,9 @@
-import { BaseEntity } from "./baseEntity";
+import { BaseEntity } from './baseEntity'
 
 export class PartNo {
-    constructor(data?: any) {
-        BaseEntity.converter(this, data)
-    }
+  constructor(data?: any) {
+    BaseEntity.converter(this, data)
+  }
 
     id?: number = undefined;
 
@@ -18,6 +18,4 @@ export class PartNo {
 
     /** 对应的机型的Id */
     modelId?: number = undefined;
-
-
 }

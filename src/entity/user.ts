@@ -1,13 +1,13 @@
-import { BaseEntity } from "./baseEntity";
-import { PermissionRole } from "./permissionRole";
+import { BaseEntity } from './baseEntity'
+import { PermissionRole } from './permissionRole'
 
 /**
  * user
  */
 export class User {
-    constructor(data?: any) {
-        BaseEntity.converter(this, data)
-    }
+  constructor(data?: any) {
+    BaseEntity.converter(this, data)
+  }
 
     public id?: number = undefined;
     /** nickanme */

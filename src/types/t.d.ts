@@ -7,6 +7,6 @@ declare module 'vue/types/vue' {
          * @param originalText 源文本
          * @param lang 语言选项
          */
-        $t(originalText: string, lang?: string): string;
+        $t(originalText: string, lang?: string): string
     }
 }

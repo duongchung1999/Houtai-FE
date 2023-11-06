@@ -1,11 +1,11 @@
-import { BaseEntity } from "./baseEntity";
-import { Station } from "./station";
-import { TestItem } from "./testItem";
+import { BaseEntity } from './baseEntity'
+import { Station } from './station'
+import { TestItem } from './testItem'
 
 export class StationTestItem {
-    constructor(data?: any) {
-        BaseEntity.converter(this, data)
-    }
+  constructor(data?: any) {
+    BaseEntity.converter(this, data)
+  }
 
     public id?: number = undefined;
 

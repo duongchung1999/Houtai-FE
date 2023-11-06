@@ -1,15 +1,15 @@
-import { ActionRecordAPI, ActionRecordSearchOptions } from '@/api/ActionRecordAPI';
-import { ActionRecord } from '@/entity/ActionRecord';
-import { formatTime } from '@/utils/index';
-import { throttle } from 'throttle-debounce';
-import Vue from "vue";
-import { Component, Watch } from 'vue-property-decorator';
-import MoreText from '@/components/moreText/index.vue';
+import { ActionRecordAPI, ActionRecordSearchOptions } from '@/api/ActionRecordAPI'
+import { ActionRecord } from '@/entity/ActionRecord'
+import { formatTime } from '@/utils/index'
+import { throttle } from 'throttle-debounce'
+import Vue from 'vue'
+import { Component, Watch } from 'vue-property-decorator'
+import MoreText from '@/components/moreText/index.vue'
 
-let DEFAULT_CONDITIONS = new ActionRecordSearchOptions()
-DEFAULT_CONDITIONS.pageSize = 9;
+const DEFAULT_CONDITIONS = new ActionRecordSearchOptions()
+DEFAULT_CONDITIONS.pageSize = 9
 
-@Component({ name: "ActionRecordPage", components: { MoreText } })
+@Component({ name: 'ActionRecordPage', components: { MoreText } })
 export default class ActionRecordPage extends Vue {
     /** 总页数 */
     totalPageCount = 0;
@@ -30,28 +30,28 @@ export default class ActionRecordPage extends Vue {
 
     /** 重置过滤 */
     reset() {
-        this.conditions = { ...DEFAULT_CONDITIONS }
-        this.search()
+      this.conditions = { ...DEFAULT_CONDITIONS }
+      this.search()
     }
 
     async _search() {
-        let result = await ActionRecordAPI.search(this.conditions);
-        this.actionRecords = result.items;
-        this.filterVisible = false;
-        this.totalPageCount = result.totalPages;
+      const result = await ActionRecordAPI.search(this.conditions)
+      this.actionRecords = result.items
+      this.filterVisible = false
+      this.totalPageCount = result.totalPages
     }
 
     search = throttle(500, false, this._search);
     formatTime = formatTime
 
     async mounted() {
-        await this.search();
-        this.operators = await ActionRecordAPI.getOperatorOptions();
-        this.actions = await ActionRecordAPI.getActionOptions();
+      await this.search()
+      this.operators = await ActionRecordAPI.getOperatorOptions()
+      this.actions = await ActionRecordAPI.getActionOptions()
     }
 
     @Watch('conditions', { immediate: true, deep: true })
     runSearch() {
-        this.search()
+      this.search()
     }
-};
+}

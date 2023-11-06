@@ -8,7 +8,7 @@
           <el-select id="model-select" clearable v-model="model" value-key="name" filterable :placeholder="$t('请选择机型')">
             <el-option v-for="item in modelList" :key="item.id" :label="item.name" :value="item"></el-option>
           </el-select>
-          <el-button type="success" class="right" @click="setModelModal({ visible: true, addMode: true, title: $t('添加机型') })
+          <el-button type="success" class="right" @click="setModelModal({visible: true, addMode: true, title: $t('添加机型')})
             ">
             {{ $t('添加机型') }}
           </el-button>
@@ -18,7 +18,7 @@
           <el-button type="success" class="right" @click="setStationModal({
             visible: true,
             title: $t('添加站别'),
-            addMode: true,
+            addMode: true
           })
             ">{{ $t('添加站别') }}</el-button>
         </el-col>
@@ -46,7 +46,7 @@
                       title: $t('编辑机型名称'),
                       visible: true,
                       addMode: false,
-                      formData: item,
+                      formData: item
                     })
                       ">
                       {{ $t('修改名称') }}</el-dropdown-item>
@@ -56,7 +56,7 @@
                     <el-dropdown-item v-else icon="el-icon-view" @click.native="showDynamicCode">{{ $t('显示密码')
                     }}</el-dropdown-item>
                     <el-dropdown-item divided icon="el-icon-delete" class="danger"
-                      @click.native="deleteModeDialog = { visible: true, model: item }">
+                      @click.native="deleteModeDialog = {visible: true, model: item}">
                       {{ $t('删除') }}</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -79,7 +79,7 @@
                     visible: true,
                     title: $t('编辑站别名称'),
                     formData: s,
-                    addMode: false,
+                    addMode: false
                   })
                     ">
                     {{ $t('修改名称') }}</el-dropdown-item>
@@ -108,7 +108,7 @@
     <!-- 设置动态密码 -->
     <v-modal-box :addMode="false" :title="$t('设置动态密码')" :visible.sync="dynamicCodeModal.visible"
       v-model="dynamicCodeModal.formData" @edit="setDynamicCode">
-      <template #default="{ formData }">
+      <template #default="{formData}">
         <el-form-item :label="$t('动态密码')" prop="code">
           <span class="dynamic-code m-r-10px">{{ formData.code }}</span>
           <el-button type="text" size="default" @click="refreshDynamicCode(formData)">{{ $t('刷新') }}</el-button>

@@ -19,7 +19,7 @@
         <el-table :data="actionRecords" height="100%">
           <el-table-column prop="operator" label="操作者" width="120px" />
           <el-table-column prop="name" label="操作" width="200px" />
-          <el-table-column prop="message" label="记录"> 
+          <el-table-column prop="message" label="记录">
             <template #default="{row}">
               <more-text :text="row['message']">
               </more-text>
@@ -32,7 +32,7 @@
           </el-table-column>
         </el-table>
       </div>
- 
+
       <el-pagination :current-page.sync="conditions.pageIndex" :page-size="conditions.pageSize" :pager-count="7" layout="prev, pager, next" :page-count="totalPageCount" />
 
     </el-main>

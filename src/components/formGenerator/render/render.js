@@ -52,9 +52,9 @@ function buildDataObject(confClone, dataObject) {
     if (key === '__vModel__') {
       vModel.call(this, dataObject, confClone.__config__.defaultValue)
     } else if (dataObject[key] !== undefined) {
-      if (dataObject[key] === null
-        || dataObject[key] instanceof RegExp
-        || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
+      if (dataObject[key] === null ||
+        dataObject[key] instanceof RegExp ||
+        ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {
         dataObject[key] = val
       } else if (Array.isArray(dataObject[key])) {
         dataObject[key] = [...dataObject[key], ...val]

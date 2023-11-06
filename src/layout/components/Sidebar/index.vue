@@ -7,42 +7,42 @@
 </template>
 
 <script lang="ts">
-import { AppModule } from "@/store/modules/app";
-import variables from "@/styles/_variables.scss";
-import { Component, Vue } from "vue-property-decorator";
-import SidebarItem from "./SidebarItem.vue";
+import { AppModule } from '@/store/modules/app'
+import variables from '@/styles/_variables.scss'
+import { Component, Vue } from 'vue-property-decorator'
+import SidebarItem from './SidebarItem.vue'
 
 @Component({
-  name: "SideBar",
+  name: 'SideBar',
   components: {
-    SidebarItem,
-  },
+    SidebarItem
+  }
 })
 export default class extends Vue {
   get sidebar() {
-    return AppModule.sidebar;
-  } 
+    return AppModule.sidebar
+  }
 
   get routes() {
-    let routes = (this.$router as any).options.routes;
-    return routes;
+    const routes = (this.$router as any).options.routes
+    return routes
   }
 
   get variables() {
-    return variables;
+    return variables
   }
 
   get activeMenu() {
-    const route = this.$route;
-    const { meta, path } = route;
+    const route = this.$route
+    const { meta, path } = route
     if (meta.activeMenu) {
-      return meta.activeMenu;
+      return meta.activeMenu
     }
-    return path;
+    return path
   }
 
   get isCollapse() {
-    return !this.sidebar.opened;
+    return !this.sidebar.opened
   }
 }
 </script>

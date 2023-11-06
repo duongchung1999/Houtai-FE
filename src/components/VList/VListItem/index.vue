@@ -11,25 +11,25 @@
 
 <script lang="ts">
 export default {
-  name: "VListItem",
+  name: 'VListItem',
   props: {},
   data() {
     return {
-      active: false,
-    };
+      active: false
+    }
   },
   methods: {
     triggerClick() {
-      this.$emit("click");
+      this.$emit('click')
     },
     mouseenter() {
-      this.active = true;
+      this.active = true
     },
     mouseleave() {
-      this.active = false;
-    },
-  },
-};
+      this.active = false
+    }
+  }
+}
 </script>
 
 <style lang="scss" scpoed>

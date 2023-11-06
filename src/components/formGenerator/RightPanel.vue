@@ -40,7 +40,7 @@
               </el-option-group>
             </el-select>
           </el-form-item> -->
-         
+
           <el-form-item
             v-if="activeData.__vModel__ !== undefined"
             label="字段名"
@@ -129,7 +129,7 @@
             <el-select
               v-model="activeData.justify"
               placeholder="请选择水平排列"
-              :style="{ width: '100%' }"
+              :style="{width: '100%'}"
             >
               <el-option
                 v-for="(item, index) in justifyOptions"
@@ -362,7 +362,7 @@
             <el-select
               v-model="activeData.type"
               placeholder="请选择时间类型"
-              :style="{ width: '100%' }"
+              :style="{width: '100%'}"
               @change="dateTypeChange"
             >
               <el-option
@@ -383,7 +383,7 @@
             <el-select
               v-model="activeData.accept"
               placeholder="请选择文件类型"
-              :style="{ width: '100%' }"
+              :style="{width: '100%'}"
               clearable
             >
               <el-option label="图片" value="image/*" />
@@ -406,7 +406,7 @@
               <el-select
                 slot="append"
                 v-model="activeData.__config__.sizeUnit"
-                :style="{ width: '66px' }"
+                :style="{width: '66px'}"
               >
                 <el-option label="KB" value="KB" />
                 <el-option label="MB" value="MB" />
@@ -440,7 +440,7 @@
             "
             label="按钮类型"
           >
-            <el-select v-model="activeData.type" :style="{ width: '100%' }">
+            <el-select v-model="activeData.type" :style="{width: '100%'}">
               <el-option label="primary" value="primary" />
               <el-option label="success" value="success" />
               <el-option label="warning" value="warning" />
@@ -649,7 +649,7 @@
             <el-select
               v-model="activeData['color-format']"
               placeholder="请选择颜色格式"
-              :style="{ width: '100%' }"
+              :style="{width: '100%'}"
               clearable
               @change="colorFormatChange"
             >
@@ -777,7 +777,7 @@
               default-expand-all
               draggable
             >
-              <span slot-scope="{ node, data }">
+              <span slot-scope="{node, data}">
                 <span class="node-label">
                   <svg-icon
                     class="node-icon"
@@ -879,7 +879,7 @@
       </el-scrollbar>
     </div>
 
-    <treeNode-dialog
+    <tree-node-dialog
       :visible.sync="dialogVisible"
       title="添加选项"
       @commit="addNode"
@@ -888,195 +888,195 @@
 </template>
 
 <script>
-import { isArray } from "util";
-import TreeNodeDialog from "./TreeNodeDialog";
-import { isNumberStr } from "@/utils/index";
-import { inputComponents } from "@/components/formGenerator/generator/config";
-import draggable from "vuedraggable";
+import { isArray } from 'util'
+import TreeNodeDialog from './TreeNodeDialog'
+import { isNumberStr } from '@/utils/index'
+import { inputComponents } from '@/components/formGenerator/generator/config'
+import draggable from 'vuedraggable'
 
 const dateTimeFormat = {
-  date: "yyyy-MM-dd",
-  week: "yyyy 第 WW 周",
-  month: "yyyy-MM",
-  year: "yyyy",
-  datetime: "yyyy-MM-dd HH:mm:ss",
-  daterange: "yyyy-MM-dd",
-  monthrange: "yyyy-MM",
-  datetimerange: "yyyy-MM-dd HH:mm:ss",
-};
+  date: 'yyyy-MM-dd',
+  week: 'yyyy 第 WW 周',
+  month: 'yyyy-MM',
+  year: 'yyyy',
+  datetime: 'yyyy-MM-dd HH:mm:ss',
+  daterange: 'yyyy-MM-dd',
+  monthrange: 'yyyy-MM',
+  datetimerange: 'yyyy-MM-dd HH:mm:ss'
+}
 
 // 使changeRenderKey在目标组件改变时可用
-const needRerenderList = [];
+const needRerenderList = []
 
 export default {
   components: {
     TreeNodeDialog,
-    draggable,
+    draggable
     // IconsDialog
   },
-  props: ["showField", "activeData", "formConf"],
+  props: ['showField', 'activeData', 'formConf'],
   data() {
     return {
-      currentTab: "field",
+      currentTab: 'field',
       currentNode: null,
       dialogVisible: false,
       iconsVisible: false,
       currentIconModel: null,
       dateTypeOptions: [
         {
-          label: "日(date)",
-          value: "date",
+          label: '日(date)',
+          value: 'date'
         },
         {
-          label: "周(week)",
-          value: "week",
+          label: '周(week)',
+          value: 'week'
         },
         {
-          label: "月(month)",
-          value: "month",
+          label: '月(month)',
+          value: 'month'
         },
         {
-          label: "年(year)",
-          value: "year",
+          label: '年(year)',
+          value: 'year'
         },
         {
-          label: "日期时间(datetime)",
-          value: "datetime",
-        },
+          label: '日期时间(datetime)',
+          value: 'datetime'
+        }
       ],
       dateRangeTypeOptions: [
         {
-          label: "日期范围(daterange)",
-          value: "daterange",
+          label: '日期范围(daterange)',
+          value: 'daterange'
         },
         {
-          label: "月范围(monthrange)",
-          value: "monthrange",
+          label: '月范围(monthrange)',
+          value: 'monthrange'
         },
         {
-          label: "日期时间范围(datetimerange)",
-          value: "datetimerange",
-        },
+          label: '日期时间范围(datetimerange)',
+          value: 'datetimerange'
+        }
       ],
       colorFormatOptions: [
         {
-          label: "hex",
-          value: "hex",
+          label: 'hex',
+          value: 'hex'
         },
         {
-          label: "rgb",
-          value: "rgb",
+          label: 'rgb',
+          value: 'rgb'
         },
         {
-          label: "rgba",
-          value: "rgba",
+          label: 'rgba',
+          value: 'rgba'
         },
         {
-          label: "hsv",
-          value: "hsv",
+          label: 'hsv',
+          value: 'hsv'
         },
         {
-          label: "hsl",
-          value: "hsl",
-        },
+          label: 'hsl',
+          value: 'hsl'
+        }
       ],
       justifyOptions: [
         {
-          label: "start",
-          value: "start",
+          label: 'start',
+          value: 'start'
         },
         {
-          label: "end",
-          value: "end",
+          label: 'end',
+          value: 'end'
         },
         {
-          label: "center",
-          value: "center",
+          label: 'center',
+          value: 'center'
         },
         {
-          label: "space-around",
-          value: "space-around",
+          label: 'space-around',
+          value: 'space-around'
         },
         {
-          label: "space-between",
-          value: "space-between",
-        },
+          label: 'space-between',
+          value: 'space-between'
+        }
       ],
       layoutTreeProps: {
         label(data, node) {
-          const config = data.__config__;
-          return data.componentName || `${config.label}: ${data.__vModel__}`;
-        },
-      },
-    };
+          const config = data.__config__
+          return data.componentName || `${config.label}: ${data.__vModel__}`
+        }
+      }
+    }
   },
   computed: {
     documentLink() {
       return (
         this.activeData.__config__.document ||
-        "https://element.eleme.cn/#/zh-CN/component/installation"
-      );
+        'https://element.eleme.cn/#/zh-CN/component/installation'
+      )
     },
     dateOptions() {
       if (
         this.activeData.type !== undefined &&
-        this.activeData.__config__.tag === "el-date-picker"
+        this.activeData.__config__.tag === 'el-date-picker'
       ) {
-        if (this.activeData["start-placeholder"] === undefined) {
-          return this.dateTypeOptions;
+        if (this.activeData['start-placeholder'] === undefined) {
+          return this.dateTypeOptions
         }
-        return this.dateRangeTypeOptions;
+        return this.dateRangeTypeOptions
       }
-      return [];
+      return []
     },
     tagList() {
       return [
         {
-          label: "输入型组件",
-          options: inputComponents,
-        },
-      ];
+          label: '输入型组件',
+          options: inputComponents
+        }
+      ]
     },
     activeTag() {
-      return this.activeData.__config__.tag;
+      return this.activeData.__config__.tag
     },
     isShowMin() {
-      return ["el-input-number", "el-slider"].indexOf(this.activeTag) > -1;
+      return ['el-input-number', 'el-slider'].indexOf(this.activeTag) > -1
     },
     isShowMax() {
       return (
-        ["el-input-number", "el-slider", "el-rate"].indexOf(this.activeTag) > -1
-      );
+        ['el-input-number', 'el-slider', 'el-rate'].indexOf(this.activeTag) > -1
+      )
     },
     isShowStep() {
-      return ["el-input-number", "el-slider"].indexOf(this.activeTag) > -1;
-    },
+      return ['el-input-number', 'el-slider'].indexOf(this.activeTag) > -1
+    }
   },
   watch: {
     formConf: {
       handler(val) {
         // saveFormConf(val)
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   methods: {
     addReg() {
       this.activeData.__config__.regList.push({
-        pattern: "",
-        message: "",
-      });
+        pattern: '',
+        message: ''
+      })
     },
     addSelectItem() {
       this.activeData.__slot__.options.push({
-        label: "",
-        value: "",
-      });
+        label: '',
+        value: ''
+      })
     },
     addTreeItem() {
-      ++this.idGlobal;
-      this.dialogVisible = true;
-      this.currentNode = this.activeData.options;
+      ++this.idGlobal
+      this.dialogVisible = true
+      this.currentNode = this.activeData.options
     },
     renderContent(h, { node, data, store }) {
       return (
@@ -1095,121 +1095,121 @@ export default {
             ></i>
           </span>
         </div>
-      );
+      )
     },
     append(data) {
       if (!data.children) {
-        this.$set(data, "children", []);
+        this.$set(data, 'children', [])
       }
-      this.dialogVisible = true;
-      this.currentNode = data.children;
+      this.dialogVisible = true
+      this.currentNode = data.children
     },
     remove(node, data) {
-      this.activeData.__config__.defaultValue = []; // 避免删除时报错
-      const { parent } = node;
-      const children = parent.data.children || parent.data;
-      const index = children.findIndex((d) => d.id === data.id);
-      children.splice(index, 1);
+      this.activeData.__config__.defaultValue = [] // 避免删除时报错
+      const { parent } = node
+      const children = parent.data.children || parent.data
+      const index = children.findIndex((d) => d.id === data.id)
+      children.splice(index, 1)
     },
     addNode(data) {
-      this.currentNode.push(data);
+      this.currentNode.push(data)
     },
     setOptionValue(item, val) {
-      item.value = isNumberStr(val) ? +val : val;
+      item.value = isNumberStr(val) ? +val : val
     },
     setDefaultValue(val) {
       if (Array.isArray(val)) {
-        return val.join(",");
+        return val.join(',')
       }
       // if (['string', 'number'].indexOf(typeof val) > -1) {
       //   return val
       // }
-      if (typeof val === "boolean") {
-        return `${val}`;
+      if (typeof val === 'boolean') {
+        return `${val}`
       }
-      return val;
+      return val
     },
     onDefaultValueInput(str) {
       if (isArray(this.activeData.__config__.defaultValue)) {
         // 数组
         this.$set(
           this.activeData.__config__,
-          "defaultValue",
-          str.split(",").map((val) => (isNumberStr(val) ? +val : val))
-        );
-      } else if (["true", "false"].indexOf(str) > -1) {
+          'defaultValue',
+          str.split(',').map((val) => (isNumberStr(val) ? +val : val))
+        )
+      } else if (['true', 'false'].indexOf(str) > -1) {
         // 布尔
-        this.$set(this.activeData.__config__, "defaultValue", JSON.parse(str));
+        this.$set(this.activeData.__config__, 'defaultValue', JSON.parse(str))
       } else {
         // 字符串和数字
         this.$set(
           this.activeData.__config__,
-          "defaultValue",
+          'defaultValue',
           isNumberStr(str) ? +str : str
-        );
+        )
       }
     },
     onSwitchValueInput(val, name) {
-      if (["true", "false"].indexOf(val) > -1) {
-        this.$set(this.activeData, name, JSON.parse(val));
+      if (['true', 'false'].indexOf(val) > -1) {
+        this.$set(this.activeData, name, JSON.parse(val))
       } else {
-        this.$set(this.activeData, name, isNumberStr(val) ? +val : val);
+        this.$set(this.activeData, name, isNumberStr(val) ? +val : val)
       }
     },
     setTimeValue(val, type) {
-      const valueFormat = type === "week" ? dateTimeFormat.date : val;
-      this.$set(this.activeData.__config__, "defaultValue", null);
-      this.$set(this.activeData, "value-format", valueFormat);
-      this.$set(this.activeData, "format", val);
+      const valueFormat = type === 'week' ? dateTimeFormat.date : val
+      this.$set(this.activeData.__config__, 'defaultValue', null)
+      this.$set(this.activeData, 'value-format', valueFormat)
+      this.$set(this.activeData, 'format', val)
     },
     spanChange(val) {
-      this.formConf.span = val;
+      this.formConf.span = val
     },
     multipleChange(val) {
-      this.$set(this.activeData.__config__, "defaultValue", val ? [] : "");
+      this.$set(this.activeData.__config__, 'defaultValue', val ? [] : '')
     },
     dateTypeChange(val) {
-      this.setTimeValue(dateTimeFormat[val], val);
+      this.setTimeValue(dateTimeFormat[val], val)
     },
     rangeChange(val) {
       this.$set(
         this.activeData.__config__,
-        "defaultValue",
+        'defaultValue',
         val ? [this.activeData.min, this.activeData.max] : this.activeData.min
-      );
+      )
     },
     rateTextChange(val) {
-      if (val) this.activeData["show-score"] = false;
+      if (val) this.activeData['show-score'] = false
     },
     rateScoreChange(val) {
-      if (val) this.activeData["show-text"] = false;
+      if (val) this.activeData['show-text'] = false
     },
     colorFormatChange(val) {
-      this.activeData.__config__.defaultValue = null;
-      this.activeData["show-alpha"] = val.indexOf("a") > -1;
-      this.activeData.__config__.renderKey = +new Date(); // 更新renderKey,重新渲染该组件
+      this.activeData.__config__.defaultValue = null
+      this.activeData['show-alpha'] = val.indexOf('a') > -1
+      this.activeData.__config__.renderKey = +new Date() // 更新renderKey,重新渲染该组件
     },
     openIconsDialog(model) {
       // this.iconsVisible = true
       // this.currentIconModel = model
     },
     setIcon(val) {
-      this.activeData[this.currentIconModel] = val;
+      this.activeData[this.currentIconModel] = val
     },
     tagChange(tagIcon) {
-      let target = inputComponents.find(
+      const target = inputComponents.find(
         (item) => item.__config__.tagIcon === tagIcon
-      );
+      )
 
-      this.$emit("tag-change", target);
+      this.$emit('tag-change', target)
     },
     changeRenderKey() {
       if (needRerenderList.includes(this.activeData.__config__.tag)) {
-        this.activeData.__config__.renderKey = +new Date();
+        this.activeData.__config__.renderKey = +new Date()
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

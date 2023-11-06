@@ -1,9 +1,9 @@
-import { BaseEntity } from "./baseEntity";
+import { BaseEntity } from './baseEntity'
 
 export class Station {
-    constructor(data?: any) {
-        BaseEntity.converter(this, data);
-    }
+  constructor(data?: any) {
+    BaseEntity.converter(this, data)
+  }
 
     public id?: number = undefined;
 

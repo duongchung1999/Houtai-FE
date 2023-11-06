@@ -6,18 +6,18 @@
 
 <script lang="ts">
 export default {
-  name: "VList",
+  name: 'VList',
   props: {
     height: {
       type: String,
-      default: "",
-    },
+      default: ''
+    }
   },
   data() {
-    return {};
+    return {}
   },
-  mounted() {},
-};
+  mounted() {}
+}
 </script>
 
 <style lang="scss" scoped >

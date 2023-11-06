@@ -1,13 +1,13 @@
-import { BaseEntity } from "./baseEntity";
-import { DynamicCode } from "./dynamicCode";
+import { BaseEntity } from './baseEntity'
+import { DynamicCode } from './dynamicCode'
 
 /**
  * model
  */
 export class Model {
-    constructor(data?: any) {
-        BaseEntity.converter(this, data)
-    }
+  constructor(data?: any) {
+    BaseEntity.converter(this, data)
+  }
 
     id?: number = undefined;
 

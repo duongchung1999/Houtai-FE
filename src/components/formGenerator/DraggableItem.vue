@@ -97,7 +97,7 @@ function layoutIsNotFound() {
 export default {
   components: {
     render,
-    draggable,
+    draggable
     // FormItemGroup
   },
   props: [

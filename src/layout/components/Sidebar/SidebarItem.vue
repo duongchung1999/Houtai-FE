@@ -22,65 +22,65 @@
 </template>
 
 <script lang="ts">
-import path from "path";
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { RouteConfig } from "vue-router";
-import { isExternal } from "@/utils/validate";
-import SidebarItemLink from "./SidebarItemLink.vue";
-import { userModule } from "@/store/modules";
+import path from 'path'
+import { Component, Prop, Vue } from 'vue-property-decorator'
+import { RouteConfig } from 'vue-router'
+import { isExternal } from '@/utils/validate'
+import SidebarItemLink from './SidebarItemLink.vue'
+import { userModule } from '@/store/modules'
 
 @Component({
   // Set 'name' here to prevent uglifyjs from causing recursive component not work
   // See https://medium.com/haiiro-io/element-component-name-with-vue-class-component-f3b435656561 for detail
-  name: "SidebarItem",
+  name: 'SidebarItem',
   components: {
-    SidebarItemLink,
-  },
+    SidebarItemLink
+  }
 })
 export default class extends Vue {
   @Prop({ required: true }) item!: RouteConfig;
   @Prop({ default: false }) isCollapse!: boolean;
   @Prop({ default: true }) isFirstLevel!: boolean;
-  @Prop({ default: "" }) basePath!: string;
+  @Prop({ default: '' }) basePath!: string;
 
   get showingChildNumber() {
     if (this.item.children) {
       const showingChildren = this.item.children.filter((item) => {
         if (item.meta && item.meta.hidden) {
-          return false;
+          return false
         } else {
-          return true;
+          return true
         }
-      });
-      return showingChildren.length;
+      })
+      return showingChildren.length
     }
-    return 0;
+    return 0
   }
 
   get theOnlyOneChild() {
     if (this.showingChildNumber > 1) {
-      return null;
+      return null
     }
     if (this.item.children) {
       for (const child of this.item.children) {
         if (!child.meta || !child.meta.hidden) {
-          return child;
+          return child
         }
       }
     }
     // If there is no children, return itself with path removed,
     // because this.basePath already conatins item's path information
-    return { ...this.item, path: "" };
+    return { ...this.item, path: '' }
   }
 
   resolvePath(routePath: string) {
     if (isExternal(routePath)) {
-      return routePath;
+      return routePath
     }
     if (isExternal(this.basePath)) {
-      return this.basePath;
+      return this.basePath
     }
-    return path.resolve(this.basePath, routePath);
+    return path.resolve(this.basePath, routePath)
   }
 
   /**
@@ -88,14 +88,14 @@ export default class extends Vue {
    * @param route 单个路由对象
    */
   hasRoutePermissions(route: any): boolean {
-    let userLevel = userModule.nowUser?.permissionRole?.level;
-    let routeRoles = route.meta?.roles;
+    const userLevel = userModule.nowUser?.permissionRole?.level
+    const routeRoles = route.meta?.roles
 
     // 没有权限限制的路由
-    if (!routeRoles || routeRoles.length == 0) return true;
+    if (!routeRoles || routeRoles.length == 0) return true
     // 如果用户拥有当前路由的权限
     else if (routeRoles.includes(userLevel)) {
-      return true;
+      return true
     }
   }
 }

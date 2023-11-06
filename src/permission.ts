@@ -10,7 +10,7 @@ NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login']
 
-router.beforeEach(async (to: Route, _: Route, next: any) => {
+router.beforeEach(async(to: Route, _: Route, next: any) => {
   // Start progress bar
   NProgress.start()
 
@@ -24,18 +24,18 @@ router.beforeEach(async (to: Route, _: Route, next: any) => {
       NProgress.done()
     } else {
       if (userModule.nickname) {
-        checkRole(to, next);
+        checkRole(to, next)
         next()
       } else {
         try {
           // get user info
-          await userModule.getInfo(0);
-          checkRole(to, next);
+          await userModule.getInfo(0)
+          checkRole(to, next)
           next()
         } catch (error) {
           // remove token and go to login page to re-login
           // await store.dispatch('user/resetToken')
-          userModule.resetToken();
+          userModule.resetToken()
           Message.error(error || 'Has Error')
           next(`/login?redirect=${to.path}`)
           NProgress.done()
@@ -60,16 +60,15 @@ router.afterEach((to: Route) => {
   NProgress.done()
 
   // set page title
-  let routerTitle = to.meta.title ? "-" + to.meta.title : '';
+  const routerTitle = to.meta.title ? '-' + to.meta.title : ''
   document.title = '模板程序后台' + routerTitle
 })
 
 function checkRole(to: Route, next: any) {
-  let userLevel = userModule.nowUser?.permissionRole?.level;
+  const userLevel = userModule.nowUser?.permissionRole?.level
 
-  let pageRoles = to?.meta?.roles;
+  const pageRoles = to?.meta?.roles
   if (pageRoles && pageRoles.length > 0) {
-    
     if (pageRoles.includes(userLevel)) {
       // console.info((!pageRoles))
       console.info(userLevel)

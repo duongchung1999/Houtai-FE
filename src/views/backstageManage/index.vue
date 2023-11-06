@@ -42,148 +42,148 @@
 
 <!-- <script src="./index.vue.ts" lang="ts"></script> -->
 <script lang="ts">
-import FormGenerator from "@/components/formGenerator/FormGenerator.vue";
-import { formConf } from "@/components/formGenerator/generator/config";
-import Parser from "@/components/formGenerator/parser/Parser.vue";
-import { BackstageConfig } from "@/entity/bakcstageConfig";
-import { backstageConfigModule } from "@/store/modules";
-import { Obj2INIString } from "@/utils/index";
-import Vue from "vue";
+import FormGenerator from '@/components/formGenerator/FormGenerator.vue'
+import { formConf } from '@/components/formGenerator/generator/config'
+import Parser from '@/components/formGenerator/parser/Parser.vue'
+import { BackstageConfig } from '@/entity/bakcstageConfig'
+import { backstageConfigModule } from '@/store/modules'
+import { Obj2INIString } from '@/utils/index'
+import Vue from 'vue'
 // import MonacoEditor from "vue-monaco-editor";
-import * as MonacoEditor from "monaco-editor";
-import { Component, Watch } from "vue-property-decorator";
+import * as MonacoEditor from 'monaco-editor'
+import { Component, Watch } from 'vue-property-decorator'
 
-formConf.fields = [];
+formConf.fields = []
 
 export enum BackstageConfigKeys {
-  defaultTemplateProgramConfigForm = "defaultTemplateProgramConfigForm",
+  defaultTemplateProgramConfigForm = 'defaultTemplateProgramConfigForm',
 }
 
 @Component({
-  name: "backstageManagePage",
-  components: { FormGenerator, Parser },
+  name: 'backstageManagePage',
+  components: { FormGenerator, Parser }
 })
 export default class BackstageManagePage extends Vue {
-  code: string = "";
-  drawerVisible: boolean = false;
+  code = '';
+  drawerVisible = false;
   editor: any = null;
   formConf: object = formConf;
 
   editorOptions: any = {
-    readOnly: true,
+    readOnly: true
   };
 
   get keyList(): Array<BackstageConfig> {
-    return backstageConfigModule.keyList;
+    return backstageConfigModule.keyList
   }
 
   get currentConfigItem(): BackstageConfig {
-    return backstageConfigModule.configItem;
-  }
-  set currentConfigItem(configItem: BackstageConfig) {
-    if (this.currentConfigItem == configItem) return;
-    this.$nextTick(async () => {
-      if (!configItem.value) {
-        await backstageConfigModule.get(configItem.key);
-      }
-    });
+    return backstageConfigModule.configItem
   }
 
-  @Watch("currentConfigItem.value", { immediate: true })
+  set currentConfigItem(configItem: BackstageConfig) {
+    if (this.currentConfigItem == configItem) return
+    this.$nextTick(async() => {
+      if (!configItem.value) {
+        await backstageConfigModule.get(configItem.key)
+      }
+    })
+  }
+
+  @Watch('currentConfigItem.value', { immediate: true })
   updateFormConf(v: any) {
-    if (!v) return;
+    if (!v) return
     if (
       this.currentConfigItem.key !=
       BackstageConfigKeys.defaultTemplateProgramConfigForm
-    )
-      return;
+    ) { return }
 
-    this.formConf = typeof v === "object" ? v : JSON.parse(v);
+    this.formConf = typeof v === 'object' ? v : JSON.parse(v)
   }
 
   // on clicked preview button
   async onPreviewForm() {
-    this.drawerVisible = true;
+    this.drawerVisible = true
     this.$nextTick(() => {
-      this.onEditorMounted();
-    });
+      this.onEditorMounted()
+    })
   }
 
   onEditorMounted() {
     this.editor = MonacoEditor.editor.create(
-      document.querySelector(".config-editor"),
+      document.querySelector('.config-editor'),
       {
-        value: "",
-        language: "ini",
+        value: '',
+        language: 'ini',
         automaticLayout: true,
         readOnly: true,
-        theme:'vs-dark',
+        theme: 'vs-dark'
       }
-    );
+    )
     // this.editor = editor;
     // this.editor.updateOptions(this.editorOptions);
-    this.previewINIConfig();
+    this.previewINIConfig()
   }
 
   previewINIConfig() {
-    let formParser = this.$refs["parser"] as any;
-    formParser.submitForm();
+    const formParser = this.$refs.parser as any
+    formParser.submitForm()
   }
 
   public static builderINIStringFromForm({ formData, formConf }) {
-    let configObj = {};
-    let configItemList = [];
+    const configObj = {}
+    const configItemList = []
     // 循环表单结构，构建初始配置
-    let { fields } = formConf;
+    const { fields } = formConf
     for (const field of fields) {
-      let fieldName = field.__vModel__;
-      if (field.type === "form-item-group") {
-        configItemList.push({ key: fieldName, value: null, isGroup: true });
+      const fieldName = field.__vModel__
+      if (field.type === 'form-item-group') {
+        configItemList.push({ key: fieldName, value: null, isGroup: true })
       } else {
-        let fieldValue = formData[fieldName];
-        let value =
-          fieldValue === null || fieldValue === undefined ? null : fieldValue;
-        configItemList.push({ key: fieldName, value });
+        const fieldValue = formData[fieldName]
+        const value =
+          fieldValue === null || fieldValue === undefined ? null : fieldValue
+        configItemList.push({ key: fieldName, value })
       }
     }
-    let lastSection = null;
+    let lastSection = null
 
     // 构建 config object
     configItemList.forEach((configItem) => {
       if (configItem.isGroup) {
-        lastSection = configItem.key;
-        configObj[lastSection] = {};
-        return;
+        lastSection = configItem.key
+        configObj[lastSection] = {}
+        return
       }
       if (lastSection) {
-        configObj[lastSection][configItem.key] = configItem.value;
+        configObj[lastSection][configItem.key] = configItem.value
       } else {
-        configObj[configItem.key] = configItem.value;
+        configObj[configItem.key] = configItem.value
       }
-    });
-    return Obj2INIString(configObj);
+    })
+    return Obj2INIString(configObj)
   }
 
   // 提交表单回调
   public onSubmitForm({ formData, formConf }) {
     this.editor.setValue(
       BackstageManagePage.builderINIStringFromForm({ formData, formConf })
-    );
+    )
   }
 
-  //保存表单配置
+  // 保存表单配置
   async saveFormConf() {
-    this.currentConfigItem.value = JSON.stringify(this.formConf);
-    let requestData = new BackstageConfig(this.currentConfigItem);
-    await backstageConfigModule.update(requestData);
-    this.$message.success("保存成功");
-    this.drawerVisible = false;
+    this.currentConfigItem.value = JSON.stringify(this.formConf)
+    const requestData = new BackstageConfig(this.currentConfigItem)
+    await backstageConfigModule.update(requestData)
+    this.$message.success('保存成功')
+    this.drawerVisible = false
   }
 
   async mounted() {
-    await backstageConfigModule.getKeyList();
+    await backstageConfigModule.getKeyList()
     if (!this.currentConfigItem?.id) {
-      this.currentConfigItem = this.keyList[0];
+      this.currentConfigItem = this.keyList[0]
     }
   }
 }

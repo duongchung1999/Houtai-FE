@@ -6,24 +6,24 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Prop, Component } from "vue-property-decorator";
+import Vue from 'vue'
+import { Prop, Component } from 'vue-property-decorator'
 
-@Component({ name: "MoreText" })
+@Component({ name: 'MoreText' })
 export default class MoreText extends Vue {
   @Prop() text: string;
 
   /** 是否完整展示文本 */
-  isFullyDisplayed: boolean = false;
+  isFullyDisplayed = false;
 
   get moreButtonVisible() {
-    let rows = 0;
+    let rows = 0
     // 统计行数
-    rows += this.text.split("\r").length;
-    rows += this.text.split("<br>").length;
-    if (rows - 1 < 3) return false;
+    rows += this.text.split('\r').length
+    rows += this.text.split('<br>').length
+    if (rows - 1 < 3) return false
 
-    return !this.isFullyDisplayed;
+    return !this.isFullyDisplayed
   }
 }
 </script>

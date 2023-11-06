@@ -1,6 +1,6 @@
-import { BaseEntity } from "./baseEntity";
+import { BaseEntity } from './baseEntity'
 
-export class PageList<T> extends BaseEntity{
+export class PageList<T> extends BaseEntity {
     public pageIndex?: number = undefined;
     public pageSize?: number = undefined;
     public totalCount?: number = undefined;

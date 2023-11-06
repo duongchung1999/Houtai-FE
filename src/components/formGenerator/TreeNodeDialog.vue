@@ -35,7 +35,7 @@
                 <el-select
                   slot="append"
                   v-model="dataType"
-                  :style="{ width: '100px' }"
+                  :style="{width: '100px'}"
                 >
                   <el-option
                     v-for="(item, index) in dataTypeOptions"
@@ -58,9 +58,9 @@
   </div>
 </template>
 <script>
-import { isNumberStr } from "@/utils/index";
+import { isNumberStr } from '@/utils/index'
 
-const id = Date.now();
+const id = Date.now()
 
 export default {
   components: {},
@@ -71,46 +71,46 @@ export default {
       id,
       formData: {
         label: undefined,
-        value: undefined,
+        value: undefined
       },
       rules: {
         label: [
           {
             required: true,
-            message: "请输入选项名",
-            trigger: "blur",
-          },
+            message: '请输入选项名',
+            trigger: 'blur'
+          }
         ],
         value: [
           {
             required: true,
-            message: "请输入选项值",
-            trigger: "blur",
-          },
-        ],
+            message: '请输入选项值',
+            trigger: 'blur'
+          }
+        ]
       },
-      dataType: "string",
+      dataType: 'string',
       dataTypeOptions: [
         {
-          label: "字符串",
-          value: "string",
+          label: '字符串',
+          value: 'string'
         },
         {
-          label: "数字",
-          value: "number",
-        },
-      ],
-    };
+          label: '数字',
+          value: 'number'
+        }
+      ]
+    }
   },
   computed: {},
   watch: {
     // eslint-disable-next-line func-names
-    "formData.value": function (val) {
-      this.dataType = isNumberStr(val) ? "number" : "string";
+    'formData.value': function(val) {
+      this.dataType = isNumberStr(val) ? 'number' : 'string'
     },
     id(val) {
       // saveTreeNodeId(val);
-    },
+    }
   },
   created() {},
   mounted() {},
@@ -118,26 +118,26 @@ export default {
     onOpen() {
       this.formData = {
         label: undefined,
-        value: undefined,
-      };
+        value: undefined
+      }
     },
     onClose() {},
     close() {
-      this.$emit("update:visible", false);
+      this.$emit('update:visible', false)
     },
     handelConfirm() {
       this.$refs.elForm.validate((valid) => {
-        if (!valid) return;
-        if (this.dataType === "number") {
-          this.formData.value = parseFloat(this.formData.value);
+        if (!valid) return
+        if (this.dataType === 'number') {
+          this.formData.value = parseFloat(this.formData.value)
         }
-        this.formData.id = this.id++;
-        this.$emit("commit", this.formData);
-        this.close();
-      });
-    },
-  },
-};
+        this.formData.id = this.id++
+        this.$emit('commit', this.formData)
+        this.close()
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

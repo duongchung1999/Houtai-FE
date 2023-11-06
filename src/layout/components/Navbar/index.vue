@@ -58,61 +58,60 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { AppModule } from "@/store/modules/app";
-import UserModule from "@/store/modules/userModule";
+import { Component, Vue } from 'vue-property-decorator'
+import { AppModule } from '@/store/modules/app'
+import UserModule from '@/store/modules/userModule'
 
-import { getModule } from "vuex-module-decorators";
-import Breadcrumb from "@/components/Breadcrumb/index.vue";
-import Hamburger from "@/components/Hamburger/index.vue";
+import { getModule } from 'vuex-module-decorators'
+import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import Hamburger from '@/components/Hamburger/index.vue'
 
-const userModule = getModule(UserModule);
+const userModule = getModule(UserModule)
 
 @Component({
-  name: "Navbar",
+  name: 'Navbar',
   components: {
     Breadcrumb,
-    Hamburger,
-  },
+    Hamburger
+  }
 })
 export default class extends Vue {
-
   // 是否展示最近更新按钮
   get isShowWhatsNews(): boolean {
-    const now = new Date();
-    const end = new Date(2023, 3, 18);
-    return now < end;
+    const now = new Date()
+    const end = new Date(2023, 3, 18)
+    return now < end
   }
 
   changeLanguageDialogVisible = false;
-  currentUserLanguage = "ZN";
+  currentUserLanguage = 'ZN';
 
   get nickname() {
-    var { nowUser } = userModule;
-    return nowUser ? nowUser.nickname : "";
+    const { nowUser } = userModule
+    return nowUser ? nowUser.nickname : ''
   }
 
   get sidebar() {
-    return AppModule.sidebar;
+    return AppModule.sidebar
   }
 
   get device() {
-    return AppModule.device.toString();
+    return AppModule.device.toString()
   }
 
   toggleSideBar() {
-    AppModule.ToggleSideBar(false);
+    AppModule.ToggleSideBar(false)
   }
 
   async logout() {
-    await userModule.logout();
-    this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+    await userModule.logout()
+    this.$router.push(`/login?redirect=${this.$route.fullPath}`)
   }
 
   async changeUserLang(lang: string) {
-    await userModule.updateUserLang({ lang });
+    await userModule.updateUserLang({ lang })
     this.$message.success('切换语言成功')
-    this.changeLanguageDialogVisible = false;
+    this.changeLanguageDialogVisible = false
   }
 }
 </script>

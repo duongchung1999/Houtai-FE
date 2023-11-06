@@ -1,6 +1,6 @@
 const path = require('path')
 const name = '后台管理系统'
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 
 module.exports = {
   // TODO: Remember to change publicPath to fit your need
@@ -9,15 +9,13 @@ module.exports = {
 
   // lintOnSave: process.env.NODE_ENV === 'development',
 
-  //关闭格式检查
+  // 关闭格式检查
   lintOnSave: false,
   pwa: {
     name: name
   },
 
-  transpileDependencies: [
-    'vuex-module-decorators'
-  ],
+  transpileDependencies: ['vuex-module-decorators'],
 
   pluginOptions: {
     'style-resources-loader': {
@@ -53,8 +51,6 @@ module.exports = {
       new MonacoWebpackPlugin({
         languages: ['ini']
       })
-    ],
-   
-  },
- 
+    ]
+  }
 }

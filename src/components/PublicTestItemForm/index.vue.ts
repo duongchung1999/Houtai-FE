@@ -1,7 +1,7 @@
-import { PublicTestItem } from "@/entity/publicTestItem/publicTestItem";
-import { PublicTestItemGroup } from "@/entity/publicTestItem/publicTestItemGroup";
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { PublicTestItem } from '@/entity/publicTestItem/publicTestItem'
+import { PublicTestItemGroup } from '@/entity/publicTestItem/publicTestItemGroup'
+import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 
 /** 临时的类型，用于更好的生成调用命令 */
 class Params {
@@ -21,11 +21,11 @@ class Params {
   value?: string = '';
 }
 
-@Component({ name: "PublicTestItemForm" })
+@Component({ name: 'PublicTestItemForm' })
 export default class PublicTestItemForm extends Vue {
   @Prop() group: PublicTestItemGroup;
   @Prop() testItems: PublicTestItem[];
-  
+
   /** 当前选中的测试项目 */
   currentTestItem: PublicTestItem = new PublicTestItem();
 
@@ -34,11 +34,11 @@ export default class PublicTestItemForm extends Vue {
 
   @Watch('currentTestItem')
   flushCurrentParams() {
-    let result: Params[] = [];
+    const result: Params[] = []
     if (!this.currentTestItem) {
       this.currentParams = []
-      return;
-    };
+      return
+    }
 
     this.currentTestItem.params.forEach(p => {
       result.push({
@@ -48,14 +48,14 @@ export default class PublicTestItemForm extends Vue {
         options: p.options,
         value: ''
       })
-    });
+    })
 
-    this.currentParams = result;
+    this.currentParams = result
   }
 
   @Watch('group')
   restetForm() {
-    this.currentTestItem = new PublicTestItem();
+    this.currentTestItem = new PublicTestItem()
   }
 
   /** 参数表单 */
@@ -63,24 +63,24 @@ export default class PublicTestItemForm extends Vue {
 
   /** 生成的命令 */
   get testCmd() {
-    let { dllName } = this.group;
-    let { methodName } = this.currentTestItem;
-    if (!dllName) return "请选择模块类别";
-    if (!methodName) return "请选择测试项目";
+    const { dllName } = this.group
+    const { methodName } = this.currentTestItem
+    if (!dllName) return '请选择模块类别'
+    if (!methodName) return '请选择测试项目'
 
-    let result = `dllname=${dllName}&method=${methodName}`;
+    let result = `dllname=${dllName}&method=${methodName}`
 
     for (const p of this.currentParams) {
-      result += `&${p.name}=${p.value}`;
+      result += `&${p.name}=${p.value}`
     }
-    return result;
+    return result
   }
 
   /** 获取选项 */
   getOptions(options: string) {
-    let result = [];
-    if (!options) return result;
-    result = options.replace(" ", "").split(",");
-    return result;
+    let result = []
+    if (!options) return result
+    result = options.replace(' ', '').split(',')
+    return result
   }
 }

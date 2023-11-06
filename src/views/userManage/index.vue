@@ -30,7 +30,7 @@
 
     <!-- 添加 / 编辑 测试项目模态框 -->
     <v-modal-box ref="user-modal-box" @add="addUser" @edit="updateUser" :addMode="userModal.addMode" :title="userModal.title" :visible.sync="userModal.visible" v-model="userModal.formData" :rules="rules">
-      <template #default="{ formData }">
+      <template #default="{formData}">
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="formData.nickname" placeholder="请输入昵称" clearable></el-input>
         </el-form-item>

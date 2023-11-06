@@ -48,16 +48,16 @@
 </template>
 
 <script lang="ts">
-import { PublicTestItemAPI } from "@/api/publicTestItem/publicTestItemAPI";
-import { PublicTestItemGroupAPI } from "@/api/publicTestItem/publicTestItemGroupAPI";
-import PublicTestItemForm from "@/components/PublicTestItemForm/index.vue";
-import { PublicTestItem } from "@/entity/publicTestItem/publicTestItem";
-import { PublicTestItemGroup } from "@/entity/publicTestItem/publicTestItemGroup";
-import { PublicTestItemParam } from "@/entity/publicTestItem/publicTestItemParam";
-import { ElUploadInternalFileDetail } from "element-ui/types/upload";
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import XMLJS from "xml-js";
+import { PublicTestItemAPI } from '@/api/publicTestItem/publicTestItemAPI'
+import { PublicTestItemGroupAPI } from '@/api/publicTestItem/publicTestItemGroupAPI'
+import PublicTestItemForm from '@/components/PublicTestItemForm/index.vue'
+import { PublicTestItem } from '@/entity/publicTestItem/publicTestItem'
+import { PublicTestItemGroup } from '@/entity/publicTestItem/publicTestItemGroup'
+import { PublicTestItemParam } from '@/entity/publicTestItem/publicTestItemParam'
+import { ElUploadInternalFileDetail } from 'element-ui/types/upload'
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+import XMLJS from 'xml-js'
 
 // FIXME 电流表A_CC测试项目，参数属性不对
 
@@ -68,14 +68,14 @@ class XmlNoteDoc {
     assembly: {
       /** 程序集类名 */
       name: {
-        _text: string;
-      };
-    };
+        _text: string
+      }
+    }
     /** 成员信息 */
     members: {
       /** 成员列表 */
-      member: XmlNoteDoc_Member[];
-    };
+      member: XmlNoteDoc_Member[]
+    }
   };
 }
 
@@ -83,30 +83,30 @@ class XmlNoteDoc {
 class XmlNoteDoc_Member {
   /** 概述 */
   summary: {
-    _text: string;
+    _text: string
 
     _attributes: {
-      /**自定义属性，dll名称 */
-      dllName: string;
+      /** 自定义属性，dll名称 */
+      dllName: string
       /** 是否为通用测试项目 */
-      isPublicTestItem: string;
-    };
+      isPublicTestItem: string
+    }
   };
 
   /** 属性 */
   _attributes: {
     /** 在代码中的完全名 */
-    name: string;
+    name: string
   };
 
   /** 返回结果 */
   returns: {
-    _text: string;
+    _text: string
   };
 
   /** 备注 */
   remarks: {
-    _text: string;
+    _text: string
   };
 
   /** 参数列表 */
@@ -118,9 +118,9 @@ class XmlNoteDoc_MemberParam {
   /** 属性 */
   _attributes: {
     /** 在代码中的属性名称 */
-    name: string;
+    name: string
     /** 可选项(数组字符串) */
-    options: string;
+    options: string
   };
 
   /** 概述 */
@@ -130,12 +130,12 @@ class XmlNoteDoc_MemberParam {
 const DEFAULT_DIALOG = {
   visible: false,
   classes: new Array<XmlNoteDoc_Member>(),
-  currentClassName: null,
-};
+  currentClassName: null
+}
 
 @Component({
-  name: "PublicTestItemManagePage",
-  components: { PublicTestItemForm },
+  name: 'PublicTestItemManagePage',
+  components: { PublicTestItemForm }
 })
 export default class PublicTestItemManagePage extends Vue {
   fileList: File[] = [];
@@ -156,66 +156,66 @@ export default class PublicTestItemManagePage extends Vue {
   allPublicTestItems: PublicTestItem[] = [];
 
   /** 页面上选中的通用测试项目组 */
-  selectedPublicTestItemGroupSummary = "";
+  selectedPublicTestItemGroupSummary = '';
   get selectedPublicTestItemGroup() {
     return this.allPublicTestItemGroups.find(
       (e) => e.summary == this.selectedPublicTestItemGroupSummary
-    );
+    )
   }
 
   /** 选择文件 */
   async chooseFile(fileDetail: ElUploadInternalFileDetail) {
-    let fr = new FileReader();
+    const fr = new FileReader()
     fr.onload = () => {
-      if (!fileDetail.name.endsWith(".xml")) {
-        this.$message.error("请上传xml文件");
-        return;
+      if (!fileDetail.name.endsWith('.xml')) {
+        this.$message.error('请上传xml文件')
+        return
       }
 
-      if (fr.result) this.addPublicTestItems(fr.result + "");
-    };
-    fr.readAsText(fileDetail.raw);
+      if (fr.result) this.addPublicTestItems(fr.result + '')
+    }
+    fr.readAsText(fileDetail.raw)
   }
 
   /** 添加通用测试项目 */
   async addPublicTestItems(xmlText: string) {
-    var xmlDoc = XMLJS.xml2js(xmlText, {
+    const xmlDoc = XMLJS.xml2js(xmlText, {
       compact: true,
       ignoreDeclaration: true,
-      trim: true,
-    }) as XmlNoteDoc;
+      trim: true
+    }) as XmlNoteDoc
 
-    this.xmlDoc = xmlDoc;
+    this.xmlDoc = xmlDoc
 
     // 检查是否是 c# xml注释文档
     if (!xmlDoc || !xmlDoc.doc.assembly || !xmlDoc.doc.members) {
-      this.$message.error("xml内容不正确, 请上传c#xml注释文档");
-      return;
+      this.$message.error('xml内容不正确, 请上传c#xml注释文档')
+      return
     }
 
     // 获取类型列表
-    var typeList = xmlDoc.doc.members.member.filter(
+    const typeList = xmlDoc.doc.members.member.filter(
       (e) =>
-        e._attributes.name.startsWith("T:") && e.summary._attributes?.dllName
-    );
+        e._attributes.name.startsWith('T:') && e.summary._attributes?.dllName
+    )
 
     // 初始化弹窗
-    this.showDialog(typeList);
+    this.showDialog(typeList)
   }
 
   initDialog() {
-    this.chooseClassDialog = { ...DEFAULT_DIALOG };
-    this.currentStep = 1;
+    this.chooseClassDialog = { ...DEFAULT_DIALOG }
+    this.currentStep = 1
   }
 
   /** 初始化选择DocClass弹框 */
   showDialog(classMembers: XmlNoteDoc_Member[]) {
     if (classMembers.length == 0) {
-      this.$message.error("没有找到 <summary>注释中带dllName属性的类");
-      return;
+      this.$message.error('没有找到 <summary>注释中带dllName属性的类')
+      return
     }
-    this.chooseClassDialog.classes = classMembers;
-    this.chooseClassDialog.visible = true;
+    this.chooseClassDialog.classes = classMembers
+    this.chooseClassDialog.visible = true
   }
 
   /**
@@ -224,18 +224,18 @@ export default class PublicTestItemManagePage extends Vue {
    * @returns 返回PublicTestItemGroup
    */
   docClass2PublicTestItemGroup(classSummary: string) {
-    let xmlMembers = this.xmlDoc.doc.members.member;
-    let docClass = xmlMembers.find((e) => e.summary._text == classSummary);
+    const xmlMembers = this.xmlDoc.doc.members.member
+    const docClass = xmlMembers.find((e) => e.summary._text == classSummary)
 
-    let docMethods = xmlMembers.filter(
+    const docMethods = xmlMembers.filter(
       (e) =>
         e._attributes.name.startsWith(
-          `${docClass._attributes.name.replace("T:", "M:")}`
-        ) && e.summary._attributes?.isPublicTestItem == "true"
-    );
+          `${docClass._attributes.name.replace('T:', 'M:')}`
+        ) && e.summary._attributes?.isPublicTestItem == 'true'
+    )
 
     // -- 解析为PublicTestItems
-    this.DocMembers2PublicTestItemGroup(docClass, docMethods);
+    this.DocMembers2PublicTestItemGroup(docClass, docMethods)
   }
 
   /** 将XML文档的成员转为通用测试项目组 */
@@ -243,157 +243,157 @@ export default class PublicTestItemManagePage extends Vue {
     docClass: XmlNoteDoc_Member,
     docMethods: XmlNoteDoc_Member[]
   ) {
-    let pTestItmes = new Array<PublicTestItem>();
+    const pTestItmes = new Array<PublicTestItem>()
 
     // 解析测试项目
     for (const method of docMethods) {
       // 解析参数
-      let params = this.parseParams(method);
+      const params = this.parseParams(method)
       // 解析方法名
-      let methodName = this.parseMethodName(method._attributes.name);
+      const methodName = this.parseMethodName(method._attributes.name)
 
-      let t: PublicTestItem = {
+      const t: PublicTestItem = {
         summary: method.summary?._text,
         methodName,
         mark: method.remarks?._text,
         returns: method.returns?._text,
-        params,
-      };
+        params
+      }
 
-      pTestItmes.push(t);
+      pTestItmes.push(t)
     }
 
     this.currentPublicTestItemGroup = {
       summary: docClass.summary?._text,
       dllName: docClass.summary._attributes.dllName,
-      mark: docClass.remarks?._text,
-    };
-    this.currentPublicTestItems = pTestItmes;
+      mark: docClass.remarks?._text
+    }
+    this.currentPublicTestItems = pTestItmes
   }
 
   /** 解析XML方法成员的参数 */
   parseParams(docMethod: XmlNoteDoc_Member): PublicTestItemParam[] {
-    let result: PublicTestItemParam[] = [];
+    const result: PublicTestItemParam[] = []
 
-    if (docMethod.param === undefined) return;
+    if (docMethod.param === undefined) return
 
-    let params: XmlNoteDoc_MemberParam[] = [];
+    let params: XmlNoteDoc_MemberParam[] = []
 
     // 单个参数类型为Object，所以只能先判断数组
     if (docMethod.param instanceof Array) {
-      params = docMethod.param as XmlNoteDoc_MemberParam[];
+      params = docMethod.param as XmlNoteDoc_MemberParam[]
     } else {
-      params = [docMethod.param as XmlNoteDoc_MemberParam];
+      params = [docMethod.param as XmlNoteDoc_MemberParam]
     }
 
-    let pTypes = this.parseParamTypes(docMethod._attributes.name);
+    const pTypes = this.parseParamTypes(docMethod._attributes.name)
 
     params.forEach((p, i) => {
-      let pTestItemParam: PublicTestItemParam = {
+      const pTestItemParam: PublicTestItemParam = {
         summary: p._text,
         name: p._attributes?.name,
         type: pTypes[i],
-        options: p._attributes?.options,
-      };
+        options: p._attributes?.options
+      }
 
-      result.push(pTestItemParam);
-    });
+      result.push(pTestItemParam)
+    })
 
-    return result;
+    return result
   }
 
   /** 将完全方法名解析为方法名称 */
   parseMethodName(fullMethodName: string) {
-    //M:Backend.Controllers.v2.AuditsController.Get(Backend.Enties.Filte,Backend.Enties.Audit)
-    let fullName = "";
-    //是否有参数
-    if (fullMethodName.includes("(")) {
-      let regexp = /([\w\W]+)\(([\w\W]+)\)/;
-      let matchs = fullMethodName.match(regexp);
-      //M:Backend.Controllers.v2.AuditsController.Get
-      fullName = matchs[1];
-      //Backend.Enties.Filte,Backend.Enties.Audit
-      let paramTypes = matchs[2];
+    // M:Backend.Controllers.v2.AuditsController.Get(Backend.Enties.Filte,Backend.Enties.Audit)
+    let fullName = ''
+    // 是否有参数
+    if (fullMethodName.includes('(')) {
+      const regexp = /([\w\W]+)\(([\w\W]+)\)/
+      const matchs = fullMethodName.match(regexp)
+      // M:Backend.Controllers.v2.AuditsController.Get
+      fullName = matchs[1]
+      // Backend.Enties.Filte,Backend.Enties.Audit
+      const paramTypes = matchs[2]
     } else {
-      fullName = fullMethodName;
+      fullName = fullMethodName
     }
 
-    let tempArr = fullName.split(".");
-    let methodName = tempArr[tempArr.length - 1];
+    const tempArr = fullName.split('.')
+    const methodName = tempArr[tempArr.length - 1]
 
-    return methodName;
+    return methodName
   }
 
   /** 从完全方法名解析参数类型 */
   parseParamTypes(fullMethodName: string): string[] {
     /** C#类型转js类型 */
-    let csType2JsType = (typeName: string): string => {
+    const csType2JsType = (typeName: string): string => {
       /** 除了Bool，其他都转换为输入框，除非表明选项 */
       switch (typeName) {
-        case "System.String":
-          return typeof "";
-        case "System.Int32":
-          return typeof 1;
-        case "System.Double":
-          return typeof 1.0;
-        case "System.Boolean":
-          return typeof false;
+        case 'System.String':
+          return typeof ''
+        case 'System.Int32':
+          return typeof 1
+        case 'System.Double':
+          return typeof 1.0
+        case 'System.Boolean':
+          return typeof false
         default:
-          return typeof new Object();
+          return typeof new Object()
       }
-    };
+    }
 
-    //是否有参数
-    if (fullMethodName.includes("(")) {
-      let regexp = /([\w\W]+)\(([\w\W]+)\)/;
-      let matchs = fullMethodName.match(regexp);
-      let paramTypes = matchs[2];
-      let pTypesArr = paramTypes.split(",");
+    // 是否有参数
+    if (fullMethodName.includes('(')) {
+      const regexp = /([\w\W]+)\(([\w\W]+)\)/
+      const matchs = fullMethodName.match(regexp)
+      const paramTypes = matchs[2]
+      const pTypesArr = paramTypes.split(',')
 
-      let result: string[] = [];
-      pTypesArr.forEach((e) => result.push(csType2JsType(e)));
-      return result;
+      const result: string[] = []
+      pTypesArr.forEach((e) => result.push(csType2JsType(e)))
+      return result
     } else {
-      return [];
+      return []
     }
   }
 
   /** 提交 */
   async submit() {
-    this.chooseClassDialog.visible = false;
+    this.chooseClassDialog.visible = false
 
     // TODO 考虑更新的情况
     this.currentPublicTestItemGroup = await PublicTestItemGroupAPI.add(
       this.currentPublicTestItemGroup
-    );
+    )
     this.currentPublicTestItems = await PublicTestItemAPI.reallocate(
       this.currentPublicTestItemGroup.id,
       this.currentPublicTestItems
-    );
+    )
 
-    this.allPublicTestItemGroups.push({ ...this.currentPublicTestItemGroup });
+    this.allPublicTestItemGroups.push({ ...this.currentPublicTestItemGroup })
 
-    this.$message.success("添加成功");
+    this.$message.success('添加成功')
   }
 
   /** 删除测试项目 */
   async deletePublicTestItemGroup() {
-    let groupId = this.selectedPublicTestItemGroup.id;
-    this.allPublicTestItems = await PublicTestItemAPI.getList(groupId);
-    await PublicTestItemGroupAPI.del(groupId);
+    const groupId = this.selectedPublicTestItemGroup.id
+    this.allPublicTestItems = await PublicTestItemAPI.getList(groupId)
+    await PublicTestItemGroupAPI.del(groupId)
 
-    this.allPublicTestItemGroups = await PublicTestItemGroupAPI.getList();
-    this.$message.success("删除成功");
+    this.allPublicTestItemGroups = await PublicTestItemGroupAPI.getList()
+    this.$message.success('删除成功')
   }
 
   /** 当选择页面上的通用测试项目组时 */
   async onPageGroupSelected() {
-    let groupId = this.selectedPublicTestItemGroup.id;
-    this.allPublicTestItems = await PublicTestItemAPI.getList(groupId);
+    const groupId = this.selectedPublicTestItemGroup.id
+    this.allPublicTestItems = await PublicTestItemAPI.getList(groupId)
   }
 
   async mounted() {
-    this.allPublicTestItemGroups = await PublicTestItemGroupAPI.getList();
+    this.allPublicTestItemGroups = await PublicTestItemGroupAPI.getList()
   }
 }
 </script>

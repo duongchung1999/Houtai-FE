@@ -1,9 +1,9 @@
-import { BaseEntity } from "./baseEntity";
+import { BaseEntity } from './baseEntity'
 
 export class TestItem {
-    constructor(data?: any) {
-        BaseEntity.converter(this, data)
-    }
+  constructor(data?: any) {
+    BaseEntity.converter(this, data)
+  }
 
     public id?: number = undefined;
     /** ID of the model that has this test item */

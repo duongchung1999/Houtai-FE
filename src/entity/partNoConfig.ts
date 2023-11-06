@@ -1,10 +1,9 @@
-import { BaseEntity } from "./baseEntity";
+import { BaseEntity } from './baseEntity'
 
 export class PartNoConfig {
-    constructor(data?: any) {
-        BaseEntity.converter(this, data)
-    }
-
+  constructor(data?: any) {
+    BaseEntity.converter(this, data)
+  }
 
     id?: number = undefined;
 
@@ -16,7 +15,6 @@ export class PartNoConfig {
 
     /** 标题 */
     title?: string = undefined;
-
 
     modelId?: number = undefined;
 }

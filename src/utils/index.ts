@@ -1,4 +1,4 @@
-import { ConfigIniParser } from "config-ini-parser"
+import { ConfigIniParser } from 'config-ini-parser'
 
 /**
  * Parse the time to string
@@ -51,12 +51,12 @@ export function parseTime(time, cFormat) {
 
 /**
  * 获取相对时间
- * @param {number|string|Date} time 
+ * @param {number|string|Date} time
  * @param {string} option
  * @returns {string}
  */
 export function formatTime(time, option) {
-  time = new Date(time);
+  time = new Date(time)
   if (('' + time).length === 10) {
     time = parseInt(time) * 1000
   } else {
@@ -96,7 +96,7 @@ export function formatTime(time, option) {
 }
 
 export function isNullOrEmpty(val) {
-  return val === null || val === undefined || val.trim() == '';
+  return val === null || val === undefined || val.trim() == ''
 }
 
 /**
@@ -128,12 +128,12 @@ export function param2Obj(url) {
  * @returns arr
  */
 export function removeEle<T>(arr: T[], cb: (value: T, index: number, obj: T[]) => unknown) {
-  var index = arr.findIndex(cb);
+  const index = arr.findIndex(cb)
   if (index != -1) {
-    arr.splice(index, 1);
+    arr.splice(index, 1)
   }
 
-  return arr;
+  return arr
 }
 
 /**
@@ -144,14 +144,14 @@ export function removeEle<T>(arr: T[], cb: (value: T, index: number, obj: T[]) =
  * @returns updated arr
  */
 export function updateEle<T>(arr: T[], value: T, cb: (value: T, index: number, obj: T[]) => unknown) {
-  var index = arr.findIndex(cb);
+  const index = arr.findIndex(cb)
   if (index != -1) {
     if (typeof (value) === 'object') {
-      arr[index] = { ...value };
+      arr[index] = { ...value }
     } else {
-      arr[index] = value;
+      arr[index] = value
     }
-  };
+  }
   arr.sort()
   return arr
 }
@@ -261,80 +261,77 @@ export function deepClone(obj) {
 export function Obj2INIString(obj: object): string {
   console.log(obj)
   // true false 会转为 0 1
-  let parserConfigValue = (value: any) => {
+  const parserConfigValue = (value: any) => {
     if (typeof value === 'boolean') {
       value = value ? 1 : 0
     } else if (value === null) {
       value = ''
     }
-    return value;
+    return value
   }
 
-
-  let configParser = new ConfigIniParser('\r\n');
+  const configParser = new ConfigIniParser('\r\n')
   for (const key in obj) {
-    let value = obj[key];
+    const value = obj[key]
     if (typeof value === 'object' && value !== null) {
-      configParser.addSection(key);
+      configParser.addSection(key)
       for (const subKey in value) {
-        configParser.set(key, subKey, parserConfigValue(value[subKey]));
+        configParser.set(key, subKey, parserConfigValue(value[subKey]))
       }
     } else {
-      configParser.set(null, key, parserConfigValue(obj[key]));
+      configParser.set(null, key, parserConfigValue(obj[key]))
     }
   }
-  return configParser.stringify();
+  return configParser.stringify()
 }
 /**
  * ini配置字符串转为对象
  */
 export function INIString2Obj(config: string): any {
-  let configParser = new ConfigIniParser();
-  configParser.parse(config);
-  let result = {}
+  const configParser = new ConfigIniParser()
+  configParser.parse(config)
+  const result = {}
 
   // ini的值转为正确的form item中的值
-  let iniValue2FormValue = (v: any) => {
-    v = v.toString();
+  const iniValue2FormValue = (v: any) => {
+    v = v.toString()
     if (v === '1') {
-      return true;
+      return true
     } else if (v === '0') {
-      return false;
-    }
-    else {
-      return v;
+      return false
+    } else {
+      return v
     }
   }
 
   // 从默认的setion设置key value
   for (const option of configParser.options(null)) {
-    let configValue = configParser.get(null, option);
-    configValue = iniValue2FormValue(configValue);
-    configValue = configValue ? configValue : null;
-    result[option] = configValue;
+    let configValue = configParser.get(null, option)
+    configValue = iniValue2FormValue(configValue)
+    configValue = configValue || null
+    result[option] = configValue
   }
 
   for (const section of configParser.sections()) {
-    let sectionConfig = {}
+    const sectionConfig = {}
     for (const option of configParser.options(section)) {
-      let configValue = configParser.get(section, option);
-      configValue = iniValue2FormValue(configValue);
-      configValue = configValue ? configValue : null;
-      sectionConfig[option] = configValue;
+      let configValue = configParser.get(section, option)
+      configValue = iniValue2FormValue(configValue)
+      configValue = configValue || null
+      sectionConfig[option] = configValue
     }
     result[section] = sectionConfig
   }
-  return result;
-
+  return result
 }
 
 export function objectIsEqual(obj1: any, obj2: any) {
   for (const key in obj1) {
     if (obj1[key] !== obj2[key]) {
-      return false;
+      return false
     }
   }
-  return true;
+  return true
 }
 
 const toStr = Function.prototype.call.bind(Object.prototype.toString)

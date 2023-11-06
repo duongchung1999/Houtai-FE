@@ -1,7 +1,7 @@
-import { deepClone } from "@/utils";
-import { Form } from "element-ui";
-import Vue from 'vue';
-import { Component, Emit, Model, Prop, PropSync, Ref, Watch } from "vue-property-decorator";
+import { deepClone } from '@/utils'
+import { Form } from 'element-ui'
+import Vue from 'vue'
+import { Component, Emit, Model, Prop, PropSync, Ref, Watch } from 'vue-property-decorator'
 
 /**
  * form item of MadalBox
@@ -10,15 +10,15 @@ export interface FormColumn {
     /**
      * prop of form item
      */
-    key: string;
+    key: string
     /**
      * label of form item
      */
-    label: string;
+    label: string
     /**
      * rules of form item
      */
-    rules: object[];
+    rules: object[]
 }
 
 /**
@@ -27,8 +27,8 @@ export interface FormColumn {
 @Component({ name: 'VModalBox' })
 export default class VModalBoxComponent extends Vue {
     formDataCopy: object = {};
-    
-    /** 
+
+    /**
      * form data of ELForm
      */
     @Model() formData: object;
@@ -49,7 +49,7 @@ export default class VModalBoxComponent extends Vue {
     @Prop() title: string
 
     /** Width of ModalBox(ElDialog) */
-    @Prop({ type: String, }) width: string
+    @Prop({ type: String }) width: string
 
     /** width of ELForm label. */
     @Prop({ type: String, default: '80px' }) labelWidth: string;
@@ -66,30 +66,29 @@ export default class VModalBoxComponent extends Vue {
      * invoked after clicked the confirm button
      */
     public submit() {
-        this.elForm.validate(v => {
-            if (v) {
-                //先深拷贝一边，因为关闭后 formDataCopy 会被清空
-                let sendData = deepClone(this.formDataCopy);
-                this.$emit('submit', sendData);
-                if (this.addMode) {
-                    this.$emit('add', sendData);
-                }else {
-                    this.$emit('edit', sendData);
-                }
-
-            }
-        })
+      this.elForm.validate(v => {
+        if (v) {
+          // 先深拷贝一边，因为关闭后 formDataCopy 会被清空
+          const sendData = deepClone(this.formDataCopy)
+          this.$emit('submit', sendData)
+          if (this.addMode) {
+            this.$emit('add', sendData)
+          } else {
+            this.$emit('edit', sendData)
+          }
+        }
+      })
     }
 
     @Watch('syncedVisible')
     visibleWatchHandler(v: boolean) {
-        if (!v) {
-            this.elForm.clearValidate();
-            for (const key in this.formDataCopy) {
-                this.formDataCopy[key] = null;
-            }
-        }else {
-            this.formDataCopy = deepClone(this.formData);
+      if (!v) {
+        this.elForm.clearValidate()
+        for (const key in this.formDataCopy) {
+          this.formDataCopy[key] = null
         }
+      } else {
+        this.formDataCopy = deepClone(this.formData)
+      }
     }
 }

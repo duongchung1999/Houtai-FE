@@ -26,7 +26,7 @@ export const inputComponents = [
       // defaultValue: null,
       layout: 'colFormItem',
       span: 24,
-      document: '',
+      document: ''
     },
     // 组件的插槽属性
     __slot__: {
@@ -34,7 +34,7 @@ export const inputComponents = [
     __vModel__: null,
     // 其余的为可直接写在组件标签上的属性
     style: { width: '100%' },
-    type: "form-item-group"
+    type: 'form-item-group'
   },
   {
     // 组件的自定义配置
@@ -219,12 +219,12 @@ export const inputComponents = [
     },
     style: {},
     disabled: false,
-    action:"#",
-    'auto-upload':false,
-    multiple:false,
-    'show-file-list':false,
-    'file-list':[],
-    'list-type':'picture-card',
-    showTip:'213'
-  },
+    action: '#',
+    'auto-upload': false,
+    multiple: false,
+    'show-file-list': false,
+    'file-list': [],
+    'list-type': 'picture-card',
+    showTip: '213'
+  }
 ]

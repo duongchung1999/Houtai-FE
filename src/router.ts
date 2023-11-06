@@ -62,7 +62,9 @@ export default new Router({
           path: 'PNConfig',
           component: () => import(/* webpackChunkName: "PNConfig" */ '@/views/PNConfig/index.vue'),
           meta: {
-            title: '料号配置', icon: 'todo-fill', roles: [
+            title: '料号配置',
+            icon: 'todo-fill',
+            roles: [
               PermissionRoleOptions.ACCOUNT_MANAGER,
               PermissionRoleOptions.SW,
               PermissionRoleOptions.ADMIN,
@@ -83,7 +85,9 @@ export default new Router({
           path: 'assignModel',
           component: () => import(/* webpackChunkName: "assignModel" */ '@/views/assignModel/index.vue'),
           meta: {
-            title: '分配机型', icon: 'share-fill', roles: [
+            title: '分配机型',
+            icon: 'share-fill',
+            roles: [
               PermissionRoleOptions.ACCOUNT_MANAGER,
               PermissionRoleOptions.SW,
               PermissionRoleOptions.ADMIN,
@@ -104,7 +108,9 @@ export default new Router({
           path: 'testitem',
           component: () => import(/* webpackChunkName: "testitem" */ '@/views/testitem/index.vue'),
           meta: {
-            title: '测试项目', icon: 'list-unordered', roles: [
+            title: '测试项目',
+            icon: 'list-unordered',
+            roles: [
               PermissionRoleOptions.ACCOUNT_MANAGER,
               PermissionRoleOptions.SW,
               PermissionRoleOptions.TE,
@@ -126,7 +132,9 @@ export default new Router({
           path: 'stationTestitem',
           component: () => import(/* webpackChunkName: "stationTestitem" */ '@/views/stationTestitem/index.vue'),
           meta: {
-            title: '站别测试项目', icon: 'list-ordered', roles: [
+            title: '站别测试项目',
+            icon: 'list-ordered',
+            roles: [
               PermissionRoleOptions.ACCOUNT_MANAGER,
               PermissionRoleOptions.SW,
               PermissionRoleOptions.TE,
@@ -144,31 +152,29 @@ export default new Router({
       component: Layout,
       redirect: '/backstageManage',
       meta: {
-        title: '后台配置', icon: 'settings-fill', roles: [
-          PermissionRoleOptions.ADMIN,
-          PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
-        ]
+        title: '后台配置',
+        icon: 'settings-fill',
+        roles: [PermissionRoleOptions.ADMIN, PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER]
       },
       children: [
         {
           path: 'backstageManage',
           component: () => import(/* webpackChunkName: "backstageManage" */ '@/views/backstageManage/index.vue'),
           meta: {
-            title: '后台配置', icon: 'settings-fill', roles: [
-              PermissionRoleOptions.ADMIN,
-              PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
-            ]
+            title: '后台配置',
+            icon: 'settings-fill',
+            roles: [PermissionRoleOptions.ADMIN, PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER]
           }
         },
 
         {
           path: 'publicTestItemManager',
-          component: () => import(/* webpackChunkName: "publicTestItemManager" */ '@/views/publicTestItemManager/index.vue'),
+          component: () =>
+            import(/* webpackChunkName: "publicTestItemManager" */ '@/views/publicTestItemManager/index.vue'),
           meta: {
-            title: '通用测试项目', icon: 'list-unordered', roles: [
-              PermissionRoleOptions.ADMIN,
-              PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER
-            ]
+            title: '通用测试项目',
+            icon: 'list-unordered',
+            roles: [PermissionRoleOptions.ADMIN, PermissionRoleOptions.TEMPLATE_PROGRAM_DEVELOPER]
           }
         }
       ]
@@ -197,10 +203,7 @@ export default new Router({
       meta: {
         title: '用户管理',
         icon: 'user',
-        roles: [
-          PermissionRoleOptions.ADMIN,
-          PermissionRoleOptions.ACCOUNT_MANAGER
-        ]
+        roles: [PermissionRoleOptions.ADMIN, PermissionRoleOptions.ACCOUNT_MANAGER]
       },
       children: [
         {
@@ -209,10 +212,7 @@ export default new Router({
           meta: {
             title: '用户管理',
             icon: 'user',
-            roles: [
-              PermissionRoleOptions.ADMIN,
-              PermissionRoleOptions.ACCOUNT_MANAGER
-            ]
+            roles: [PermissionRoleOptions.ADMIN, PermissionRoleOptions.ACCOUNT_MANAGER]
           }
         },
         {
@@ -221,10 +221,7 @@ export default new Router({
           meta: {
             title: '角色管理',
             icon: 'user',
-            roles: [
-              PermissionRoleOptions.ADMIN,
-              PermissionRoleOptions.ACCOUNT_MANAGER
-            ]
+            roles: [PermissionRoleOptions.ADMIN, PermissionRoleOptions.ACCOUNT_MANAGER]
           }
         }
       ]
@@ -242,13 +239,11 @@ export default new Router({
           component: () => import(/* webpackChunkName: "changePassword" */ '@/views/changePassword/index.vue'),
           meta: {
             title: '修改密码',
-            icon: 'user',
-
+            icon: 'user'
           }
         }
       ]
     },
-
 
     {
       path: '*',
