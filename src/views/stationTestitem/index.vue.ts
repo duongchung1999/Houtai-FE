@@ -18,6 +18,16 @@ enum DragingDirectionOptions {
     Downward,
 }
 
+const defaultTestItemFormData = {
+  name: '',
+  cmd: '',
+  lowerValue: '',
+  upperValue: '',
+  unitL: '',
+  isHidden: false,
+  isAlwaysRun: false
+}
+
 Component.registerHooks(['beforeRouteLeave'])
 
 @Component({ name: 'stationTestitem', components: { Draggable } })
@@ -30,6 +40,18 @@ export default class StationTestItemPage extends Vue {
     isLoading = false;
     searchTestItemKw = ''
     searchStationTestItemKw = ''
+
+    testItemModal = {
+      visible: false,
+      title: '',
+      formData: defaultTestItemFormData,
+      addMode: false,
+      rules: {
+        name: [{ required: true, message: '请输入测试项目名称', trigger: 'click' }],
+        cmd: [{ required: true, message: '请输入调用命令', trigger: 'click' }]
+      },
+      onSubmit(formData: any) { }
+    }
 
     /** extract TestItem from this.stationTestItemList to form a new array */
     parsedStationTestItemList: TestItem[] = [];
@@ -409,5 +431,33 @@ export default class StationTestItemPage extends Vue {
       } else {
         this.model = this.model
       }
+
+      this.testItemModal.onSubmit = async(formData: any) => {
+        const testItem = new TestItem(formData)
+          await this.updateTestItem(testItem)
+        this.testItemModal.visible = false
+      }
+    }
+
+    async updateTestItem(testItem: TestItem) {
+      await testItemModule.update({ modelId: this.model.id, testItem })
+      this.$message.success('更新成功')
+    }
+
+    setTestItemModal(data: any) {
+      this.testItemModal = { ...this.testItemModal, ...data }
+      if (data.formData) {
+        const copyFormData = { ...data.formData }
+
+        if (data.addMode) {
+          copyFormData.no = 1
+        }
+
+        this.testItemModal.formData = copyFormData
+      }
+    }
+
+    getTestItemById(id: number) {
+      return this.testItemList.find(e => e.id == id)
     }
 }

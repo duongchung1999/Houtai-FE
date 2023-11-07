@@ -151,6 +151,17 @@
                   </el-tag>
                 </div>
 
+                <el-button plain size="mini" icon="el-icon-edit" class="m-r-10px" @click="
+                    setTestItemModal({
+                      visible: true,
+                      addMode: false,
+                      title: '编辑测试项目',
+                      formData: getTestItemById(item.id)
+                    })
+                  ">
+                  编辑
+                </el-button>
+
                 <div class="buttons">
                   <el-button class="move-btn" type="text" icon="el-icon-rank"></el-button>
                   <el-button
@@ -190,6 +201,70 @@
         <el-button type="primary" @click="exportStationTestItemZip()">导出</el-button>
       </span>
     </el-dialog>
+
+     <!-- 添加 / 编辑 测试项目模态框 -->
+     <v-modal-box ref="test-item-modal" :addMode="testItemModal.addMode" :title="testItemModal.title"
+      :visible.sync="testItemModal.visible" v-model="testItemModal.formData" @submit="testItemModal.onSubmit"
+      :rules="testItemModal.rules">
+      <template #default="{formData}">
+        <el-form-item :label="$t('名称')" prop="name">
+          <el-input v-model="formData.name"></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('调用命令')" prop="cmd">
+          <el-input v-model="formData.cmd">
+            <div slot="append">
+              <el-button @click="publicTestItemPanelVisible = true">
+                <el-tooltip :content="$t('点击选择通用测试项目')" placement="top">
+                  <i class="el-icon-s-opportunity" />
+                </el-tooltip>
+              </el-button>
+            </div>
+          </el-input>
+        </el-form-item>
+        <el-row>
+          <el-col :span="9">
+            <el-form-item label="下限" prop="lowerValue">
+              <el-input v-model="formData.lowerValue"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="9">
+            <el-form-item label="上限" prop="upperValue" label-width="50px">
+              <el-input v-model="formData.upperValue"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="单位" prop="unit" label-width="50px">
+              <el-input v-model="formData.unit"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="24">
+            <el-form-item label="比对编号" size="normal">
+              <el-select v-model="formData.no" value-key="no" placeholder="请选择比对编号">
+                <el-option-group v-for="group in NoList" :key="group.groupName" :label="group.groupName">
+                  <el-option v-for="item in group.items" :key="item.value" :label="item.label" :value="item.value">
+                    {{ item.value }} {{ item.label }}
+                  </el-option>
+                </el-option-group>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="4">
+            <el-form-item label="隐藏此项" prop="isHidden">
+              <el-switch v-model="formData.isHidden" active-color="#13ce66">
+              </el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="始终执行" prop="isAlwaysRun">
+              <el-switch v-model="formData.isAlwaysRun" active-color="#13ce66">
+              </el-switch>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </template>
+    </v-modal-box>
   </div>
 </template>
 
