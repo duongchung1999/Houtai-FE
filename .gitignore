@@ -10,3 +10,7 @@
 
 # Local History for Visual Studio Code
 .history/
+.env
+.env.example
+.env.local
+.env.staging
