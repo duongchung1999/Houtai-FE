@@ -136,9 +136,11 @@
                   isAlwaysRun: item.isAlwaysRun
                 }"
               >
-                <div>
+                <div class="display-flex flex-1">
                   <span class="sort-index">{{ item.reallyIndex }}</span>
-                  {{ getTestItemName(item) }}
+                  <el-tooltip :content="item.cmd" placement="right" effect="dark" class="flex-1">
+                    <div>{{ getTestItemName(item) }}</div>
+                  </el-tooltip>
                 </div>
                 <div class="config-tags">
                   <el-tag type="success" effect="dark" size="small" disable-transitions v-if="item.isAlwaysRun">
