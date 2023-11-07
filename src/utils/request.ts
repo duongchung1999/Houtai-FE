@@ -3,13 +3,13 @@ import { Message } from 'element-ui'
 import { getToken } from './cookies'
 import multiLanguage from '@/multi-language/multi-language'
 const service = axios.create({
-  // baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: process.env.VUE_APP_BASE_API,
   //
   // baseURL: process.env && process.env.NODE_ENV == 'development' ? 'https://localhost:44334/api/v2' : 'http://10.55.2.25:9001/api/v2',
-  baseURL:
-    process.env && process.env.NODE_ENV == 'development'
-      ? 'http://10.55.2.25:9001/api/v2'
-      : 'http://10.55.2.25:9001/api/v2',
+  // baseURL:
+  //   process.env && process.env.NODE_ENV == 'development'
+  //     ? 'http://10.55.2.25:9001/api/v2'
+  //     : 'http://10.55.2.25:9001/api/v2',
 
   // 越南服务器
   // baseURL: process.env && process.env.NODE_ENV == "development" ? 'https://localhost:44334/api/v2' : 'http://10.175.5.59:9001/api/v2',
