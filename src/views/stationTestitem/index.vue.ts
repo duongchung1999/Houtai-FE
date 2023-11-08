@@ -436,6 +436,11 @@ export default class StationTestItemPage extends Vue {
         const testItem = new TestItem(formData)
           await this.updateTestItem(testItem)
         this.testItemModal.visible = false
+
+        if (this.model?.id && this.station?.id) {
+          await stationTestItemModule.getList({ mdoelUk: this.model.id, stationUk: this.station.id })
+          this.lastStationTestItem = Array.from(this.stationTestItemDragList.list)
+        }
       }
     }
 
