@@ -72,6 +72,12 @@
             </template>
           </el-table-column>
 
+          <el-table-column label="车站" align="center" width="100px">
+            <template #default="{row}">
+              {{ stationInItemTest }}
+            </template>
+          </el-table-column>
+
           <el-table-column label="状态" align="center" width="100px">
             <template #default="{row}">
               <div class="status-bar">

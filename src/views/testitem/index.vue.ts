@@ -88,6 +88,8 @@ export default class TestItemPage extends Vue {
       // { key: "isAlwaysRun", label: "始终执行", width: "80px" },
     ]
 
+    stationInItemTest = "T2.0,T2.3,T2.45"
+
     deleteTestItemContent = '';
 
     deleteTestItemDialog = {
