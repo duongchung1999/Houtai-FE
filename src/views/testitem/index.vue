@@ -65,16 +65,16 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="上下限" width="180px">
+          <el-table-column label="上下限" width="160px">
             <template #default="{row}">
               {{ getTestItemLimitText(row.testItem.lowerValue, row.testItem.upperValue, row.testItem.no,
                 row.testItem.unit) }}
             </template>
           </el-table-column>
 
-          <el-table-column label="车站" align="center" width="100px">
+          <el-table-column label="车站" align="center" width="200px">
             <template #default="{row}">
-              {{ stationInItemTest }}
+              {{ row.whereUsed }}
             </template>
           </el-table-column>
 

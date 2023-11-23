@@ -88,8 +88,6 @@ export default class TestItemPage extends Vue {
       // { key: "isAlwaysRun", label: "始终执行", width: "80px" },
     ]
 
-    stationInItemTest = "T2.0,T2.3,T2.45"
-
     deleteTestItemContent = '';
 
     deleteTestItemDialog = {
@@ -211,7 +209,7 @@ export default class TestItemPage extends Vue {
         tempData[e.station.name].push(e.sortIndex)
       })
 
-      ret = '在站别'
+      // ret = '在站别'
 
       for (const stationName in tempData) {
         const sectionText = `${stationName}、`
@@ -220,7 +218,7 @@ export default class TestItemPage extends Vue {
       // 去掉ret最后一个字符
       ret = ret.substring(0, ret.length - 1)
 
-      ret += '使用'
+      // ret += '使用'
 
       tableRow.whereUsed = ret
     }

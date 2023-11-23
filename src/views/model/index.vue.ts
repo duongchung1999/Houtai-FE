@@ -157,12 +157,17 @@ export default class ModelPage extends Vue {
       readOnly: true,
       theme: 'vs-dark'
     })
+
+    // Get form config module
     await backstageConfigModule.get(BackstageConfigKeys.defaultTemplateProgramConfigForm)
     this.defaultConfigForm = JSON.parse(backstageConfigModule.configItem.value)
 
+    // Add value of config station in form config
     if (this.station.config) {
       this.initDefaultConfigForm(this.station.config)
     }
+
+    // Add value of config station in screen code config
     this.formParserKey = Date.now()
     const code = this.station?.config ? this.station.config : ''
     this.editor.setValue(code)
