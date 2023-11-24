@@ -259,7 +259,6 @@ export function deepClone(obj) {
  * 将对象转为ini配置字符串
  */
 export function Obj2INIString(obj: object): string {
-  console.log(obj)
   // true false 会转为 0 1
   const parserConfigValue = (value: any) => {
     if (typeof value === 'boolean') {
@@ -317,7 +316,11 @@ export function INIString2Obj(config: string): any {
     for (const option of configParser.options(section)) {
       let configValue = configParser.get(section, option)
       configValue = iniValue2FormValue(configValue)
-      configValue = configValue || null
+      if(configValue === false) {
+        configValue = configValue
+      } else {
+        configValue = configValue || null
+      }
       sectionConfig[option] = configValue
     }
     result[section] = sectionConfig

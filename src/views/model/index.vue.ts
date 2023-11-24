@@ -3,7 +3,7 @@ import Parser from '@/components/formGenerator/parser'
 import { Model } from '@/entity/model'
 import { Station } from '@/entity/station'
 import { backstageConfigModule, modelModule, stationModule, userModule } from '@/store/modules'
-import { INIString2Obj, parseTime } from '@/utils/index'
+import { INIString2Obj, Obj2INIString, parseTime } from '@/utils/index'
 import { debounce } from 'throttle-debounce'
 import Vue from 'vue'
 import * as MonacoEditor from 'monaco-editor'
@@ -79,6 +79,7 @@ export default class ModelPage extends Vue {
   editor: any = null
   defaultConfigForm: any = formConf
   toAddedStationName = ''
+  isFormConfigModel = true 
 
   editorOptions: any = {
     readOnly: true
@@ -150,6 +151,7 @@ export default class ModelPage extends Vue {
   }
 
   async onEditorMounted() {
+    this.isFormConfigModel = false;
     this.editor = MonacoEditor.editor.create(document.querySelector('.config-editor'), {
       value: '',
       language: 'ini',
@@ -161,7 +163,7 @@ export default class ModelPage extends Vue {
     // Get form config module
     await backstageConfigModule.get(BackstageConfigKeys.defaultTemplateProgramConfigForm)
     this.defaultConfigForm = JSON.parse(backstageConfigModule.configItem.value)
-
+    
     // Add value of config station in form config
     if (this.station.config) {
       this.initDefaultConfigForm(this.station.config)
@@ -171,6 +173,21 @@ export default class ModelPage extends Vue {
     this.formParserKey = Date.now()
     const code = this.station?.config ? this.station.config : ''
     this.editor.setValue(code)
+  }
+
+  async onEditorMountedModel() {    
+    this.isFormConfigModel = true;
+    this.editor = MonacoEditor.editor.create(document.querySelector('.config-editor'), {
+      value: '',
+      language: 'ini',
+      automaticLayout: true,
+      readOnly: true,
+      theme: 'vs-dark'
+    })
+
+    // Get form config module
+    await backstageConfigModule.get(BackstageConfigKeys.defaultTemplateProgramConfigForm)
+    this.defaultConfigForm = JSON.parse(backstageConfigModule.configItem.value)
   }
 
   /** 用ini配置字符串初始化默认配置表单 */
@@ -198,12 +215,45 @@ export default class ModelPage extends Vue {
 
   async saveConfig() {
     const parser = this.$refs.parser as any
-    parser.submitForm()
-    this.station.config = this.editor.getValue()
-    await stationModule.update({ modelId: this.model.id, station: this.station })
+      parser.submitForm()
+    if(this.isFormConfigModel) {
+       stationModule.stationList.forEach(async stationInList => {
+        if(!!stationInList.config) {
+          let objConfigModel = INIString2Obj(this.editor.getValue());
+          let objConfigStation = INIString2Obj(stationInList.config);
+          stationInList.config = Obj2INIString(this.mergeNestedObjects(objConfigModel, objConfigStation));
+        } else {
+          stationInList.config = this.editor.getValue();
+        }
+        await stationModule.update({ modelId: this.model.id, station: stationInList });
+      })
+    } else {
+      this.station.config = this.editor.getValue()
+      await stationModule.update({ modelId: this.model.id, station: this.station })
+    }
     this.$message.success('更新成功')
-
     this.drawerVisible = false
+  }
+
+   mergeNestedObjects(objA, objB) {
+    const result = {};
+    // Loop through keys of object B
+    Object.keys(objB).forEach(keyB => {
+      // Check if the key exists in object A
+      if (objA[keyB] !== null) {
+        // If it's an object, recursively merge the nested objects
+        if (typeof objB[keyB] === 'object' && objB[keyB] !== null) {
+          result[keyB] = this.mergeNestedObjects(objA[keyB], objB[keyB]);
+        } else {
+          // If it's a leaf node, use the value from object A
+          result[keyB] = objA[keyB];
+        }
+      } else {
+        // If the key doesn't exist in object A, use the value from object B
+        result[keyB] = objB[keyB];
+      }
+    });
+    return result;
   }
 
   initEditorValue = debounce(250, false, (editor, { formData, formConf }) => {
@@ -280,6 +330,13 @@ export default class ModelPage extends Vue {
         this.$message.success('删除成功')
       })
       .catch(e => console.info(e))
+  }
+
+  showConfigEditorModel() {
+    this.drawerVisible = true
+    this.$nextTick(() => {
+      this.onEditorMountedModel()
+    })
   }
 
   showConfigEditor() {

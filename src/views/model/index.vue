@@ -55,6 +55,10 @@
                       $t('设置密码') }}</el-dropdown-item>
                     <el-dropdown-item v-else icon="el-icon-view" @click.native="showDynamicCode">{{ $t('显示密码')
                     }}</el-dropdown-item>
+                    <!-- Show Config Model  -->
+                    <el-dropdown-item icon="el-icon-setting" @click.native="showConfigEditorModel()">
+                    {{ $t('编辑配置') }}</el-dropdown-item>
+
                     <el-dropdown-item divided icon="el-icon-delete" class="danger"
                       @click.native="deleteModeDialog = {visible: true, model: item}">
                       {{ $t('删除') }}</el-dropdown-item>
@@ -147,6 +151,7 @@
       </div>
     </el-dialog>
 
+    <!-- Form config Station -->
     <el-drawer class="config-form-drawer" :with-header="false" :visible.sync="drawerVisible" direction="rtl" size="100%"
       destroy-on-close>
       <el-row class="priview-row">
