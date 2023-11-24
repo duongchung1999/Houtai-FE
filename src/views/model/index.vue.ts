@@ -188,6 +188,8 @@ export default class ModelPage extends Vue {
     // Get form config module
     await backstageConfigModule.get(BackstageConfigKeys.defaultTemplateProgramConfigForm)
     this.defaultConfigForm = JSON.parse(backstageConfigModule.configItem.value)
+
+    this.formParserKey = Date.now()
   }
 
   /** 用ini配置字符串初始化默认配置表单 */
