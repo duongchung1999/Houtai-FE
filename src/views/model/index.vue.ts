@@ -251,6 +251,13 @@ export default class ModelPage extends Vue {
     } else {
       this.$message.error('发生错误')
     }
+    // Reset page
+    if (!this.model?.id) {
+      this.model = this.modelList[0]
+    }
+    if (this.model.id) {
+      await stationModule.getList(this.model.id)
+    }
     // Close Form
     this.drawerVisible = false
   }
