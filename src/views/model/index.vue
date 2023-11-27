@@ -3,6 +3,7 @@
     <!-- [\u4e00-\u9fa5]+ 搜索中文， 替换原本的内容+格式 $t('$&') -->
     <el-header height="60px">
       <el-row :gutter="26" style="width:100%">
+
         <el-col :span="12">
           <label class="radio-label" for="model-select">{{ $t('机型') }}</label>
           <el-select id="model-select" clearable v-model="model" value-key="name" filterable :placeholder="$t('请选择机型')">
@@ -15,6 +16,10 @@
         </el-col>
 
         <el-col :span="12">
+          <!-- Button Add config All  -->
+          <el-button type="success" class="left" @click="showConfigEditorAllModel()">{{ $t('配置所有站') }}</el-button>
+
+          <!-- Button Add Station of Model  -->
           <el-button type="success" class="right" @click="setStationModal({
             visible: true,
             title: $t('添加站别'),

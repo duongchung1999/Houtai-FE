@@ -79,7 +79,7 @@ export default class ModelPage extends Vue {
   editor: any = null
   defaultConfigForm: any = formConf
   toAddedStationName = ''
-  isFormConfigModel = true 
+  formConfigModel = ''
 
   editorOptions: any = {
     readOnly: true
@@ -151,7 +151,6 @@ export default class ModelPage extends Vue {
   }
 
   async onEditorMounted() {
-    this.isFormConfigModel = false;
     this.editor = MonacoEditor.editor.create(document.querySelector('.config-editor'), {
       value: '',
       language: 'ini',
@@ -176,7 +175,6 @@ export default class ModelPage extends Vue {
   }
 
   async onEditorMountedModel() {    
-    this.isFormConfigModel = true;
     this.editor = MonacoEditor.editor.create(document.querySelector('.config-editor'), {
       value: '',
       language: 'ini',
@@ -218,7 +216,7 @@ export default class ModelPage extends Vue {
   async saveConfig() {
     const parser = this.$refs.parser as any
       parser.submitForm()
-    if(this.isFormConfigModel) {
+    if(this.formConfigModel === "MODEL") {
        stationModule.stationList.forEach(async stationInList => {
         if(!!stationInList.config) {
           let objConfigModel = INIString2Obj(this.editor.getValue());
@@ -229,11 +227,31 @@ export default class ModelPage extends Vue {
         }
         await stationModule.update({ modelId: this.model.id, station: stationInList });
       })
+      this.$message.success('更新成功')
+    } else if (this.formConfigModel === "STATION") {
+      this.station.config = this.editor.getValue();
+      await stationModule.update({ modelId: this.model.id, station: this.station });
+      this.$message.success('更新成功')
+    } else if (this.formConfigModel === "ALLMODEL") {
+      modelModule.modelList.forEach(async modelInList => {
+        await stationModule.getList(modelInList.id);
+        let listStationOfModel = stationModule.stationList;
+        listStationOfModel.forEach(async stationInList => {
+          if(!!stationInList.config) {
+            let objConfigModel = INIString2Obj(this.editor.getValue());
+            let objConfigStation = INIString2Obj(stationInList.config);
+            stationInList.config = Obj2INIString(this.mergeNestedObjects(objConfigModel, objConfigStation));
+          } else {
+            stationInList.config = this.editor.getValue();
+          }
+          await stationModule.update({ modelId: modelInList.id, station: stationInList });
+        })
+      })
+      this.$message.success('更新成功')
     } else {
-      this.station.config = this.editor.getValue()
-      await stationModule.update({ modelId: this.model.id, station: this.station })
+      this.$message.error('发生错误')
     }
-    this.$message.success('更新成功')
+    // Close Form
     this.drawerVisible = false
   }
 
@@ -336,6 +354,15 @@ export default class ModelPage extends Vue {
 
   showConfigEditorModel() {
     this.drawerVisible = true
+    this.formConfigModel = "MODEL";
+    this.$nextTick(() => {
+      this.onEditorMountedModel()
+    })
+  }
+
+  showConfigEditorAllModel() {
+    this.drawerVisible = true
+    this.formConfigModel = "ALLMODEL";
     this.$nextTick(() => {
       this.onEditorMountedModel()
     })
@@ -343,6 +370,7 @@ export default class ModelPage extends Vue {
 
   showConfigEditor() {
     this.drawerVisible = true
+    this.formConfigModel = "STATION";
     this.$nextTick(() => {
       this.onEditorMounted()
     })
