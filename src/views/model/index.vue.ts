@@ -80,6 +80,55 @@ export default class ModelPage extends Vue {
   defaultConfigForm: any = formConf
   toAddedStationName = ''
   formConfigModel = ''
+  isShowBtnAddConfigAllModel = false
+
+  // modal select model config
+  isShowModalChooseModelConfig = false 
+  allocateModelKeyWord = ''
+  unallocateModelKeyWord = ''
+
+  userModels: Model[] = [];
+  chooseModelsConfig: Model[] = [];
+
+  get filteredUserModels() {
+    return this.userModels.filter(e => e.name.includes(this.allocateModelKeyWord))
+  }
+
+  get filteredUnalloateModels() {
+    let models = modelModule.modelList
+    models = models.filter(e => !this.userModels.some(um => um.name == e.name))
+    return models.filter(e => e.name.includes(this.unallocateModelKeyWord))
+  }
+
+  removeModel4User(m: Model) {
+    const index = this.userModels.findIndex(e => e.id == m.id)
+    if (index != -1) {
+      this.userModels.splice(index, 1)
+    }
+  }
+
+  addModel2User(m: Model) {
+    if (this.userModels.find(e => e.id == m.id)) {
+      this.$message.warning('已经分配过这个机型')
+      return
+    }
+    this.userModels.push(m)
+    // this.model = null
+  }
+
+  assign() {
+    this.chooseModelsConfig = [...this.userModels];
+    this.isShowModalChooseModelConfig = false;
+  }
+
+  clearAllModelConfig() {
+    this.userModels = [];
+  }
+
+  chooseAllModelConfig() {
+    this.userModels = [...modelModule.modelList];
+  }
+  // modal select model config
 
   editorOptions: any = {
     readOnly: true
@@ -227,39 +276,70 @@ export default class ModelPage extends Vue {
         }
         await stationModule.update({ modelId: this.model.id, station: stationInList });
       })
+      // Reset page
+      if (!this.model?.id) {
+        this.model = this.modelList[0]
+      }
+      if (this.model.id) {
+        await stationModule.getList(this.model.id)
+      }
+      // Close Form
+      this.drawerVisible = false
       this.$message.success('更新成功')
     } else if (this.formConfigModel === "STATION") {
       this.station.config = this.editor.getValue();
       await stationModule.update({ modelId: this.model.id, station: this.station });
+      // Reset page
+      if (!this.model?.id) {
+        this.model = this.modelList[0]
+      }
+      if (this.model.id) {
+        await stationModule.getList(this.model.id)
+      }
+      // Close Form
+      this.drawerVisible = false
       this.$message.success('更新成功')
     } else if (this.formConfigModel === "ALLMODEL") {
-      modelModule.modelList.forEach(async modelInList => {
-        await stationModule.getList(modelInList.id);
-        let listStationOfModel = stationModule.stationList;
-        listStationOfModel.forEach(async stationInList => {
-          if(!!stationInList.config) {
-            let objConfigModel = INIString2Obj(this.editor.getValue());
-            let objConfigStation = INIString2Obj(stationInList.config);
-            stationInList.config = Obj2INIString(this.mergeNestedObjects(objConfigModel, objConfigStation));
-          } else {
-            stationInList.config = this.editor.getValue();
-          }
-          await stationModule.update({ modelId: modelInList.id, station: stationInList });
+      if(this.chooseModelsConfig.length <= 0) {
+        this.$message.error('您还没有选择型号')
+      } else {
+        this.chooseModelsConfig.forEach(async modelInList => {
+          await stationModule.getList(modelInList.id);
+          let listStationOfModel = stationModule.stationList;
+          listStationOfModel.forEach(async stationInList => {
+            if(!!stationInList.config) {
+              let objConfigModel = INIString2Obj(this.editor.getValue());
+              let objConfigStation = INIString2Obj(stationInList.config);
+              stationInList.config = Obj2INIString(this.mergeNestedObjects(objConfigModel, objConfigStation));
+            } else {
+              stationInList.config = this.editor.getValue();
+            }
+            await stationModule.update({ modelId: modelInList.id, station: stationInList });
+          })
         })
-      })
-      this.$message.success('更新成功')
+        // Reset page
+        if (!this.model?.id) {
+          this.model = this.modelList[0]
+        }
+        if (this.model.id) {
+          await stationModule.getList(this.model.id)
+        }
+        // Close Form
+        this.drawerVisible = false
+        this.$message.success('更新成功')
+      }
     } else {
-      this.$message.error('发生错误')
+      // Reset page
+      if (!this.model?.id) {
+        this.model = this.modelList[0]
+      }
+      if (this.model.id) {
+        await stationModule.getList(this.model.id)
+      }
+      // Close Form
+      this.drawerVisible = false
+      this.$message.error('发生错误');
     }
-    // Reset page
-    if (!this.model?.id) {
-      this.model = this.modelList[0]
-    }
-    if (this.model.id) {
-      await stationModule.getList(this.model.id)
-    }
-    // Close Form
-    this.drawerVisible = false
   }
 
    mergeNestedObjects(objA, objB) {
@@ -483,5 +563,7 @@ export default class ModelPage extends Vue {
       }
       this.stationModal.visible = false
     }
+
+    this.isShowBtnAddConfigAllModel = (userModule.nowUser.permissionRole.level === 8)
   }
 }

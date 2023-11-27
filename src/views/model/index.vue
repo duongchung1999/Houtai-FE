@@ -17,7 +17,7 @@
 
         <el-col :span="12">
           <!-- Button Add config All  -->
-          <el-button type="success" class="left" @click="showConfigEditorAllModel()">{{ $t('配置所有站') }}</el-button>
+          <el-button v-if="isShowBtnAddConfigAllModel" type="success" class="left" @click="showConfigEditorAllModel()">{{ $t('配置所有站') }}</el-button>
 
           <!-- Button Add Station of Model  -->
           <el-button type="success" class="right" @click="setStationModal({
@@ -168,6 +168,7 @@
             <div class="action-bar">
               <div id="save-btn">
                 <el-button type="success" size="small" @click="saveConfig">{{ $t('保存配置') }}</el-button>
+                <el-button v-if="formConfigModel === 'ALLMODEL'" type="success" size="small" @click="isShowModalChooseModelConfig = true">{{ $t('选择型号添加配置') }}</el-button>
               </div>
               <el-button type="text" icon="el-icon-close" @click="drawerVisible = false"></el-button>
             </div>
@@ -181,6 +182,51 @@
         </el-col>
       </el-row>
     </el-drawer>
+
+    <!-- Modal Choose model config  -->
+    <el-dialog title="分配机型" :visible.sync="isShowModalChooseModelConfig" width="50%">
+      <el-row :gutter="20" class="allocate-box">
+        <el-col :span="12">
+          <div class="title-area">
+            <el-input v-model="allocateModelKeyWord" placeholder="搜索已经分配的机型" clearable>
+              <template slot="prepend">
+                <div class="body-font title">已分配</div>
+              </template>
+            </el-input>
+          </div>
+          <v-list>
+            <v-list-item v-for="(m, i) in filteredUserModels" :key="i" @click="removeModel4User(m)">
+              {{m.name}}
+              <i class="el-icon-remove"></i>
+            </v-list-item>
+          </v-list>
+        </el-col>
+        <el-col :span="12">
+          <div class="title-area">
+            <el-input v-model="unallocateModelKeyWord" placeholder="搜索没有分配的的机型" clearable>
+              <template slot="prepend">
+                <div class="body-font title">未分配</div>
+              </template>
+            </el-input>
+          </div>
+          <v-list>
+            <v-list-item v-for="(m, i) in filteredUnalloateModels" :key="i" @click="addModel2User(m)">
+              {{m.name}}
+              <i class="el-icon-circle-plus"></i>
+            </v-list-item>
+          </v-list>
+        </el-col>
+      </el-row>
+
+      <div>
+
+      </div>
+      <span slot="footer">
+        <el-button @click="clearAllModelConfig">全部清除</el-button>
+        <el-button @click="chooseAllModelConfig">选择全部</el-button>
+        <el-button type="primary" @click="assign">分配</el-button>
+      </span>
+    </el-dialog>
   </el-container>
 </template>
 <script src="./index.vue.ts" />

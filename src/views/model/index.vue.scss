@@ -179,3 +179,44 @@
   gap: 12px;
   padding-bottom: 12px;
 }
+
+// Modal select model config 
+.el-dialog {
+  .v-list {
+    height: 320px;
+  }
+  
+  .allocate-box {
+    .title-area {
+        gap: 10px;
+        margin-right: 8px;
+        padding-bottom: 12px;
+        display: flex;
+        align-items: center;
+        
+        .title {
+            font-weight: 600;
+        }
+    }
+  }
+  
+  .v-list-item {
+    margin-right: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    color: #303133;
+    justify-content: space-between;
+    border-radius: 0;
+  
+    border-bottom: 0.5px solid #d7dae2;
+  }
+  
+  .el-icon-circle-plus {
+    color: $green;
+  }
+  
+  .el-icon-remove {
+    color: $red;
+  }
+}
