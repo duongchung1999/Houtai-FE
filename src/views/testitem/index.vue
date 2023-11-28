@@ -72,7 +72,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="车站" align="center" width="200px">
+          <el-table-column label="测试站" align="center" width="200px">
             <template #default="{row}">
               {{ row.whereUsed }}
             </template>
