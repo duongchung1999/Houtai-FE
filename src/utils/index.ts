@@ -294,13 +294,7 @@ export function INIString2Obj(config: string): any {
   // ini的值转为正确的form item中的值
   const iniValue2FormValue = (v: any) => {
     v = v.toString()
-    if (v === '1') {
-      return true
-    } else if (v === '0') {
-      return false
-    } else {
-      return v
-    }
+    return v
   }
 
   // 从默认的setion设置key value

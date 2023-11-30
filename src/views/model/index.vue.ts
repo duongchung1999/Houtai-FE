@@ -12,6 +12,7 @@ import BackstageManagePage, { BackstageConfigKeys } from '../backstageManage/ind
 import { DynamicCode } from '@/entity/dynamicCode'
 import { DynamicCodeAPI } from '@/api/dynamicCodeAPI'
 import { getTranslationDate } from '@/multi-language/multi-language'
+import { PermissionRoleOptions } from '@/entity/permissionRole'
 
 formConf.fields = []
 function limitExpireDate(rule, value: Date, callback) {
@@ -564,6 +565,6 @@ export default class ModelPage extends Vue {
       this.stationModal.visible = false
     }
 
-    this.isShowBtnAddConfigAllModel = (userModule.nowUser.permissionRole.level === 8)
+    this.isShowBtnAddConfigAllModel = (userModule.nowUser.permissionRole.level === PermissionRoleOptions.ADMIN)
   }
 }

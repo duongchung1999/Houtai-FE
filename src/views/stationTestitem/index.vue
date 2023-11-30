@@ -138,7 +138,7 @@
               >
                 <div class="display-flex flex-1">
                   <span class="sort-index">{{ item.reallyIndex }}</span>
-                  <el-tooltip :content="item.cmd" placement="right" effect="dark" class="flex-1">
+                  <el-tooltip :content="item.cmd" placement="left" effect="dark" class="flex-1">
                     <div>{{ getTestItemName(item) }}</div>
                   </el-tooltip>
                 </div>
