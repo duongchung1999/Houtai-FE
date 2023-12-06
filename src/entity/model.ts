@@ -27,4 +27,7 @@ export class Model {
 
     /** 动态码 */
     dynamicCode?: DynamicCode = undefined;
+
+    /**  this config is used to template program config */
+    config?: string = undefined;
 }

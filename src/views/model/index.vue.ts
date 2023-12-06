@@ -237,6 +237,29 @@ export default class ModelPage extends Vue {
     await backstageConfigModule.get(BackstageConfigKeys.defaultTemplateProgramConfigForm)
     this.defaultConfigForm = JSON.parse(backstageConfigModule.configItem.value)
 
+    // Add value of config model in form config
+    if (this.model.config) {
+      this.initDefaultConfigForm(this.model.config)
+    }
+
+    this.formParserKey = Date.now()
+    const code = this.model?.config ? this.model.config : ''
+    this.editor.setValue(code)
+  }
+
+  async onEditorMountedAllModel() {    
+    this.editor = MonacoEditor.editor.create(document.querySelector('.config-editor'), {
+      value: '',
+      language: 'ini',
+      automaticLayout: true,
+      readOnly: true,
+      theme: 'vs-dark'
+    })
+
+    // Get form config module
+    await backstageConfigModule.get(BackstageConfigKeys.defaultTemplateProgramConfigForm)
+    this.defaultConfigForm = JSON.parse(backstageConfigModule.configItem.value)
+
     this.formParserKey = Date.now()
   }
 
@@ -267,6 +290,17 @@ export default class ModelPage extends Vue {
     const parser = this.$refs.parser as any
       parser.submitForm()
     if(this.formConfigModel === "MODEL") {
+      //Update config Model
+      if(!!this.model.config) {
+        let objConfigModel = INIString2Obj(this.editor.getValue());
+        let objConfigStation = INIString2Obj(this.model.config);
+        this.model.config = Obj2INIString(this.mergeNestedObjects(objConfigModel, objConfigStation));
+      } else {
+        this.model.config = this.editor.getValue();
+      }
+      await modelModule.update(this.model);
+
+      //Update config Station of Model
        stationModule.stationList.forEach(async stationInList => {
         if(!!stationInList.config) {
           let objConfigModel = INIString2Obj(this.editor.getValue());
@@ -305,6 +339,17 @@ export default class ModelPage extends Vue {
         this.$message.error('您还没有选择型号')
       } else {
         this.chooseModelsConfig.forEach(async modelInList => {
+          //Update config Model
+          if(!!modelInList.config) {
+            let objConfigModel = INIString2Obj(this.editor.getValue());
+            let objConfigStation = INIString2Obj(modelInList.config);
+            modelInList.config = Obj2INIString(this.mergeNestedObjects(objConfigModel, objConfigStation));
+          } else {
+            modelInList.config = this.editor.getValue();
+          }
+          await modelModule.update(modelInList);
+
+          //Update config Station
           await stationModule.getList(modelInList.id);
           let listStationOfModel = stationModule.stationList;
           listStationOfModel.forEach(async stationInList => {
@@ -452,7 +497,7 @@ export default class ModelPage extends Vue {
     this.drawerVisible = true
     this.formConfigModel = "ALLMODEL";
     this.$nextTick(() => {
-      this.onEditorMountedModel()
+      this.onEditorMountedAllModel()
     })
   }
 
