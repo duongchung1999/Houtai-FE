@@ -1,7 +1,12 @@
+import { PublicTestItemAPI } from '@/api/publicTestItem/publicTestItemAPI'
+import { PublicTestItemGroupAPI } from '@/api/publicTestItem/publicTestItemGroupAPI'
+import PublicTestItemForm from '@/components/PublicTestItemForm/index.vue'
 import { Model } from '@/entity/model'
 import { Station } from '@/entity/station'
 import { StationTestItem } from '@/entity/stationTestItem'
 import { TestItem } from '@/entity/testItem'
+import { PublicTestItem } from '@/entity/publicTestItem/publicTestItem'
+import { PublicTestItemGroup } from '@/entity/publicTestItem/publicTestItemGroup'
 import { modelModule, stationModule, stationTestItemModule, testItemModule, userModule } from '@/store/modules'
 import { objectIsEqual } from '@/utils/index'
 import { ElUploadInternalFileDetail } from 'element-ui/types/upload'
@@ -30,8 +35,42 @@ const defaultTestItemFormData = {
 
 Component.registerHooks(['beforeRouteLeave'])
 
-@Component({ name: 'stationTestitem', components: { Draggable } })
+@Component({ name: 'stationTestitem', components: { Draggable, PublicTestItemForm } })
 export default class StationTestItemPage extends Vue {
+  // component for edit test item
+  currentPublicTestItemGroupSummary: String = null;
+    get currentPublicTestItemGroup() {
+      const summary = this.currentPublicTestItemGroupSummary
+      if (!summary) return null
+      return this.publicTestItemGroups.find(e => e.summary == summary)
+    }
+
+    publicTestItems: PublicTestItem[] = [];
+    publicTestItemGroups: PublicTestItemGroup[] = [];
+    publicTestItemPanelVisible = false;
+    cmdInTestItem = null;
+
+    NoList = [
+      {
+        groupName: '机型Dll',
+        items: [
+          { value: 1, label: '1 比对定值' },
+          { value: 2, label: '2 比对范围' },
+          { value: 3, label: '3 不比对' }
+        ]
+      },
+      {
+        groupName: '公共Dll',
+        items: [
+          { value: 4, label: '4 比对定值' },
+          { value: 5, label: '5 比对范围' },
+          { value: 6, label: '6 不比对' }
+        ]
+      }
+    ]
+
+    defaultTestItemFormData = defaultTestItemFormData
+
     exportStationTestItemZipDialog = {
       visible: false,
       selectedStations: [] as Station[]
@@ -394,7 +433,6 @@ export default class StationTestItemPage extends Vue {
 
     @Watch('stationTestItemList', { immediate: true })
     parseStationTestItemList(items: StationTestItem[]) {
-      console.log('parser')
       const result: TestItem[] = []
       const copyItems = Array.from(items)
 
@@ -423,6 +461,16 @@ export default class StationTestItemPage extends Vue {
       next()
     }
 
+    @Ref('publicTestItemForm')
+    publicTestItemForm: PublicTestItemForm;
+
+    createCmd() {
+      const cmd = this.publicTestItemForm.testCmd
+      this.publicTestItemPanelVisible = false
+      const testItemFormModal = this.$refs['test-item-modal'] as any
+      testItemFormModal.formDataCopy.cmd = cmd
+    }
+
     async mounted() {
       await modelModule.getList(userModule.nowUser.id)
 
@@ -442,6 +490,8 @@ export default class StationTestItemPage extends Vue {
           this.lastStationTestItem = Array.from(this.stationTestItemDragList.list)
         }
       }
+
+      this.publicTestItemGroups = await PublicTestItemGroupAPI.getList()
     }
 
     async updateTestItem(testItem: TestItem) {
@@ -458,8 +508,40 @@ export default class StationTestItemPage extends Vue {
           copyFormData.no = 1
         }
 
-        this.testItemModal.formData = copyFormData
+        this.testItemModal.formData = copyFormData;
+        this.getSummaryFromCMD(copyFormData.cmd);
       }
+    }
+
+    async getSummaryFromCMD(cmd: string) {
+      if(cmd.includes("dllname")) {
+        const keyValuePairs = cmd.split('&');
+        const dllNamePair = keyValuePairs.find(pair => pair.startsWith('dllname='));
+        const dllNameInCMD = dllNamePair ? dllNamePair.split('=')[1] : null;
+        const testItemGroup = this.publicTestItemGroups.find(e => e.dllName == dllNameInCMD)
+        if(!!testItemGroup) {
+          this.currentPublicTestItemGroupSummary = (testItemGroup.summary) ? testItemGroup.summary : null;
+          this.publicTestItems = await PublicTestItemAPI.getList(testItemGroup.id);
+          this.cmdInTestItem = keyValuePairs;
+        } else {
+          this.currentPublicTestItemGroupSummary = null;
+          this.publicTestItems = [];
+          this.cmdInTestItem = null;
+        }
+      } else {
+        this.currentPublicTestItemGroupSummary = null;
+        this.publicTestItems = [];
+        this.cmdInTestItem = null;
+      }
+    }
+
+    /** 当选择通用测试项目组时 */
+    async onPTI_GroupSelected() {
+      const groupSummary = this.currentPublicTestItemGroupSummary
+      const group = this.publicTestItemGroups.find(e => e.summary == groupSummary)
+      if (!group) return
+
+      this.publicTestItems = await PublicTestItemAPI.getList(group.id)
     }
 
     getTestItemById(id: number) {

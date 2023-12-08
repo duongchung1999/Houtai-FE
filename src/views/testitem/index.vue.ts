@@ -271,8 +271,6 @@ export default class TestItemPage extends Vue {
 
     async getSummaryFromCMD(cmd: string) {
       if(cmd.includes("dllname")) {
-        console.log("cmd: ", cmd);
-        
         const keyValuePairs = cmd.split('&');
         const dllNamePair = keyValuePairs.find(pair => pair.startsWith('dllname='));
         const dllNameInCMD = dllNamePair ? dllNamePair.split('=')[1] : null;
