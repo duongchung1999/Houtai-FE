@@ -221,8 +221,8 @@
     <!-- 通用测试项目面板 -->
     <el-dialog title="通用测试项目" :visible.sync="publicTestItemPanelVisible" width="80%">
       
-      <label class="radio-label" for="model-select">DLL</label>
-      <el-select @change="onPTI_GroupSelected" id="model-select" v-model="currentPublicTestItemGroupSummary" value-key="summary" filterable placeholder="DLL">
+      <label class="radio-label padding-left-20" for="model-select">通用测试项目:</label>
+      <el-select @change="onPTI_GroupSelected" id="model-select" v-model="currentPublicTestItemGroupSummary" value-key="summary" filterable placeholder="通用测试项目">
         <el-option v-for="item in publicTestItemGroups" :key="item.id" :label="item.summary" :value="item.summary"></el-option>
       </el-select>
       <PublicTestItemForm

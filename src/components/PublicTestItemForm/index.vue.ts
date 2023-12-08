@@ -107,16 +107,20 @@ export default class PublicTestItemForm extends Vue {
     return "";
   }
 
+  getCurrentTestItemFromMethodNameInCMD() {
+    if(this.cmdOfTestItem) {
+      const methodPair = this.cmdOfTestItem.find(pair => pair.startsWith('method='));
+      const methodInCMD = methodPair ? methodPair.split('=')[1] : null;
+      this.currentTestItem = this.testItems.find(e => e.methodName == methodInCMD);
+    }
+  }
+
   @Watch('cmdOfTestItem')
   renderParam () {
-    const methodPair = this.cmdOfTestItem.find(pair => pair.startsWith('method='));
-    const methodInCMD = methodPair ? methodPair.split('=')[1] : null;
-    this.currentTestItem = this.testItems.find(e => e.methodName == methodInCMD);
+    this.getCurrentTestItemFromMethodNameInCMD();
   }
 
   mounted () {
-    const methodPair = this.cmdOfTestItem.find(pair => pair.startsWith('method='));
-    const methodInCMD = methodPair ? methodPair.split('=')[1] : null;
-    this.currentTestItem = this.testItems.find(e => e.methodName == methodInCMD);
+    this.getCurrentTestItemFromMethodNameInCMD();
   }
 }

@@ -499,7 +499,19 @@ export default class StationTestItemPage extends Vue {
       this.$message.success('更新成功')
     }
 
-    setTestItemModal(data: any) {
+    async setTestItemModal(data: any) {
+      // Check isChange save
+      if (this.isChanged) {
+        await this.$confirm('检测到未保存的内容，是否在离开页面前保存修改？', '确认信息', {
+          confirmButtonText: '保存',
+          cancelButtonText: '放弃修改'
+        }).then(async() => {
+          await this.save()
+        }).catch(async() => {
+          this.$message.warning('放弃修改')
+        })
+      }
+      //Set Data for Form
       this.testItemModal = { ...this.testItemModal, ...data }
       if (data.formData) {
         const copyFormData = { ...data.formData }
