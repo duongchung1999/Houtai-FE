@@ -220,14 +220,27 @@
 
     <!-- 通用测试项目面板 -->
     <el-dialog title="通用测试项目" :visible.sync="publicTestItemPanelVisible" width="80%">
-      <el-tabs v-model="currentPublicTestItemGroupSummary" type="card" tab-position="top"
+      
+      <label class="radio-label" for="model-select">DLL</label>
+      <el-select @change="onPTI_GroupSelected" id="model-select" v-model="currentPublicTestItemGroupSummary" value-key="summary" filterable placeholder="DLL">
+        <el-option v-for="item in publicTestItemGroups" :key="item.id" :label="item.summary" :value="item.summary"></el-option>
+      </el-select>
+      <PublicTestItemForm
+          ref="publicTestItemForm"
+          v-if="currentPublicTestItemGroup"
+          :group="currentPublicTestItemGroup"
+          :testItems="publicTestItems"
+          :cmdOfTestItem="cmdInTestItem"
+      />
+      
+      <!-- <el-tabs v-model="currentPublicTestItemGroupSummary" type="card" tab-position="top"
         @tab-click="onPTI_GroupSelected">
         <el-tab-pane v-for="item in publicTestItemGroups" :key="item.id" :label="item.summary" :name="item.summary">
         </el-tab-pane>
         <PublicTestItemForm ref="publicTestItemForm" v-if="currentPublicTestItemGroup" :group="currentPublicTestItemGroup"
           :testItems="publicTestItems" />
 
-      </el-tabs>
+      </el-tabs> -->
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="publicTestItemPanelVisible = false">取 消</el-button>

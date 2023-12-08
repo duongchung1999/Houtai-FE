@@ -49,9 +49,10 @@ export default class TestItemPage extends Vue {
       return this.publicTestItemGroups.find(e => e.summary == summary)
     }
 
-    publicTestItems: PublicTestItem[] = []
-    publicTestItemGroups: PublicTestItemGroup[] = []
+    publicTestItems: PublicTestItem[] = [];
+    publicTestItemGroups: PublicTestItemGroup[] = [];
     publicTestItemPanelVisible = false;
+    cmdInTestItem = null;
 
     NoList = [
       {
@@ -263,6 +264,32 @@ export default class TestItemPage extends Vue {
         }
 
         this.testItemModal.formData = copyFormData
+        this.getSummaryFromCMD(copyFormData.cmd);
+        
+      }
+    }
+
+    async getSummaryFromCMD(cmd: string) {
+      if(cmd.includes("dllname")) {
+        console.log("cmd: ", cmd);
+        
+        const keyValuePairs = cmd.split('&');
+        const dllNamePair = keyValuePairs.find(pair => pair.startsWith('dllname='));
+        const dllNameInCMD = dllNamePair ? dllNamePair.split('=')[1] : null;
+        const testItemGroup = this.publicTestItemGroups.find(e => e.dllName == dllNameInCMD)
+        if(!!testItemGroup) {
+          this.currentPublicTestItemGroupSummary = (testItemGroup.summary) ? testItemGroup.summary : null;
+          this.publicTestItems = await PublicTestItemAPI.getList(testItemGroup.id);
+          this.cmdInTestItem = keyValuePairs;
+        } else {
+          this.currentPublicTestItemGroupSummary = null;
+          this.publicTestItems = [];
+          this.cmdInTestItem = null;
+        }
+      } else {
+        this.currentPublicTestItemGroupSummary = null;
+        this.publicTestItems = [];
+        this.cmdInTestItem = null;
       }
     }
 

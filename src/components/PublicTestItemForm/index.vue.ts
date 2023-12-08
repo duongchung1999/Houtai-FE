@@ -25,6 +25,7 @@ class Params {
 export default class PublicTestItemForm extends Vue {
   @Prop() group: PublicTestItemGroup;
   @Prop() testItems: PublicTestItem[];
+  @Prop() cmdOfTestItem: any;
 
   /** 当前选中的测试项目 */
   currentTestItem: PublicTestItem = new PublicTestItem();
@@ -34,6 +35,13 @@ export default class PublicTestItemForm extends Vue {
 
   @Watch('currentTestItem')
   flushCurrentParams() {
+    let arrParamInCMD = [];
+    if(this.getValueByParam(this.cmdOfTestItem, "method") === this.currentTestItem.methodName) {
+       arrParamInCMD = [...this.cmdOfTestItem];
+    } else {
+       arrParamInCMD = [];
+    }
+    
     const result: Params[] = []
     if (!this.currentTestItem) {
       this.currentParams = []
@@ -46,7 +54,7 @@ export default class PublicTestItemForm extends Vue {
         name: p.name,
         type: p.type,
         options: p.options,
-        value: ''
+        value: this.getValueByParam(arrParamInCMD, p.name)
       })
     })
 
@@ -73,6 +81,7 @@ export default class PublicTestItemForm extends Vue {
     for (const p of this.currentParams) {
       result += `&${p.name}=${p.value}`
     }
+    
     return result
   }
 
@@ -82,5 +91,32 @@ export default class PublicTestItemForm extends Vue {
     if (!options) return result
     result = options.replace(' ', '').split(',')
     return result
+  }
+
+  getValueByParam(arr, param) {
+    if(!!arr) {
+      const result = arr.reduce((acc, current) => {
+          const [key, value] = current.split("=");
+          if (key === param) {
+              acc = value;
+          }
+          return acc;
+      }, "");
+      return result;
+    }
+    return "";
+  }
+
+  @Watch('cmdOfTestItem')
+  renderParam () {
+    const methodPair = this.cmdOfTestItem.find(pair => pair.startsWith('method='));
+    const methodInCMD = methodPair ? methodPair.split('=')[1] : null;
+    this.currentTestItem = this.testItems.find(e => e.methodName == methodInCMD);
+  }
+
+  mounted () {
+    const methodPair = this.cmdOfTestItem.find(pair => pair.startsWith('method='));
+    const methodInCMD = methodPair ? methodPair.split('=')[1] : null;
+    this.currentTestItem = this.testItems.find(e => e.methodName == methodInCMD);
   }
 }
