@@ -24,4 +24,7 @@ export class PublicTestItemParam {
   // TODO 为了适配不同形式的可选项，改成字符串，前端解析
   /** 可选项 */
   options?: string
+
+  //默认值
+  defaultValue?: string
 }

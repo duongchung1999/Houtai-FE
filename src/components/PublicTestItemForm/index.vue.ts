@@ -54,7 +54,7 @@ export default class PublicTestItemForm extends Vue {
         name: p.name,
         type: p.type,
         options: p.options,
-        value: this.getValueByParam(arrParamInCMD, p.name)
+        value: this.getValueByParam(arrParamInCMD, p.name) || p.defaultValue || ''
       })
     })
 

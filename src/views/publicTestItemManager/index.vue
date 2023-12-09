@@ -121,6 +121,8 @@ class XmlNoteDoc_MemberParam {
     name: string
     /** 可选项(数组字符串) */
     options: string
+    // 默认值
+    default_value: string
   };
 
   /** 概述 */
@@ -293,7 +295,8 @@ export default class PublicTestItemManagePage extends Vue {
         summary: p._text,
         name: p._attributes?.name,
         type: pTypes[i],
-        options: p._attributes?.options
+        options: p._attributes?.options,
+        defaultValue: p._attributes?.default_value ? p._attributes?.default_value : null
       }
 
       result.push(pTestItemParam)
