@@ -301,7 +301,7 @@ export default class ModelPage extends Vue {
       await modelModule.update(this.model);
 
       //Update config Station of Model
-       stationModule.stationList.forEach(async stationInList => {
+      for (const stationInList of stationModule.stationList) {
         if(!!stationInList.config) {
           let objConfigModel = INIString2Obj(this.editor.getValue());
           let objConfigStation = INIString2Obj(stationInList.config);
@@ -310,7 +310,7 @@ export default class ModelPage extends Vue {
           stationInList.config = this.editor.getValue();
         }
         await stationModule.update({ modelId: this.model.id, station: stationInList });
-      })
+      }
       // Reset page
       if (!this.model?.id) {
         this.model = this.modelList[0]
@@ -335,12 +335,12 @@ export default class ModelPage extends Vue {
       this.drawerVisible = false
       this.$message.success('更新成功')
     } else if (this.formConfigModel === "ALLMODEL") {
-      if(this.chooseModelsConfig.length <= 0) {
-        this.$message.error('您还没有选择型号')
+      if (this.chooseModelsConfig.length <= 0) {
+        this.$message.error('您还没有选择型号');
       } else {
-        this.chooseModelsConfig.forEach(async modelInList => {
-          //Update config Model
-          if(!!modelInList.config) {
+        for (const modelInList of this.chooseModelsConfig) {
+          // Update config Model
+          if (!!modelInList.config) {
             let objConfigModel = INIString2Obj(this.editor.getValue());
             let objConfigStation = INIString2Obj(modelInList.config);
             modelInList.config = Obj2INIString(this.mergeNestedObjects(objConfigModel, objConfigStation));
@@ -348,12 +348,12 @@ export default class ModelPage extends Vue {
             modelInList.config = this.editor.getValue();
           }
           await modelModule.update(modelInList);
-
-          //Update config Station
+    
+          // Update config Station
           await stationModule.getList(modelInList.id);
           let listStationOfModel = stationModule.stationList;
-          listStationOfModel.forEach(async stationInList => {
-            if(!!stationInList.config) {
+          for (const stationInList of listStationOfModel) {
+            if (!!stationInList.config) {
               let objConfigModel = INIString2Obj(this.editor.getValue());
               let objConfigStation = INIString2Obj(stationInList.config);
               stationInList.config = Obj2INIString(this.mergeNestedObjects(objConfigModel, objConfigStation));
@@ -361,18 +361,20 @@ export default class ModelPage extends Vue {
               stationInList.config = this.editor.getValue();
             }
             await stationModule.update({ modelId: modelInList.id, station: stationInList });
-          })
-        })
+          }
+        }
+    
         // Reset page
         if (!this.model?.id) {
-          this.model = this.modelList[0]
+          this.model = this.modelList[0];
         }
         if (this.model.id) {
-          await stationModule.getList(this.model.id)
+          await stationModule.getList(this.model.id);
         }
+    
         // Close Form
-        this.drawerVisible = false
-        this.$message.success('更新成功')
+        this.drawerVisible = false;
+        this.$message.success('更新成功');
       }
     } else {
       // Reset page
