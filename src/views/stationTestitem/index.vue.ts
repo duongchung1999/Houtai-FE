@@ -482,7 +482,11 @@ export default class StationTestItemPage extends Vue {
 
       this.testItemModal.onSubmit = async(formData: any) => {
         const testItem = new TestItem(formData)
+        if (this.testItemModal.addMode) {
+          await this.addTestItem(testItem)
+        } else {
           await this.updateTestItem(testItem)
+        }
         this.testItemModal.visible = false
 
         if (this.model?.id && this.station?.id) {
@@ -497,6 +501,11 @@ export default class StationTestItemPage extends Vue {
     async updateTestItem(testItem: TestItem) {
       await testItemModule.update({ modelId: this.model.id, testItem })
       this.$message.success('更新成功')
+    }
+
+    async addTestItem(testItem: TestItem) {
+      await testItemModule.add({ modelId: this.model.id, testItem })
+      this.$message.success('添加成功')
     }
 
     async setTestItemModal(data: any) {

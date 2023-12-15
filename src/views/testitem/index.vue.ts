@@ -299,6 +299,12 @@ export default class TestItemPage extends Vue {
       return this.testItemList.find(e => e.id == id)
     }
 
+    getTestItemCopyById(id: number) {
+      let itemCopy = {...this.testItemList.find(e => e.id == id)}
+      if ('id' in itemCopy) delete itemCopy.id;
+      return itemCopy;
+    }
+
     async updateTestItemIsHidden(testItemId: number, isHidden: boolean) {
       const testItem = this.getTestItemById(testItemId)
       testItem.isHidden = isHidden

@@ -115,8 +115,19 @@
           </el-table-column>
 
           <!-- 操作栏 -->
-          <el-table-column fixed="right" align="center" label="操作" width="200">
+          <el-table-column fixed="right" align="center" label="操作" width="300">
             <template #default="{row}">
+              <el-button plain size="mini" icon="" class="m-r-10px" @click="
+                setTestItemModal({
+                  visible: true,
+                  addMode: true,
+                  title: '添加测试项目',
+                  formData: getTestItemCopyById(row.id)
+                })
+              ">
+                复制
+              </el-button>
+
               <el-button plain size="mini" icon="el-icon-edit" class="m-r-10px" @click="
                 setTestItemModal({
                   visible: true,

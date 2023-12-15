@@ -8,6 +8,16 @@
           <el-select id="model-select" v-model="model" value-key="name" filterable placeholder="请选择机型">
             <el-option v-for="item in modelList" :key="item.id" :label="item.name" :value="item"></el-option>
           </el-select>
+          <el-button type="success" class="m-l-10px" @click="
+            setTestItemModal({
+              visible: true,
+              title: '添加测试项目',
+              addMode: true,
+              formData: defaultTestItemFormData
+            })
+          ">
+            添加测试项目
+          </el-button>
         </el-col>
         <el-col :span="12" class="right-action-bar">
           <div>
@@ -30,6 +40,7 @@
 
     <el-main class="content">
       <el-row class="list-row">
+        <!-- Column Test Item Left -->
         <el-col :span="12">
           <div class="list-header">
             <label for="" class="radio-label">测试项目</label>
@@ -77,6 +88,8 @@
             </draggable>
           </el-scrollbar>
         </el-col>
+
+        <!-- Column Test Item Right  -->
         <el-col :span="12">
           <div class="list-header">
             <label for="" class="radio-label">站别测试项目</label>
