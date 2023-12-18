@@ -82,6 +82,18 @@
                     隐藏的
                   </el-tag>
                 </div>
+
+                <!-- Copy test item  -->
+                <el-button plain size="mini" icon="" class="m-r-10px" @click="
+                  setTestItemModal({
+                    visible: true,
+                    addMode: true,
+                    title: $t('添加测试项目'),
+                    formData: getTestItemCopyById(item.id)
+                  })
+                ">
+                  {{ $t('复制') }}
+                </el-button>
                 <!-- Edit item in List Test item-->
                 <el-button plain size="mini" icon="el-icon-edit" class="m-r-10px" @click="
                     setTestItemModal({

@@ -568,4 +568,10 @@ export default class StationTestItemPage extends Vue {
     getTestItemById(id: number) {
       return this.testItemList.find(e => e.id == id)
     }
+
+    getTestItemCopyById(id: number) {
+      let itemCopy = {...this.testItemList.find(e => e.id == id)}
+      if ('id' in itemCopy) delete itemCopy.id;
+      return itemCopy;
+    }
 }
