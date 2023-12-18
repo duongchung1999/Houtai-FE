@@ -82,6 +82,18 @@
                     隐藏的
                   </el-tag>
                 </div>
+                <!-- Edit item in List Test item-->
+                <el-button plain size="mini" icon="el-icon-edit" class="m-r-10px" @click="
+                    setTestItemModal({
+                      visible: true,
+                      addMode: false,
+                      title: '编辑测试项目',
+                      formData: getTestItemById(item.id)
+                    })
+                  ">
+                  编辑
+                </el-button>
+
                 <el-button class="move-btn" type="text" icon="el-icon-rank"></el-button>
               </v-list-item>
               <el-empty description="无测试项目" v-if="!testItemList.length" :image-size="200"></el-empty>
@@ -163,7 +175,7 @@
                     隐藏的
                   </el-tag>
                 </div>
-
+                <!-- Edit test item in station  -->
                 <el-button plain size="mini" icon="el-icon-edit" class="m-r-10px" @click="
                     setTestItemModal({
                       visible: true,
