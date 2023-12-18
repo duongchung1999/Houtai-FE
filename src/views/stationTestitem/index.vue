@@ -11,12 +11,12 @@
           <el-button type="success" class="m-l-10px" @click="
             setTestItemModal({
               visible: true,
-              title: '添加测试项目',
+              title: $t('添加测试项目'),
               addMode: true,
               formData: defaultTestItemFormData
             })
           ">
-            添加测试项目
+            {{ $t('添加测试项目') }}
           </el-button>
         </el-col>
         <el-col :span="12" class="right-action-bar">
@@ -32,7 +32,7 @@
             type="primary"
             @click="exportStationTestItemZipDialog.visible = true"
           >
-            导出站别测试项目压缩包
+          {{ $t('导出站别测试项目压缩包') }}
           </el-button>
         </el-col>
       </el-row>
@@ -107,11 +107,11 @@
                 :limit="1"
                 :file-list="fileList"
               >
-                <el-button class="import-btn" size="small">导入</el-button>
+                <el-button class="import-btn" size="small">{{ $t('导入') }}</el-button>
               </el-upload>
 
               <el-tooltip content="将此站的测试项目导出为txt" effect="dark">
-                <el-button size="small" @click="exportTextItem2File">导出</el-button>
+                <el-button size="small" @click="exportTextItem2File">{{ $t('导出') }}</el-button>
               </el-tooltip>
 
               <el-badge :is-dot="isChanged" type="danger">
@@ -123,7 +123,7 @@
                   :disabled="!isChanged"
                   :loading="isLoading"
                 >
-                  保存更改
+                {{ $t('保存更改') }}
                 </el-button>
               </el-badge>
             </div>
@@ -198,7 +198,7 @@
 
     <el-dialog
       class="export-STI-diolag"
-      title="选择要导出的站别"
+      :title="$t('选择要导出的站别')"
       :visible.sync="exportStationTestItemZipDialog.visible"
       width="50%"
     >
@@ -210,8 +210,8 @@
         </el-checkbox-group>
       </div>
       <span slot="footer">
-        <el-button @click="exportStationTestItemZipDialog = false">取消</el-button>
-        <el-button type="primary" @click="exportStationTestItemZip()">导出</el-button>
+        <el-button @click="exportStationTestItemZipDialog = false">{{ $t('取消') }}</el-button>
+        <el-button type="primary" @click="exportStationTestItemZip()">{{ $t('导出') }}</el-button>
       </span>
     </el-dialog>
 
@@ -304,8 +304,8 @@
       </el-tabs> -->
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="publicTestItemPanelVisible = false">取 消</el-button>
-        <el-button type="primary" @click="createCmd">确定</el-button>
+        <el-button @click="publicTestItemPanelVisible = false">{{ $t('取消') }}</el-button>
+        <el-button type="primary" @click="createCmd">{{ $t('确定') }}</el-button>
       </span>
     </el-dialog>
   </div>

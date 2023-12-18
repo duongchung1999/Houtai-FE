@@ -240,18 +240,18 @@ export default class TestItemPage extends Vue {
 
       removeEle(this.tableData, v => v.id == toDeleteTestItem.id)
 
-      this.$message.success('删除成功')
+      this.$message.success(this.$t('删除成功'))
       this.deleteTestItemDialog.visible = false
     }
 
     async updateTestItem(testItem: TestItem) {
       await testItemModule.update({ modelId: this.model.id, testItem })
-      this.$message.success('更新成功')
+      this.$message.success(this.$t('更新成功'))
     }
 
     async addTestItem(testItem: TestItem) {
       await testItemModule.add({ modelId: this.model.id, testItem })
-      this.$message.success('添加成功')
+      this.$message.success(this.$t('添加成功'))
     }
 
     setTestItemModal(data: any) {
@@ -309,14 +309,14 @@ export default class TestItemPage extends Vue {
       const testItem = this.getTestItemById(testItemId)
       testItem.isHidden = isHidden
       await testItemModule.update({ modelId: this.model.id, testItem: testItem })
-      this.$message.success('保存成功')
+      this.$message.success(this.$t('保存成功'))
     }
 
     async updateTestItemIsAlwaysRun(testItemId: number, isAlwaysRun: boolean) {
       const testItem = this.getTestItemById(testItemId)
       testItem.isAlwaysRun = isAlwaysRun
       await testItemModule.update({ modelId: this.model.id, testItem: testItem })
-      this.$message.success('保存成功')
+      this.$message.success(this.$t('保存成功'))
     }
 
     @Ref('publicTestItemForm')

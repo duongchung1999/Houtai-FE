@@ -176,7 +176,7 @@ export default class BackstageManagePage extends Vue {
     this.currentConfigItem.value = JSON.stringify(this.formConf)
     const requestData = new BackstageConfig(this.currentConfigItem)
     await backstageConfigModule.update(requestData)
-    this.$message.success('保存成功')
+    this.$message.success(this.$t('保存成功'))
     this.drawerVisible = false
   }
 

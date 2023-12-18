@@ -17,7 +17,7 @@
 
         <el-col :span="12">
           <!-- Button Add config All  -->
-          <el-button v-if="isShowBtnAddConfigAllModel" type="success" class="left" @click="showConfigEditorAllModel()">{{ $t('配置所有站') }}</el-button>
+          <el-button v-if="isShowBtnAddConfigAllModel" type="success" class="left" @click="showConfigEditorAllModel()">{{ $t('配置所有机型') }}</el-button>
 
           <!-- Button Add Station of Model  -->
           <el-button type="success" class="right" @click="setStationModal({

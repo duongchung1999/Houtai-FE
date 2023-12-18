@@ -139,7 +139,7 @@ export default class PNConfigPage extends Vue {
 
     /** 删除料号配置 */
     async deletePNConfig(id: number) {
-      this.$confirm('是否删除', '删除配置')
+      this.$confirm(this.$t('是否删除'), this.$t('删除配置'))
         .then(async _ => {
           await PartNoAPI.deletePartNoConfig(id)
           this.PNConfigList = await PartNoAPI.getPartNoConfigList(this.model.id)
@@ -147,7 +147,7 @@ export default class PNConfigPage extends Vue {
             this.PNList = []
             this.currentPNConfig = new PartNoConfig()
           }
-          this.$message.success('删除成功')
+          this.$message.success(this.$t('删除成功'))
         })
         .catch(e => console.info(e))
     }
@@ -200,7 +200,7 @@ export default class PNConfigPage extends Vue {
       await PartNoAPI.updatePartNoConfig(this.currentPNConfig)
       this.PNConfigList = await PartNoAPI.getPartNoConfigList(this.model.id)
       this.onSelectConfig(this.currentPNConfig)
-      this.$message.success('保存成功')
+      this.$message.success(this.$t('保存成功'))
     }
 
     async savePnConfigTemplate() {
@@ -208,7 +208,7 @@ export default class PNConfigPage extends Vue {
       if (!this.checkIniFormat(configTemplate)) return
       this.model.pnConfigTemplate = configTemplate
       await ModelAPI.update(this.model)
-      this.$message.success('保存成功')
+      this.$message.success(this.$t('保存成功'))
       this.PNConfTemplate.visible = false
     }
 

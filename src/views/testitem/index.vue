@@ -14,12 +14,12 @@
           <el-button type="success" class="m-l-10px" @click="
             setTestItemModal({
               visible: true,
-              title: '添加测试项目',
+              title: $t('添加测试项目'),
               addMode: true,
               formData: defaultTestItemFormData
             })
           ">
-            添加测试项目
+            {{ $t('添加测试项目') }}
           </el-button>
         </el-col>
         <el-col :span="12">
@@ -121,11 +121,11 @@
                 setTestItemModal({
                   visible: true,
                   addMode: true,
-                  title: '添加测试项目',
+                  title: $t('添加测试项目'),
                   formData: getTestItemCopyById(row.id)
                 })
               ">
-                复制
+                {{ $t('复制') }}
               </el-button>
 
               <el-button plain size="mini" icon="el-icon-edit" class="m-r-10px" @click="
@@ -136,12 +136,12 @@
                   formData: getTestItemById(row.id)
                 })
               ">
-                编辑
+                {{ $t('编辑') }}
               </el-button>
 
               <el-button slot="reference" type="danger" size="mini" icon="el-icon-delete"
                 @click="showDeleteTestItemDialog(row)">
-                删除
+                {{ $t('删除') }}
               </el-button>
             </template>
           </el-table-column>
@@ -214,23 +214,23 @@
     </v-modal-box>
 
     <!-- 删除测试项目 -->
-    <el-dialog class="delete-test-item-dialog" title="删除测试项目" :visible.sync="deleteTestItemDialog.visible" width="30%"
+    <el-dialog class="delete-test-item-dialog" :title="$t('删除测试项目')" :visible.sync="deleteTestItemDialog.visible" width="30%"
       destroy-on-close>
-      <h4 v-show="!deleteTestItemContent">你确定要删除吗？</h4>
+      <h4 v-show="!deleteTestItemContent">{{ $t('你确定要删除吗？') }}</h4>
       <el-alert title="将一并从以下站别中删除" type="warning" show-icon :closable="false" v-show="deleteTestItemContent">
       </el-alert>
       <div v-show="deleteTestItemContent"></div>
       <ul class="where-used" v-html="deleteTestItemContent"></ul>
       <span slot="footer">
         <el-button @click="deleteTestItemDialog.visible = false">
-          取消
+          {{ $t('取消') }}
         </el-button>
-        <el-button type="primary" @click="deleteTestItem">确定</el-button>
+        <el-button type="primary" @click="deleteTestItem">{{ $t('确定') }}</el-button>
       </span>
     </el-dialog>
 
     <!-- 通用测试项目面板 -->
-    <el-dialog title="通用测试项目" :visible.sync="publicTestItemPanelVisible" width="80%">
+    <el-dialog :title="$t('通用测试项目')" :visible.sync="publicTestItemPanelVisible" width="80%">
       
       <label class="radio-label padding-left-20" for="model-select">通用测试项目:</label>
       <el-select @change="onPTI_GroupSelected" id="model-select" v-model="currentPublicTestItemGroupSummary" value-key="summary" filterable placeholder="通用测试项目">
@@ -254,8 +254,8 @@
       </el-tabs> -->
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="publicTestItemPanelVisible = false">取 消</el-button>
-        <el-button type="primary" @click="createCmd">确定</el-button>
+        <el-button @click="publicTestItemPanelVisible = false">{{ $t('取消') }}</el-button>
+        <el-button type="primary" @click="createCmd">{{ $t('确定') }}</el-button>
       </span>
     </el-dialog>
 

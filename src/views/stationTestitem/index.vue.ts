@@ -260,7 +260,7 @@ export default class StationTestItemPage extends Vue {
       })
       try {
         await stationTestItemModule.distribute({ stationId, newItems: requestData })
-        this.$message.success('保存成功')
+        this.$message.success(this.$t('保存成功'))
         this.lastStationTestItem = Array.from(this.stationTestItemDragList.list)
       } catch (error) {
         console.info(error)
@@ -362,7 +362,7 @@ export default class StationTestItemPage extends Vue {
         txtFileStationTestItem.push(tempStationTestItem)
       })
 
-      this.$confirm('此操作会清空之前分配的测试项目，相同名称的测试项目将会被覆盖', { type: 'warning' })
+      this.$confirm(this.$t('此操作会清空之前分配的测试项目，相同名称的测试项目将会被覆盖'), { type: 'warning' })
         .then(async(_) => {
           // 查找/添加 站别
           const stationName = fileDetail.name.replace('.txt', '')
@@ -401,7 +401,7 @@ export default class StationTestItemPage extends Vue {
 
             this.stationTestItemList.push(fileTestItem)
           }
-          this.$message.success('导入成功，点击保存后应用更改')
+          this.$message.success(this.$t('导入成功，点击保存后应用更改'))
           this.lastStationTestItem = []
         })
         .catch((e) => console.info(e))
@@ -450,13 +450,13 @@ export default class StationTestItemPage extends Vue {
         next()
         return
       }
-      await this.$confirm('检测到未保存的内容，是否在离开页面前保存修改？', '确认信息', {
-        confirmButtonText: '保存',
-        cancelButtonText: '放弃修改'
+      await this.$confirm(this.$t('检测到未保存的内容，是否在离开页面前保存修改？'), this.$t('确认信息'), {
+        confirmButtonText: this.$t('保存'),
+        cancelButtonText: this.$t('放弃修改')
       }).then(async() => {
         await this.save()
       }).catch(async() => {
-        this.$message.warning('放弃修改')
+        this.$message.warning(this.$t('放弃修改'))
       })
       next()
     }
@@ -500,24 +500,24 @@ export default class StationTestItemPage extends Vue {
 
     async updateTestItem(testItem: TestItem) {
       await testItemModule.update({ modelId: this.model.id, testItem })
-      this.$message.success('更新成功')
+      this.$message.success(this.$t('更新成功'))
     }
 
     async addTestItem(testItem: TestItem) {
       await testItemModule.add({ modelId: this.model.id, testItem })
-      this.$message.success('添加成功')
+      this.$message.success(this.$t('添加成功'))
     }
 
     async setTestItemModal(data: any) {
       // Check isChange save
       if (this.isChanged) {
-        await this.$confirm('检测到未保存的内容，是否在离开页面前保存修改？', '确认信息', {
-          confirmButtonText: '保存',
-          cancelButtonText: '放弃修改'
+        await this.$confirm(this.$t('检测到未保存的内容，是否在离开页面前保存修改？'), this.$t('确认信息'), {
+          confirmButtonText: this.$t('保存'),
+          cancelButtonText: this.$t('放弃修改')
         }).then(async() => {
           await this.save()
         }).catch(async() => {
-          this.$message.warning('放弃修改')
+          this.$message.warning(this.$t('放弃修改'))
         })
       }
       //Set Data for Form

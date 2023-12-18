@@ -8,7 +8,7 @@
             <el-option v-for="item in modelList" :key="item.id" :label="item.name" :value="item"></el-option>
           </el-select>
           <el-button type="primary" style="margin-left:auto" @click="PNConfTemplate.visible = true">
-            编辑配置模板
+            {{ $t('编辑配置模板') }}
           </el-button>
         </el-col>
         <el-col :span="12"></el-col>
@@ -25,7 +25,7 @@
             </el-select>
 
             <el-button type="primary" style="margin-left: auto;" @click="PNConfigPanel.visible = true">
-              配置列表
+              {{ $t('配置列表') }}
             </el-button>
           </div>
           <div class="PNConfigBox">
@@ -37,7 +37,7 @@
             <label for="">已分配的料号列表</label>
 
             <el-button type="success" :disabled="!currentPNConfig.id" @click="addPartNoDialog.visible = true">
-              添加料号
+              {{ $t('添加料号') }}
             </el-button>
           </div>
           <v-list id="pn-list">
@@ -51,16 +51,16 @@
     </el-main>
 
     <!-- 添加料号，支持一次性添加多个料号 -->
-    <el-dialog title="添加料号" :visible.sync="addPartNoDialog.visible" width="50%">
+    <el-dialog :title="$t('添加料号')" :visible.sync="addPartNoDialog.visible" width="50%">
       <el-input
         type="textarea"
         :rows="5"
-        placeholder="请输入料号，回车分割多个料号"
+        :placeholder="$t('请输入料号，回车分割多个料号')"
         v-model="addPartNoDialog.inputValue"
       />
       <span slot="footer">
-        <el-button @click="addPartNoDialog.visible = false">取消</el-button>
-        <el-button type="primary" @click="addPartNo">添加</el-button>
+        <el-button @click="addPartNoDialog.visible = false">{{$t('取消')}}</el-button>
+        <el-button type="primary" @click="addPartNo">{{$t('添加')}}</el-button>
       </span>
     </el-dialog>
 
@@ -85,7 +85,7 @@
               placeholder="搜索配置"
               clearable
             ></el-input>
-            <el-button type="success" size="small" style="margin-left: auto;" @click="addPNConfig">添加配置</el-button>
+            <el-button type="success" size="small" style="margin-left: auto;" @click="addPNConfig">{{ $t('添加配置') }}</el-button>
           </div>
           <v-list id="PNConfig-list">
             <v-list-item
@@ -110,7 +110,7 @@
           <div class="col-title">
             <label>当前配置</label>
             <el-button type="success" size="small" style="margin-left: auto" @click="updatePNConfig">
-              保存配置
+              {{ $t(' 保存配置') }}
             </el-button>
           </div>
           <div class="pn-config-title-input">
@@ -139,11 +139,11 @@
           <div class="template-config-editor" style="height: 100vh;"></div>
         </el-col>
         <el-col :span="12">
-          <el-button type="success" style="small" @click="savePnConfigTemplate">保存</el-button>
+          <el-button type="success" style="small" @click="savePnConfigTemplate">{{ $t('保存') }}</el-button>
           <ul>
             <li><i class="el-icon-question"></i></li>
-            <li>1. 模板只支持 Ini 配置</li>
-            <li>2. 料号配置中的每个节(section)和键(key)与模板中的节和键一致</li>
+            <li>{{$t('1. 模板只支持 Ini 配置')}}</li>
+            <li>{{$t('2. 料号配置中的每个节(section)和键(key)与模板中的节和键一致')}}</li>
           </ul>
         </el-col>
       </el-row>
