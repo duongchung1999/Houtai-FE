@@ -259,7 +259,7 @@ export default class TestItemPage extends Vue {
       if (data.formData) {
         const copyFormData = { ...data.formData }
 
-        if (data.addMode) {
+        if (data.isDefaultValueNo) {
           copyFormData.no = 1
         }
 

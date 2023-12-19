@@ -11,8 +11,9 @@
           <el-button type="success" class="m-l-10px" @click="
             setTestItemModal({
               visible: true,
-              title: $t('添加测试项目'),
               addMode: true,
+              isDefaultValueNo: true,
+              title: $t('添加测试项目'),
               formData: defaultTestItemFormData
             })
           ">
@@ -88,6 +89,7 @@
                   setTestItemModal({
                     visible: true,
                     addMode: true,
+                    isDefaultValueNo: false,
                     title: $t('添加测试项目'),
                     formData: getTestItemCopyById(item.id)
                   })
@@ -99,6 +101,7 @@
                     setTestItemModal({
                       visible: true,
                       addMode: false,
+                      isDefaultValueNo: false,
                       title: '编辑测试项目',
                       formData: getTestItemById(item.id)
                     })
@@ -192,6 +195,7 @@
                     setTestItemModal({
                       visible: true,
                       addMode: false,
+                      isDefaultValueNo: false,
                       title: '编辑测试项目',
                       formData: getTestItemById(item.id)
                     })
