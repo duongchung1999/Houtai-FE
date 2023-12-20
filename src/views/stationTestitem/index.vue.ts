@@ -273,6 +273,10 @@ export default class StationTestItemPage extends Vue {
       return testItem.name.replace('+', '').replace('-', '')
     }
 
+    getTestItemNameFull(testItem: TestItem) {
+      return testItem.name;
+    }
+
     setDragingDirection(e: MouseEvent, scrollbarName: string) {
       const el: HTMLElement = this.stationTestItemScrollbar.$el
       // height offset of page top
@@ -383,7 +387,7 @@ export default class StationTestItemPage extends Vue {
 
           for (const fileTestItem of txtFileStationTestItem) {
             let oldTestItem = this.testItemList.find(
-              (e) => this.getTestItemName(e) == this.getTestItemName(fileTestItem.testItem)
+              (e) => this.getTestItemNameFull(e) == this.getTestItemNameFull(fileTestItem.testItem)
             )
             // 更新旧的测试项目
             if (oldTestItem) {
