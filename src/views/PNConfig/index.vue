@@ -3,7 +3,7 @@
     <el-header height="60px">
       <el-row :gutter="24" style="width:100%">
         <el-col :span="12" style="display:flex">
-          <label class="radio-label" for="model-select">机型</label>
+          <label class="radio-label" for="model-select">{{ $t('机型') }}</label>
           <el-select id="model-select" v-model="model" value-key="name" filterable placeholder="请选择机型">
             <el-option v-for="item in modelList" :key="item.id" :label="item.name" :value="item"></el-option>
           </el-select>
@@ -19,7 +19,7 @@
       <el-row class="list-row" :gutter="10">
         <el-col :span="12">
           <div class="v-list-header">
-            <label class="m-r-10px">配置</label>
+            <label class="m-r-10px">{{ $t("配置") }}</label>
             <el-select v-model="currentPNConfig" value-key="title" filterable @change="onSelectConfig">
               <el-option v-for="item in PNConfigList" :key="item.id" :label="item.title" :value="item" />
             </el-select>
@@ -34,7 +34,7 @@
         </el-col>
         <el-col :span="12">
           <div class="v-list-header">
-            <label for="">已分配的料号列表</label>
+            <label for="">{{ $t("已分配的料号列表") }}</label>
 
             <el-button type="success" :disabled="!currentPNConfig.id" @click="addPartNoDialog.visible = true">
               {{ $t('添加料号') }}

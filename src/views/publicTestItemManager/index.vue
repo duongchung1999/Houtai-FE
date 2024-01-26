@@ -4,7 +4,7 @@
       <el-link type="primary" :underline="false" href="http://10.55.22.160:8099/mdContent?id=223&t=1663739099475" target="_blank" class="m-r-20px">了解更多...</el-link>
 
       <el-upload action="#" :before-upload="() => false" :on-change="chooseFile" :limit="1" :file-list="fileList">
-        <el-button id="add-btn" type="success" size="small">添加通用测试项目</el-button>
+        <el-button id="add-btn" type="success" size="small">{{ $t("添加通用测试项目") }}</el-button>
       </el-upload>
 
       <!-- 删除功能放在页面内 -->

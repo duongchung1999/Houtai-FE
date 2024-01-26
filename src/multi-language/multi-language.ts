@@ -438,6 +438,26 @@ const texts = {
     EN: 'Please enter the material number and press Enter to split multiple material numbers.'
   },
 
+  // Label config
+  label_config: {
+    ZN: '配置',
+    VN: 'Cấu hình',
+    EN: 'Config'
+  },
+
+  // 料号List
+  label_Partnumber_list: {
+    ZN: '已分配的料号列表',
+    VN: 'Danh sách các mã liệu đã phân phối',
+    EN: 'List of assigned Part numbers'
+  },
+
+  //Public Test item
+  label_AddPublicTestItem:{
+    ZN: '添加通用测试项目',
+    VN: 'Thêm các hạng mục test chung',
+    EN: 'Add Public Test item'
+  }
 }
 
 export function getTranslation(text: string, lang = 'ZN'): string {

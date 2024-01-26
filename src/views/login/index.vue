@@ -9,14 +9,14 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">登录</h3>
+        <h3 class="title">Login</h3>
       </div>
 
       <el-form-item prop="username">
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="用户名"
+          placeholder="User name"
           name="username"
           type="text"
           tabindex="1"
@@ -30,7 +30,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="密码"
+          placeholder="Password"
           name="password"
           tabindex="2"
           auto-complete="on"
